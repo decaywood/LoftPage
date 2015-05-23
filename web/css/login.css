@@ -1,0 +1,180 @@
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+body {
+  text-align: center;
+  background-image: url("../images/login.jpg");
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+}
+
+[data-icon]:after {
+  font-family: "entypo";
+  content: attr(data-icon);
+  speak: none;
+}
+
+.hide-text, label, button {
+  display: block;
+  text-indent: 150%;
+  overflow: hidden;
+}
+.hide-text:before, label:before, button:before, .hide-text:after, label:after, button:after {
+  text-indent: 0;
+}
+
+form {
+  margin: 20px 0 0 0;
+}
+
+fieldset {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  width: 250px;
+  padding: 16px 16px 8px 16px;
+  background: #423142;
+  filter:alpha(opacity=80);  /*支持 IE 浏览器*/
+  -moz-opacity:0.80; /*支持 FireFox 浏览器*/
+  opacity:0.80;  /*支持 Chrome, Opera, Safari 等浏览器*/
+  border: 0;
+}
+
+label[data-icon]:after,
+button[data-icon]:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 16px;
+}
+
+label {
+  -moz-border-radius: 3px 0 0 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px 0 0 3px;
+  position: absolute;
+  margin-top: -42px;
+  width: 40px;
+  height: 40px;
+  background: #dedede;
+  border-right: 1px solid #cecece;
+  cursor: pointer;
+}
+label[data-icon]:after {
+  color: #847384;
+}
+label[for="username"][data-icon]:after {
+  margin: -9.14286px 0 0 -7.11111px;
+}
+label[for="password"][data-icon]:after {
+  margin: -9.14286px 0 0 -4.92308px;
+}
+
+input[type="text"],
+input[type="password"] {
+  /*@include input-placeholder {
+    color: $form-input-text-placeholder-color;
+  }*/
+  -moz-border-radius: 0 3px 3px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 3px 3px 0;
+  height: 40px;
+  width: 200px;
+  border: 0;
+  margin: 0 0 2px 40px;
+  padding: 0 0 0 8px;
+  font: 14px Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+}
+input[type="text"]::-webkit-input-placeholder,
+input[type="password"]::-webkit-input-placeholder {
+  color: #848484;
+}
+input[type="text"]::-moz-input-placeholder,
+input[type="password"]::-moz-input-placeholder {
+  color: #848484;
+}
+input[type="text"]:-ms-input-placeholder,
+input[type="password"]:-ms-input-placeholder {
+  color: #848484;
+}
+input[type="text"] + label + span,
+input[type="password"] + label + span {
+  display: none;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 0 0 transparent;
+  -webkit-box-shadow: 0 0 0 transparent;
+  box-shadow: 0 0 0 transparent;
+  position: absolute;
+  left: 280px;/* 提示 */
+  margin-top: -42px;
+  padding: 0 10px;
+  height: 40px;
+  color: white;
+  background: #e62163;
+  border: 0;
+  font: 14px Corbel, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Verdana, "Verdana Ref", sans-serif;
+  line-height: 40px;
+  white-space: nowrap;
+}
+input[type="text"] + label + span:before,
+input[type="password"] + label + span:before {
+  width: 0;
+  height: 0;
+  left: -8px;
+  top: 12px;
+  content: '';
+  position: absolute;
+  border-top: 4px solid transparent;
+  border-right: 8px solid #e62163;
+  border-bottom: 4px solid transparent;
+}
+input[type="text"]:invalid,
+input[type="password"]:invalid {
+  display: block;
+  box-shadow: none;
+  outline: none;
+}
+input[type="text"].blur:required:invalid + label,
+input[type="password"].blur:required:invalid + label {
+  background: #e62163;
+  border-right-color: #ffffff;
+}
+input[type="text"].blur:required:invalid + label:after,
+input[type="password"].blur:required:invalid + label:after {
+  margin: -9.14286px 0 0 -8px;
+  content: '\26A0';
+  color: white;
+}
+
+button {
+  -moz-border-radius: 0 3px 3px 0;
+  -webkit-border-radius: 0;
+  border-radius: 0 3px 3px 0;
+  position: absolute;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  margin-top: -42px;
+  color: white;
+  background: #ad6bad;
+  border: 0;
+}
+button[data-icon]:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -9.14286px 0 0 -6.4px;
+  color: white;
+  font-size: 16px;
+}
+
+.login-component {
+  width:300px;
+  height:200px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin:-100px 0 0 -150px
+}
