@@ -19,7 +19,7 @@ public class BaseController {
     /**
      * 得到PageData
      */
-    public RequestDatas getPageData(){
+    public RequestDatas getRequestDatas(){
         return new RequestDatas(this.getRequest());
     }
 

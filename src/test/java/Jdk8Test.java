@@ -1,10 +1,5 @@
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,8 +10,8 @@ import static org.junit.Assert.assertEquals;
  * Created by decaywood on 2015/5/23.
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class Jdk8Test {
 
     @Test
@@ -50,11 +45,6 @@ public class Jdk8Test {
     }
 
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
-    @Test
-    public void autoWiredTest() {
-        System.out.println(httpServletRequest);
-    }
+
 
 }

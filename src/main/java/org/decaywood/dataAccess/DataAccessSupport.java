@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by decaywood on 2015/5/23.
  */
 
-@Repository("dataAccessSupport")
+@Repository(value = "dataAccessSupport")
 public class DataAccessSupport <R, L, K, V, P> implements IDataAccess <R, L, K, V, P> {
 
     @Resource(name = "sqlSessionTemplate")
@@ -103,5 +103,10 @@ public class DataAccessSupport <R, L, K, V, P> implements IDataAccess <R, L, K, 
     @Override
     public int delete(String statement, P parameter) {
         return sqlSessionTemplate.delete(statement, parameter);
+    }
+
+    @Override
+    public void batchDelete(String statement, List<L> parameter) {
+        sqlSessionTemplate.delete(statement, parameter);
     }
 }

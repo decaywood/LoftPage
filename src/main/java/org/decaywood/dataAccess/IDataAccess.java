@@ -46,5 +46,7 @@ public interface IDataAccess<R, L, K, V, P> {
 
     int delete(String statement, P parameter);
 
+    void batchDelete(String statement, List<L> parameter);
+
 
 }
