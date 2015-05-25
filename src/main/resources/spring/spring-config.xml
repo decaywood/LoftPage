@@ -53,6 +53,40 @@
     </bean>
 
 
+    <!-- ================ Shiro start ================ -->
+    <!--<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">-->
+        <!--<property name="realm" ref="ShiroRealm" />-->
+    <!--</bean>-->
 
+    <!--&lt;!&ndash; 項目自定义的Realm &ndash;&gt;-->
+    <!--<bean id="ShiroRealm" class="com.fh.interceptor.shiro.ShiroRealm" ></bean>-->
+
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+
+        <property name="loginUrl" value="/login_toLogin.do" />
+
+        <property name="successUrl" value="/login_index.do" />
+
+        <property name="unauthorizedUrl" value="/login_toLogin.do" />
+
+        <property name="filterChainDefinitions">
+            <value>
+                /admin00/login/** = anon
+                /assets/** = anon
+                /avatars/** = anon
+                /css/** = anon
+                /font/** = anon
+                /images/** = anon
+                /img/** = anon
+                /js/** = anon
+                /code.do = anon
+                /login_login.do = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+    <!-- ================ Shiro end ================ -->
 
 </beans>

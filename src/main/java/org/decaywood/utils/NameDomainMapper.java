@@ -14,6 +14,7 @@ public enum NameDomainMapper {
     USER_STATUS,
     USER_LOGO,
     VALIDATE_CODE,
+    SESSION_SECURITY_CODE,
     SYSTEM_NAME,
     REQUEST_DATAS;
 

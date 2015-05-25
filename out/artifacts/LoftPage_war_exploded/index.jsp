@@ -23,7 +23,6 @@
   <body>
     <p>hello!</p>
     <script type="text/javascript">
-
       document.location = "<%=path%>/login.do"
     </script>
   </body>

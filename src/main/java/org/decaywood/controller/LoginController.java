@@ -1,15 +1,21 @@
 package org.decaywood.controller;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.decaywood.dataAccess.IDataAccess;
-import org.decaywood.utils.CommonUtils;
-import org.decaywood.utils.NameDomainMapper;
-import org.decaywood.utils.RequestDatas;
-import org.decaywood.utils.SystemConfigure;
+import org.decaywood.utils.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author: decaywood
@@ -32,19 +38,22 @@ public class LoginController extends BaseController {
     }
 
     @RequestMapping(value = "/loginValidate.do")
-    public ModelAndView loginValidate() {
-        ModelAndView modelAndView = getModelAndView();
-        RequestDatas requestDatas = getRequestDatas();
-        String errorInfo = null;
-        String validateCode = requestDatas.get(NameDomainMapper.VALIDATE_CODE.name());
-
-        if (validateCode == null || "".equals(validateCode)) {
-            errorInfo = "validate code is invalid";
-        } else {
-//            String userName = requestDatas;
+    public void loginValidate(HttpServletResponse response) {
+        ByteOutputStream outputStream = new ByteOutputStream();
+        ValidateCode validateCode = new ValidateCode(125, 40, 4, 10);
+        BufferedImage bufferedImage = validateCode.getBufferedImage();
+        String validateCodeString = validateCode.getCode();
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        session.setAttribute(NameDomainMapper.SESSION_SECURITY_CODE, validateCodeString);
+        try {
+            ImageIO.write(bufferedImage, "jpg", new FileOutputStream("D:\\Work\\IntelliJProjects"));
+            ImageIO.write(bufferedImage, "jpg", outputStream);
+            outputStream.writeTo(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return modelAndView;
     }
 
 }
