@@ -21,6 +21,11 @@
         <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.2.2" />
         <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.2.8" />
         <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.35" />
+        <element id="library" level="project" name="Maven: org.apache.shiro:shiro-spring:1.2.3" />
+        <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.2.3" />
+        <element id="library" level="project" name="Maven: org.apache.shiro:shiro-core:1.2.3" />
+        <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.4" />
+        <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
       </element>
       <element id="javaee-facet-resources" facet="LoftPage/web/Web" />
     </root>

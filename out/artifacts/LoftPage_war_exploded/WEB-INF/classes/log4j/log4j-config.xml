@@ -12,39 +12,43 @@
 
     <!-- Application Loggers -->
     <logger name="com.decaywood">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <logger name="org.springframework.beans">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <logger name="org.springframework.context">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <logger name="org.springframework.web">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <logger name="org.springframework.jdbc">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
 
     <logger name="org.mybatis">
-        <level value="info" />
+        <level value="DEBUG" />
     </logger>
     <logger name="java.sql">
-        <level value="info" />
+        <level value="DEBUG" />
+    </logger>
+    <logger name="org.apache.shiro">
+        <level value="DEBUG" />
     </logger>
     <!-- Root Logger -->
     <root>
-        <priority value="info" />
+
+        <priority value="DEBUG" />
         <appender-ref ref="console" />
     </root>
 

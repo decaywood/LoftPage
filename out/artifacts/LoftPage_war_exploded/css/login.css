@@ -27,7 +27,10 @@ form {
 }
 
 fieldset {
-
+    filter:alpha(opacity=80);
+    -moz-opacity:0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -153,13 +156,19 @@ button {
     border-radius: 0 20px 20px 0;
     position: absolute;
     right: 16px;
-    width: 64px;
+    width: 75px;
     height: 38px;
-    margin-top: -91px;
+    margin-top: 0%;
     color: white;
     background: #ad6bad;
     border: 0;
 }
+
+#login{
+    width: 150px;
+    background: red;
+}
+
 button[data-icon]:after {
     position: absolute;
     top: 50%;
@@ -170,14 +179,9 @@ button[data-icon]:after {
 }
 
 #loginComponent {
+    width: 300px;
+    height: 300px;
     position: absolute;
-    filter:alpha(opacity=80);
-    -moz-opacity:0.8;
-    -khtml-opacity: 0.8;
-    opacity: 0.8;
-    /*width: 300px;*/
-    /*height: 300px;*/
-    /*position: absolute;*/
-    /*left: 40%;*/
-    /*top: 35%;*/
+    left: 40%;
+    top: 35%;
 }

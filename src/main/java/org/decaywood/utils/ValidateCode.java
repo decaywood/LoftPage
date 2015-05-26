@@ -24,6 +24,8 @@ public class ValidateCode {
     // 验证码图片Buffer
     private BufferedImage buffImg = null;
 
+    private static Font font;
+
     private char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
             'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -73,7 +75,9 @@ public class ValidateCode {
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, width, height);
         // 创建字体
-        Font font = getFont(fontHeight);
+        if(font == null)
+            font = getFont(fontHeight);
+
         g.setFont(font);
 
         for (int i = 0; i < lineCount; i++) {
@@ -89,7 +93,7 @@ public class ValidateCode {
         }
 
         // randomCode记录随机产生的验证码
-        StringBuffer randomCode = new StringBuffer();
+        StringBuilder randomCode = new StringBuilder();
         // 随机产生codeCount个字符的验证码。
         for (int i = 0; i < codeCount; i++) {
             String strRand = String.valueOf(codeSequence[random.nextInt(codeSequence.length)]);

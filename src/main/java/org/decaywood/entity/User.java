@@ -9,12 +9,38 @@ public class User {
     private String userLoginName;
     private String userPassWord;
     private String userName;
+    private String userEmail;
+    private String userPhoneNumber;
     private String userRight;
     private String userRole;
     private String userLastLoginTime;
     private String userIPAddress;
     private String userStatus;
     private String userLogo;
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+    }
+
+    public String getUserLoginName() {
+        return userLoginName;
+    }
+
+    public void setUserLoginName(String userLoginName) {
+        this.userLoginName = userLoginName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public String getUserID() {
         return userID;

@@ -22,18 +22,18 @@
 </head>
 <body>
 <div id="loginComponent">
-    <form>
+    <form action="/loginValidate.do" method="post" name="loginForm" id="loginForm">
         <fieldset>
             <div>
                 <!-- Entypo &#128100; = User -->
                 <input type="text"
-                       name="username"
-                       id="username"
+                       name="userName"
+                       id="userName"
                        placeholder="Username"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,11}$"
-                       data-validation-msg="Username must be 2 - 12 characters"
+                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$"
+                       data-validation-msg="Username must be 2 - 20 characters"
                        required />
-                <label for="username" data-icon="&#128100;">Username</label>
+                <label for="userName" data-icon="&#128100;">Username</label>
             </div>
             <div>
                 <!-- Entypo &#128274; = Locked -->
@@ -41,10 +41,11 @@
                        name="password"
                        id="password"
                        placeholder="Password"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,11}$"
-                       data-validation-msg="Password must be 2-12 characters"
+                       pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$"
+                       data-validation-msg="Password must be 2-20 characters"
                        required />
                 <label for="password" data-icon="&#128274;">Password</label>
+                <button id="register" value="Submit" data-icon="&#58542;" title="register" />
             </div>
             <div>
                 <input type="text"
@@ -54,13 +55,13 @@
                        data-validation-msg="Identify must be 4 characters"
                        required >
                 <label for="identyfy" data-icon="&#x25;"></label>
+                <button id="login" value="Submit" data-icon="&#58542;" title="login" />
             </div>
             <div>
                 <img id="codeImg"
                      alt="click to change"
                      title="click to change"
-                     src="<%=path%>/images/identify.png">
-                <button value="Submit" data-icon="&#58542;" />
+                     src="">
             </div>
         </fieldset>
     </form>

@@ -54,36 +54,35 @@
 
 
     <!-- ================ Shiro start ================ -->
-    <!--<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">-->
-        <!--<property name="realm" ref="ShiroRealm" />-->
-    <!--</bean>-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="ShiroRealm" />
+    </bean>
 
-    <!--&lt;!&ndash; 項目自定义的Realm &ndash;&gt;-->
-    <!--<bean id="ShiroRealm" class="com.fh.interceptor.shiro.ShiroRealm" ></bean>-->
+    <!-- 項目自定义的Realm -->
+    <bean id="ShiroRealm" class="org.decaywood.interceptor.ShiroRealm" ></bean>
 
-    <!-- Shiro Filter -->
+    <!-- Shiro Filter id需要和web.xml中配置的过滤器一致 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager" />
 
-        <property name="loginUrl" value="/login_toLogin.do" />
+        <property name="loginUrl" value="/login.do" />
 
-        <property name="successUrl" value="/login_index.do" />
+        <property name="successUrl" value="/loginSuccess.do" />
 
-        <property name="unauthorizedUrl" value="/login_toLogin.do" />
+        <property name="unauthorizedUrl" value="/login.do" />
 
         <property name="filterChainDefinitions">
             <value>
-                /admin00/login/** = anon
-                /assets/** = anon
-                /avatars/** = anon
-                /css/** = anon
-                /font/** = anon
-                /images/** = anon
-                /img/** = anon
-                /js/** = anon
-                /code.do = anon
-                /login_login.do = anon
-                /** = authc
+                <!--/admin00/login/** = anon-->
+                <!--/assets/** = anon-->
+                <!--/avatars/** = anon-->
+                <!--/css/** = anon-->
+                <!--/font/** = anon-->
+                <!--/images/** = anon-->
+                <!--/img/** = anon-->
+                <!--/js/** = anon-->
+                <!--/code.do = anon-->
+                <!--/login_login.do = anon-->
             </value>
         </property>
     </bean>

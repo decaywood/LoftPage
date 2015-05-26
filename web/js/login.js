@@ -20,7 +20,7 @@ $(function () {
     }, 500, function(){
         $('input#username').focus();
     });
-
+    changeVerifyingCode();
     $('img#codeImg').click(changeVerifyingCode);
 
     // Let's hide the default validation msg as
@@ -30,7 +30,7 @@ $(function () {
     }, true);
 
     // Validate form on submit - display tooltip if input has no value
-    $('button').click(function () {
+    $('button#login').click(function () {
         inputsLen = inputs.length;
 
         while (inputsLen--) {
@@ -39,6 +39,8 @@ $(function () {
             }
             next(inputs[inputsLen]).nextSibling.style.display = "block";
         }
+
+        //alert($('input#userName').value());
     });
 
     while (inputsLen--) {
