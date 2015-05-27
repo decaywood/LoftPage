@@ -70,7 +70,7 @@ label[for="username"][data-icon]:after {
 label[for="password"][data-icon]:after {
     margin: -9.14286px 0 0 -4.92308px;
 }
-label[for="identyfy"][data-icon]:after {
+label[for="validate"][data-icon]:after {
     margin: -9.14286px 0 0 -4.92308px;
 }
 
@@ -179,9 +179,7 @@ button[data-icon]:after {
 }
 
 #loginComponent {
-    width: 300px;
-    height: 300px;
+    width: 0px;
+    height: 0px;
     position: absolute;
-    left: 40%;
-    top: 35%;
 }

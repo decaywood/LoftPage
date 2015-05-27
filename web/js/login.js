@@ -39,8 +39,20 @@ $(function () {
             }
             next(inputs[inputsLen]).nextSibling.style.display = "block";
         }
+    });
 
-        //alert($('input#userName').value());
+    $('button#login').click(function () {
+
+        var userName = $('input#userName').val();
+        var password = $('input#password').val();
+        var verifyingCode = $('input#validate').val();
+
+        var legalUserName = $('input#userName').css("display") != "block";
+        var legalPassword = $('input#userName').css("display") != "block";
+        var legalVerifyingCode = $('input#userName').css("display") != "block";
+
+        var leagal = legalUserName && legalPassword && legalVerifyingCode;
+        alert(leagal);
     });
 
     while (inputsLen--) {

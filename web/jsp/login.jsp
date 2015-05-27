@@ -49,12 +49,12 @@
             </div>
             <div>
                 <input type="text"
-                       id="identyfy"
+                       id="validate"
                        placeholder="Identify code"
                        pattern="[a-zA-Z0-9-_\.]{4}$"
                        data-validation-msg="Identify must be 4 characters"
                        required >
-                <label for="identyfy" data-icon="&#x25;"></label>
+                <label for="validate" data-icon="&#x25;"></label>
                 <button id="login" value="Submit" data-icon="&#58542;" title="login" />
             </div>
             <div>
