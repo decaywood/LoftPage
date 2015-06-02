@@ -17,7 +17,9 @@ public class UserService {
     @Resource(name = "dataAccessSupport")
     private DataAccessSupport<User, User, Object, Object, Object> dao;
 
-
+    public User queryByUser(User user) {
+        return dao.selectOne("UserXMapper.queryByUser", user);
+    }
     /*
     * 通过id获取数据
     */
@@ -75,6 +77,11 @@ public class UserService {
     public void updateUser(User User) {
         dao.update("UserXMapper.updateUser", User);
     }
+
+    public void updateUserLastLoginTime(User user) {
+        dao.update("UserXMapper.updateUserLastLoginTime", user.getUserLastLoginTime());
+    }
+
     /*
     * 换皮肤
     */

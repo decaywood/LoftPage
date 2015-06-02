@@ -13,16 +13,16 @@
 <html>
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <title>登陆界面表单提交js特效</title>
+    <title>登陆界面表单提交js特效</title>
 
-  <link rel="stylesheet" href="<%=path%>/css/login.css" media="screen" type="text/css" />
+    <link rel="stylesheet" href="<%=path%>/css/login.css" media="screen" type="text/css"/>
 
 </head>
 <body>
 <div id="loginComponent">
-    <form action="/loginValidate.do" method="post" name="loginForm" id="loginForm">
+    <form action="<%=path%>/validate.do" method="post" name="loginForm" id="loginForm">
         <fieldset>
             <div>
                 <!-- Entypo &#128100; = User -->
@@ -32,7 +32,7 @@
                        placeholder="Username"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$"
                        data-validation-msg="Username must be 2 - 20 characters"
-                       required />
+                       required/>
                 <label for="userName" data-icon="&#128100;">Username</label>
             </div>
             <div>
@@ -43,19 +43,21 @@
                        placeholder="Password"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,19}$"
                        data-validation-msg="Password must be 2-20 characters"
-                       required />
+                       required>
                 <label for="password" data-icon="&#128274;">Password</label>
-                <button id="register" value="Submit" data-icon="&#58542;" title="register" />
+                <button id="register" value="Submit" data-icon="&#58542;" title="register"/>
             </div>
             <div>
-                <input type="text"
-                       id="identyfy"
+                <input name="validateCode"
+                       type="text"
+                       id="validate"
                        placeholder="Identify code"
                        pattern="[a-zA-Z0-9-_\.]{4}$"
                        data-validation-msg="Identify must be 4 characters"
-                       required >
-                <label for="identyfy" data-icon="&#x25;"></label>
-                <button id="login" value="Submit" data-icon="&#58542;" title="login" />
+                       errorInfo=""
+                       required>
+                <label for="validate" data-icon="&#x25;"></label>
+                <button id="login" value="Submit" data-icon="&#58542;" title="login"/>
             </div>
             <div>
                 <img id="codeImg"
@@ -67,12 +69,24 @@
     </form>
 </div>
 
+
 <script src='<%=path%>/js/jquery.js'></script>
-<script src="<%=path%>/js/login.js"></script>
+<script src='<%=path%>/js/login.js'></script>
+<script src='<%=path%>/js/smoke.min.js'></script>
+<script type="text/javascript">
+    smoke.signal("hi ervey one", function (e) {}, {});
+    $(function () {
+        var userName = "${userName}";
+        var password = "${password}";
+        var errorInfo = "${errorInfo}";
+        $('input#userName').val(userName);
+        $('input#password').val(password);
+        smoke.signal("hi ervey one", function (e) {}, {});
+        if(errorInfo != "") {
 
-<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
-
-</div>
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -69,20 +69,16 @@
 
         <property name="successUrl" value="/loginSuccess.do" />
 
-        <property name="unauthorizedUrl" value="/login.do" />
+        <property name="unauthorizedUrl" value="/validate.do" />
 
         <property name="filterChainDefinitions">
             <value>
-                <!--/admin00/login/** = anon-->
-                <!--/assets/** = anon-->
-                <!--/avatars/** = anon-->
-                <!--/css/** = anon-->
-                <!--/font/** = anon-->
-                <!--/images/** = anon-->
-                <!--/img/** = anon-->
-                <!--/js/** = anon-->
-                <!--/code.do = anon-->
-                <!--/login_login.do = anon-->
+                /css/** = anon
+                /images/** = anon
+                /js/** = anon
+                /validate.do = anon
+                /validateCode.do = anon
+                /** = authc
             </value>
         </property>
     </bean>

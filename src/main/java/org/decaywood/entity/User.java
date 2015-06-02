@@ -22,103 +22,116 @@ public class User {
         return userPhoneNumber;
     }
 
-    public void setUserPhoneNumber(String userPhoneNumber) {
+    public User setUserPhoneNumber(String userPhoneNumber) {
         this.userPhoneNumber = userPhoneNumber;
+        return this;
     }
 
     public String getUserLoginName() {
         return userLoginName;
     }
 
-    public void setUserLoginName(String userLoginName) {
+    public User setUserLoginName(String userLoginName) {
         this.userLoginName = userLoginName;
+        return this;
     }
 
     public String getUserEmail() {
         return userEmail;
     }
 
-    public void setUserEmail(String userEmail) {
+    public User setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+        return this;
     }
 
     public String getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public User setUserID(String userID) {
         this.userID = userID;
+        return this;
     }
 
     public String getUserNickName() {
         return userLoginName;
     }
 
-    public void setUserNickName(String userLoginName) {
+    public User setUserNickName(String userLoginName) {
         this.userLoginName = userLoginName;
+        return this;
     }
 
     public String getUserPassWord() {
         return userPassWord;
     }
 
-    public void setUserPassWord(String userPassWord) {
+    public User setUserPassWord(String userPassWord) {
         this.userPassWord = userPassWord;
+        return this;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public User setUserName(String userName) {
         this.userName = userName;
+        return this;
     }
 
     public String getUserRight() {
         return userRight;
     }
 
-    public void setUserRight(String userRight) {
+    public User setUserRight(String userRight) {
         this.userRight = userRight;
+        return this;
     }
 
     public String getUserRole() {
         return userRole;
     }
 
-    public void setUserRole(String userRole) {
+    public User setUserRole(String userRole) {
         this.userRole = userRole;
+        return this;
     }
 
     public String getUserLastLoginTime() {
         return userLastLoginTime;
     }
 
-    public void setUserLastLoginTime(String userLastLoginTime) {
+    public User setUserLastLoginTime(String userLastLoginTime) {
         this.userLastLoginTime = userLastLoginTime;
+        return this;
     }
 
     public String getUserIPAddress() {
         return userIPAddress;
     }
 
-    public void setUserIPAddress(String userIPAddress) {
+    public User setUserIPAddress(String userIPAddress) {
         this.userIPAddress = userIPAddress;
+        return this;
     }
 
     public String getUserStatus() {
         return userStatus;
     }
 
-    public void setUserStatus(String userStatus) {
+    public User setUserStatus(String userStatus) {
         this.userStatus = userStatus;
+        return this;
     }
 
     public String getUserLogo() {
         return userLogo;
     }
 
-    public void setUserLogo(String userLogo) {
+    public User setUserLogo(String userLogo) {
         this.userLogo = userLogo;
+        return this;
     }
 }

@@ -150,18 +150,7 @@ public class ValidateCode {
      * @return
      */
     private String getFontByteStr() {
-
-        String line = null; // 用来保存每行读取的内容
-
-        try {
-            String path = ValidateCode.class.getClassLoader().getResource("").getPath() + "font/font.txt";
-            InputStream is = new FileInputStream(path);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            line = reader.readLine(); // 读取第一行
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return line;
+        return CommonUtils.readFile("font/font.txt");
     }
 
     public BufferedImage getBufferedImage() {

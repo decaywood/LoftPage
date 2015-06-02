@@ -36,6 +36,7 @@ fieldset {
     box-sizing: border-box;
     position: relative;
     width: 250px;
+    height: 300px;
     padding: 16px 16px 8px 16px;
     background: #423142;
     border: 0;

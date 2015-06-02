@@ -5,6 +5,6 @@ package org.decaywood.utils;
  */
 public class SystemConfigure {
 
-    public static final String SYSTEM_NAME = "configure/systemName";
+    public static final String SYSTEM_NAME = "configure/systemName.txt";
 
 }

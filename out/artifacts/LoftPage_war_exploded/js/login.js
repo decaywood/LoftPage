@@ -42,17 +42,14 @@ $(function () {
     });
 
     $('button#login').click(function () {
-
-        var userName = $('input#userName').val();
-        var password = $('input#password').val();
-        var verifyingCode = $('input#validate').val();
-
         var legalUserName = $('input#userName').css("display") != "block";
-        var legalPassword = $('input#userName').css("display") != "block";
-        var legalVerifyingCode = $('input#userName').css("display") != "block";
+        var legalPassword = $('input#password').css("display") != "block";
+        var legalVerifyingCode = $('input#validate').css("display") != "block";
 
         var leagal = legalUserName && legalPassword && legalVerifyingCode;
-        alert(leagal);
+        if(leagal) {
+            $('form#loginForm').submit();
+        }
     });
 
     while (inputsLen--) {
@@ -82,7 +79,7 @@ $(function () {
 });
 
 function changeVerifyingCode() {
-    $('img#codeImg').attr('src', 'loginValidate.do?t=' + new Date().getTime());
+    $('img#codeImg').attr('src', 'validateCode.do?t=' + new Date().getTime());
 }
 
 // Credit to John Resig for this function taken from Pro JavaScript techniques 
