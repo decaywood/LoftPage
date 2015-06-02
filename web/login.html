@@ -3,12 +3,14 @@
 <html>
 <head>
 
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <title>登陆界面表单提交js特效</title>
+    <title>登陆界面表单提交js特效</title>
 
-  <link rel="stylesheet" href="./css/login.css" media="screen" type="text/css" />
 
+    <link rel="stylesheet" href="./css/login.css" media="screen" type="text/css"/>
+
+    <link rel="stylesheet" href="./css/smoke.css" media="screen" type="text/css"/>
 </head>
 <body>
 <div id="loginComponent">
@@ -22,7 +24,7 @@
                        placeholder="Username"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,11}$"
                        data-validation-msg="Username must be 2 - 12 characters"
-                       required />
+                       required/>
                 <label for="username" data-icon="&#128100;">Username</label>
             </div>
             <div>
@@ -33,9 +35,9 @@
                        placeholder="Password"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,11}$"
                        data-validation-msg="Password must be 2-12 characters"
-                       required />
+                       required/>
                 <label for="password" data-icon="&#128274;">Password</label>
-                <button id="register" value="Submit" data-icon="&#58542;" title="register" />
+                <button id="register" value="Submit" data-icon="&#58542;" title="register"/>
             </div>
             <div>
                 <input type="text"
@@ -43,9 +45,9 @@
                        placeholder="Identify code"
                        pattern="[a-zA-Z0-9-_\.]{4}$"
                        data-validation-msg="Identify must be 4 characters"
-                       required >
+                       required>
                 <label for="identyfy" data-icon="&#x25;"></label>
-                <button id="login" value="Submit" data-icon="&#58542;" title="login" />
+                <button id="login" value="Submit" data-icon="&#58542;" title="login"/>
             </div>
             <div>
                 <img id="codeImg"
@@ -57,11 +59,15 @@
         </fieldset>
     </form>
 </div>
-
+<script src='./js/smoke.min.js'></script>
 <script src='./js/jquery.js'></script>
 <script src="./js/login.js"></script>
 
-<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<script type="text/javascript">
+    $(function () {
+        smoke.signal('This is a normal alert... nothing fancy', function () {},{duration:3000});
+    });
+</script>
 
 </div>
 

@@ -18,6 +18,7 @@
     <title>登陆界面表单提交js特效</title>
 
     <link rel="stylesheet" href="<%=path%>/css/login.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<%=path%>/css/smoke.css" media="screen" type="text/css"/>
 
 </head>
 <body>
@@ -74,16 +75,14 @@
 <script src='<%=path%>/js/login.js'></script>
 <script src='<%=path%>/js/smoke.min.js'></script>
 <script type="text/javascript">
-    smoke.signal("hi ervey one", function (e) {}, {});
     $(function () {
         var userName = "${userName}";
         var password = "${password}";
         var errorInfo = "${errorInfo}";
         $('input#userName').val(userName);
         $('input#password').val(password);
-        smoke.signal("hi ervey one", function (e) {}, {});
-        if(errorInfo != "") {
-
+        if(errorInfo != ""){
+            smoke.signal(errorInfo, function (e) {}, { duration:50000});
         }
     });
 </script>

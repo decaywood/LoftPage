@@ -150,7 +150,7 @@ input[type="password"].blur:required:invalid + label:after {
     color: white;
 }
 
-button {
+#login, #register {
     cursor: pointer;
     -moz-border-radius: 0 20px 20px 0;
     -webkit-border-radius:  0 20px 20px 0;
