@@ -1,13 +1,15 @@
 <!DOCTYPE HTML>
+<%
+	String path = request.getContextPath();
+%>
 <html>
 <head>
 <title>Home</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
-<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/slimmenu.css" rel="stylesheet" media="screen">
-<script src="../js/jquery.min.js"></script>
+<link href="<%=path%>/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<script src="<%=path%>/js/jquery.min.js"></script>
 </head>
 <body>
 <div class="content" id="home">
@@ -15,7 +17,7 @@
 		<div class="header_style1">
 			<!-- start h_logo -->
 			<div class="logo">
-				<h1><a href="welcome.jsp">Resume</a></h1>
+				<h1><a href="mainPage.jsp">Resume</a></h1>
 			</div>
 			<!-- start h_menu -->
 			<div class="h_menu">
@@ -32,8 +34,8 @@
 		</div>
 		<!---------menu-script-------------> 
 		<!-- start manu --> 
-		<script type="text/javascript" src="../js/flexy-menu.js"></script>
-		<link href="../css/header_style1.css" rel="stylesheet" type="text/css" media="all" />
+		<script type="text/javascript" src="<%=path%>/js/flexy-menu.js"></script>
+		<link href="<%=path%>/css/header_style1.css" rel="stylesheet" type="text/css" media="all" />
 		<script type="text/javascript">$(document).ready(function(){$(".flexy-menu").flexymenu({speed: 400,type: "horizontal",align: "right"});});</script> 
 		<!---------end-script-menu------------->
 		<span class="slider">
@@ -58,9 +60,9 @@
 				</nav>
 			</div>
 			<div class="down-arrow"> <a href="#group_1" class="scroll" ><span> </span></a> </div>
-			<link rel="stylesheet" type="text/css" href="../css/slider.css" />
-			<script type="text/javascript" src="../js/modernizr.custom.28468.js"></script>
-			<script type="text/javascript" src="../js/jquery.cslider.js"></script>
+			<link rel="stylesheet" type="text/css" href="<%=path%>/css/slider.css" />
+			<script type="text/javascript" src="<%=path%>/js/modernizr.custom.28468.js"></script>
+			<script type="text/javascript" src="<%=path%>/js/jquery.cslider.js"></script>
 			<script type="text/javascript">
 				$(function() {
 
@@ -133,7 +135,7 @@
 			<div id="owl-demo1" class="owl-carousel">
 				<div class="item" >
 					<div class="carousel">
-						<div class="group_2_img1"> <img src="../images/img1.png" alt=""> </div>
+						<div class="group_2_img1"> <img src="<%=path%>/images/img1.png" alt=""> </div>
 						<div class="group_2_text2">
 							<div class="desc">
 								<h3>client</h3>
@@ -155,7 +157,7 @@
 				</div>
 				<div class="item">
 					<div class="carousel">
-						<div class="group_2_img1"> <img src="../images/img2.jpg" alt=""> </div>
+						<div class="group_2_img1"> <img src="<%=path%>/images/img2.jpg" alt=""> </div>
 						<div class="group_2_text2">
 							<div class="desc">
 								<h3>client</h3>
@@ -177,7 +179,7 @@
 				</div>
 				<div class="item">
 					<div class="carousel">
-						<div class="group_2_img1"> <img src="../images/img3.jpg" alt=""> </div>
+						<div class="group_2_img1"> <img src="<%=path%>/images/img3.jpg" alt=""> </div>
 						<div class="group_2_text2">
 							<div class="desc">
 								<h3>client</h3>
@@ -202,10 +204,10 @@
 	</div>
 </div>
 <!-- Owl Carousel Assets -->
-<link href="../css/owl.carousel.css" rel="stylesheet">
+<link href="<%=path%>/css/owl.carousel.css" rel="stylesheet">
 <!-- Owl Carousel Assets --> 
 <!-- Prettify --> 
-<script src="../js/owl.carousel.js"></script>
+<script src="<%=path%>/js/owl.carousel.js"></script>
 <script>
 		    $(document).ready(function() {
 		
@@ -297,8 +299,8 @@
 			</div>
 		</div>
 	</section>
-	<script src="../js/plugins.js"></script>
-	<script src="../js/script.js"></script>
+	<script src="<%=path%>/js/plugins.js"></script>
+	<script src="<%=path%>/js/script.js"></script>
 </div>
 <div class="exper" id="Experience">
 	<div class="wrap">
@@ -315,7 +317,7 @@
 					<div class="year">
 						<time datetime="2013">2013</time>
 						<div class="experience"> <span class="circle"></span>
-							<div class="experience-img"><img src="../images/asset01.jpg" alt=""></div>
+							<div class="experience-img"><img src="<%=path%>/images/asset01.jpg" alt=""></div>
 							<div class="experience-info clear-after">
 								<h5>Facebook</h5>
 								<div class="role">UI/UX Designer</div>
@@ -325,7 +327,7 @@
 						</div>
 						<!-- experience -->
 						<div class="experience"> <span class="circle"></span>
-							<div class="experience-img"><img src="../images/asset02.jpg" alt=""></div>
+							<div class="experience-img"><img src="<%=path%>/images/asset02.jpg" alt=""></div>
 							<div class="experience-info clear-after">
 								<h5>Amazon</h5>
 								<div class="role">UI/UX Designer</div>
@@ -339,7 +341,7 @@
 					<div class="year year1">
 						<time datetime="2012">2012</time>
 						<div class="experience"> <span class="circle"></span>
-							<div class="experience-img"><img src="../images/asset03.jpg" alt=""></div>
+							<div class="experience-img"><img src="<%=path%>/images/asset03.jpg" alt=""></div>
 							<div class="experience-info clear-after">
 								<h5>Apple</h5>
 								<div class="role">UI/UX Designer</div>
@@ -349,7 +351,7 @@
 						</div>
 						<!-- experience -->
 						<div class="experience"> <span class="circle"></span>
-							<div class="experience-img"><img src="../images/asset04.jpg" alt=""></div>
+							<div class="experience-img"><img src="<%=path%>/images/asset04.jpg" alt=""></div>
 							<div class="experience-info clear-after">
 								<h5>IBM</h5>
 								<div class="role">UI/UX Designer</div>
@@ -373,7 +375,7 @@
 			<div id="owl-demo2" class="owl-carousel">
 				<div class="item" >
 					<div class="carousel">
-						<div class="group_3_img"> <img src="../images/img.png" alt=""> </div>
+						<div class="group_3_img"> <img src="<%=path%>/images/img.png" alt=""> </div>
 						<div class="group_1_text group_3_text">
 							<h3> Adedayo Saheed</h3>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
@@ -383,7 +385,7 @@
 				</div>
 				<div class="item">
 					<div class="carousel">
-						<div class="group_3_img"> <img src="../images/img.png" alt=""> </div>
+						<div class="group_3_img"> <img src="<%=path%>/images/img.png" alt=""> </div>
 						<div class="group_1_text group_3_text">
 							<h3>Narate Ketram</h3>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
@@ -393,7 +395,7 @@
 				</div>
 				<div class="item">
 					<div class="carousel">
-						<div class=" group_3_img"> <img src="../images/img.png" alt=""> </div>
+						<div class=" group_3_img"> <img src="<%=path%>/images/img.png" alt=""> </div>
 						<div class="group_1_text group_3_text">
 							<h3>Adrian Thomas</h3>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
@@ -510,8 +512,8 @@
 		<p>© 2014 Template </p>
 	</div>
 	<!-- scroll_top_btn --> 
-	<script type="text/javascript" src="../js/move-top.js"></script>
-	<script type="text/javascript" src="../js/easing.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/move-top.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/easing.js"></script>
 	<script type="text/javascript">
 			$(document).ready(function() {
 			

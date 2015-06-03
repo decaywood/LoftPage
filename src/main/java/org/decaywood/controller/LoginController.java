@@ -2,11 +2,11 @@ package org.decaywood.controller;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.decaywood.entity.User;
 import org.decaywood.service.UserService;
 import org.decaywood.utils.*;
 import org.springframework.stereotype.Controller;
@@ -34,9 +34,9 @@ public class LoginController extends BaseController {
     public ModelAndView login() {
         ModelAndView modelAndView = getModelAndView();
         RequestDatas requestDatas = getRequestDatas();
-        requestDatas.put(NameDomainMapper.SYSTEM_NAME.name(), CommonUtils.readFile(SystemConfigure.SYSTEM_NAME));
+        requestDatas.put(NameDomainMapper.SYSTEM_NAME.getName(), CommonUtils.readFile(SystemConfigure.SYSTEM_NAME));
         modelAndView.setViewName("login");
-        modelAndView.addObject(NameDomainMapper.REQUEST_DATAS.name(), requestDatas);
+        modelAndView.addObject(NameDomainMapper.REQUEST_DATAS.getName(), requestDatas);
         return modelAndView;
     }
 
@@ -51,7 +51,7 @@ public class LoginController extends BaseController {
 
         Subject currentUser = SecurityUtils.getSubject();
         Session session = currentUser.getSession();
-        session.setAttribute(NameDomainMapper.SESSION_SECURITY_CODE.name(), validateCodeString);
+        session.setAttribute(NameDomainMapper.SESSION_SECURITY_CODE.getName(), validateCodeString);
 
         try {
             ImageIO.write(bufferedImage, "jpg", outputStream);
@@ -64,59 +64,38 @@ public class LoginController extends BaseController {
 
     @RequestMapping(value = "/validate")
     public ModelAndView validate(HttpServletRequest request) {
+
         ModelAndView modelAndView = getModelAndView();
         RequestDatas requestDatas = getRequestDatas();
 
-        Subject currentUser = SecurityUtils.getSubject();
-        Session session = currentUser.getSession();
-        String respectValidateCode = (String) session.getAttribute(NameDomainMapper.SESSION_SECURITY_CODE.name());
-
-        String validateCode = requestDatas.get("validateCode");
+        String userName = requestDatas.get(NameDomainMapper.USER_LOGIN_NAME.getName());
+        char[] password = requestDatas.get(NameDomainMapper.USER_PASSWORD.getName()).toCharArray();
 
         String errorInfo = null;
-        if(CommonUtils.isEmpty(respectValidateCode) || !respectValidateCode.equalsIgnoreCase(validateCode)) {
-            errorInfo = "validate code is empty!";
-        }
-
-        String userName = requestDatas.get("userName");
-        char[] password = requestDatas.get("password").toCharArray();
-        String hashedPassowrd = new SimpleHash("SHA-1", userName, password).toString();
-
-        User user = new User().setUserLoginName(userName).setUserPassWord(hashedPassowrd);
-//        user = userService.queryByUser(user);
-
-        if(user == null){
-            errorInfo = "password or userName is fault!";
-        }
-
-        if (errorInfo != null) {
-            modelAndView.setViewName("login");
-            modelAndView.addObject("userName", userName);
-            modelAndView.addObject("password", requestDatas.get("password"));
-            modelAndView.addObject("errorInfo", errorInfo);
+        try {
+            UsernamePasswordToken passwordToken = new UsernamePasswordToken(userName, password);
+            Subject currentUser = SecurityUtils.getSubject();
+            currentUser.login(passwordToken);
+            clearArray(password);
+        } catch (CredentialsException e) {
+            errorInfo = NameDomainMapper.ERROR_INFO1.getName();
+        } catch (AuthenticationException e) {
+            errorInfo = NameDomainMapper.ERROR_INFO2.getName();
+        } catch (Exception e){
+            modelAndView.setViewName(NameDomainMapper.ERROR_PAGE.getName());
+        } finally {
+            String viewName = errorInfo != null ? NameDomainMapper.LOGIN_PAGE.getName()
+                    : NameDomainMapper.MAIN_PAGE.getName();
+           
+            modelAndView.setViewName(viewName);
+            modelAndView.addObject(NameDomainMapper.USER_NAME.getName(), userName);
+            modelAndView.addObject(NameDomainMapper.USER_PASSWORD.getName(),
+                    requestDatas.get(NameDomainMapper.USER_PASSWORD.getName()));
+            modelAndView.addObject(NameDomainMapper.ERROR_INFO.getName(), errorInfo);
             return modelAndView;
         }
-
-        user.setUserLastLoginTime(TimeUtils.getTime().toString());
-        userService.updateUserLastLoginTime(user);
-
-        session.setAttribute(NameDomainMapper.SESSION_USER_LOGIN_NAME.name(), user);
-        session.removeAttribute(NameDomainMapper.SESSION_SECURITY_CODE.name());
-
-        UsernamePasswordToken passwordToken = new UsernamePasswordToken(userName, password);
-        clearArray(password);
-
-
-        currentUser.login(passwordToken);
-        modelAndView.setViewName("welcome");
-        return modelAndView;
-
     }
 
-    @RequestMapping(value = "/mainPage")
-    public void mainPage(){
-
-    }
 
 
 
