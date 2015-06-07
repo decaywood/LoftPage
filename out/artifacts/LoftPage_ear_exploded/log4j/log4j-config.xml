@@ -31,6 +31,9 @@
     <logger name="org.springframework.web">
         <level value="DEBUG" />
     </logger>
+    <logger name="org.springframework.http">
+        <level value="DEBUG" />
+    </logger>
 
     <logger name="org.springframework.jdbc">
         <level value="DEBUG" />

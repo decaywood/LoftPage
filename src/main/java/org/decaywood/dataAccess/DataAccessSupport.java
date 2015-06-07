@@ -3,7 +3,6 @@ package org.decaywood.dataAccess;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Map;
  * Created by decaywood on 2015/5/23.
  */
 
-@Repository(value = "dataAccessSupport")
+
 public class DataAccessSupport <R, L, K, V, P> implements IDataAccess <R, L, K, V, P> {
 
     @Resource(name = "sqlSessionTemplate")

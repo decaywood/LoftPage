@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.UUID;
 
 /**
  * Created by decaywood on 2015/5/24.
@@ -26,6 +27,12 @@ public class CommonUtils {
         }
         return line;
     }
+
+    public static String generateUUID() {
+        String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
+        return uuid;
+    }
+
 
     public static boolean isEmpty(String s){
         return s == null || "".equals(s) || "null".equals(s);

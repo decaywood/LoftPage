@@ -7,6 +7,25 @@
 
        <context:component-scan base-package="org.decaywood.controller" />
 
+       <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+              <property name="order" value="0"/>
+       </bean>
+       <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+              <property name="messageConverters">
+                     <list>
+                            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                                   <property name="supportedMediaTypes">
+                                          <list>
+                                                 <value>text/html;charset=UTF-8</value>
+                                                 <value>application/json;charset=UTF-8</value>
+                                          </list>
+                                   </property>
+                            </bean>
+                     </list>
+              </property>
+       </bean>
+
+
        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
               <property name="prefix" value="/jsp/"/>
               <property name="suffix" value=".jsp"/>

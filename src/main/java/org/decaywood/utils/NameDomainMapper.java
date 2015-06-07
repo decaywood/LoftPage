@@ -14,16 +14,22 @@ public enum NameDomainMapper {
     USER_STATUS,
     USER_LOGO,
     VALIDATE_CODE,
+
     SESSION_USER_LOGIN_NAME,
 
     SESSION_SECURITY_CODE,
     SYSTEM_NAME,
     REQUEST_DATAS,
 
-    ERROR_INFO("errorInfo"),
+    ROLE_USER,
+    ROLE_ADMINISTRATOR,
+
+    STATUS_LOGIN,
+
+    ERROR_INFO("error! details as follow-> "),
     ERROR_INFO1("validate code does not match!"),
     ERROR_INFO2("password or userName is fault!"),
-    ERROR_PAGE("error"),
+
     LOGIN_PAGE("login"),
     MAIN_PAGE("mainPage");
 

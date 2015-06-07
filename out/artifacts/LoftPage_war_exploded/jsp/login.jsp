@@ -17,13 +17,13 @@
 
     <title>登陆界面表单提交js特效</title>
 
-    <link rel="stylesheet" href="<%=path%>/css/login.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="<%=path%>/css/smoke.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<%=path%>/css/login/login.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="<%=path%>/css/login/smoke.css" media="screen" type="text/css"/>
 
 </head>
 <body>
 <div id="loginComponent">
-    <form action="<%=path%>/validate.do" method="post" name="loginForm" id="loginForm">
+    <form action="<%=path%>/authenticate.do" method="post" name="loginForm" id="loginForm">
         <fieldset>
             <div>
                 <!-- Entypo &#128100; = User -->
@@ -46,7 +46,7 @@
                        data-validation-msg="Password must be 2-20 characters"
                        required>
                 <label for="password" data-icon="&#128274;">Password</label>
-                <button id="register" value="Submit" data-icon="&#58542;" title="register"/>
+                <button id="register" type="button" data-icon="&#58542;" title="register"/>
             </div>
             <div>
                 <input name="validateCode"
@@ -58,7 +58,7 @@
                        errorInfo=""
                        required>
                 <label for="validate" data-icon="&#x25;"></label>
-                <button id="login" value="Submit" data-icon="&#58542;" title="login"/>
+                <button id="login" type="button" data-icon="&#58542;" title="login"/>
             </div>
             <div>
                 <img id="codeImg"
@@ -71,21 +71,9 @@
 </div>
 
 
-<script src='<%=path%>/js/jquery.js'></script>
-<script src='<%=path%>/js/login.js'></script>
-<script src='<%=path%>/js/smoke.min.js'></script>
-<script type="text/javascript">
-    $(function () {
-        var userName = "${userName}";
-        var password = "${password}";
-        var errorInfo = "${errorInfo}";
-        $('input#userName').val(userName);
-        $('input#password').val(password);
-        if(errorInfo != ""){
-            smoke.signal(errorInfo, function (e) {}, { duration:50000});
-        }
-    });
-</script>
+<script src='<%=path%>/js/login/jquery.js'></script>
+<script src='<%=path%>/js/login/smoke.min.js'></script>
+<script src='<%=path%>/js/login/login.js'></script>
 
 </body>
 </html>

@@ -21,7 +21,6 @@
     <meta http-equiv="description" content="This is my page">
   </head>
   <body>
-    <p>hello!</p>
     <script type="text/javascript">
       document.location = "<%=path%>/login.do"
     </script>

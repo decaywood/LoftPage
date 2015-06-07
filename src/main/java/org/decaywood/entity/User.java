@@ -1,22 +1,36 @@
 package org.decaywood.entity;
 
+import java.sql.Date;
+
 /**
  * Created by decaywood on 2015/5/24.
  */
 public class User {
 
+    //======================= PADDING ======================
     private String userID;
+    private String userRole;
+    private Date userLastLoginTime;
+    private Date userRegisterTime;
+    private String userStatus;
+    //======================= PADDING ======================
+
     private String userLoginName;
-    private String userPassWord;
+    private String userPassword;
     private String userName;
     private String userEmail;
     private String userPhoneNumber;
-    private String userRight;
-    private String userRole;
-    private String userLastLoginTime;
     private String userIPAddress;
-    private String userStatus;
-    private String userLogo;
+    private String userLogoURL;
+
+
+    public Date getUserRegisterTime() {
+        return userRegisterTime;
+    }
+
+    public void setUserRegisterTime(Date userRegisterTime) {
+        this.userRegisterTime = userRegisterTime;
+    }
 
     public String getUserPhoneNumber() {
         return userPhoneNumber;
@@ -63,12 +77,12 @@ public class User {
         return this;
     }
 
-    public String getUserPassWord() {
-        return userPassWord;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public User setUserPassWord(String userPassWord) {
-        this.userPassWord = userPassWord;
+    public User setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
         return this;
     }
 
@@ -81,14 +95,6 @@ public class User {
         return this;
     }
 
-    public String getUserRight() {
-        return userRight;
-    }
-
-    public User setUserRight(String userRight) {
-        this.userRight = userRight;
-        return this;
-    }
 
     public String getUserRole() {
         return userRole;
@@ -99,11 +105,11 @@ public class User {
         return this;
     }
 
-    public String getUserLastLoginTime() {
+    public Date getUserLastLoginTime() {
         return userLastLoginTime;
     }
 
-    public User setUserLastLoginTime(String userLastLoginTime) {
+    public User setUserLastLoginTime(Date userLastLoginTime) {
         this.userLastLoginTime = userLastLoginTime;
         return this;
     }
@@ -126,12 +132,14 @@ public class User {
         return this;
     }
 
-    public String getUserLogo() {
-        return userLogo;
+    public String getUserLogoURL() {
+        return userLogoURL;
     }
 
-    public User setUserLogo(String userLogo) {
-        this.userLogo = userLogo;
+    public User setUserLogoURL(String userLogoURL) {
+        this.userLogoURL = userLogoURL;
         return this;
     }
+
+
 }

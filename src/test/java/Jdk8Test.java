@@ -1,5 +1,11 @@
+import org.decaywood.entity.User;
+import org.decaywood.service.UserService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,9 +16,24 @@ import static org.junit.Assert.assertEquals;
  * Created by decaywood on 2015/5/23.
  */
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class Jdk8Test {
+    @Resource(name = "userService")
+    UserService userService;
+    @Test
+    public void mysqlTest() {
+        User user = new User().setUserLoginName("decaywood")
+                .setUserEmail("decaywood@qq.com")
+                .setUserPassword("123456")
+                .setUserID("123")
+                .setUserName("decaywood")
+                .setUserRight("admin")
+                .setUserIPAddress("localhost")
+                .setUserStatus("go")
+                .setUserRole("");
+        userService.saveUser(user);
+    }
 
     @Test
     public void notNullTest() {

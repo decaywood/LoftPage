@@ -8,9 +8,9 @@
     <title>登陆界面表单提交js特效</title>
 
 
-    <link rel="stylesheet" href="./css/login.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="css/login/login.css" media="screen" type="text/css"/>
 
-    <link rel="stylesheet" href="./css/smoke.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="css/login/smoke.css" media="screen" type="text/css"/>
 </head>
 <body>
 <div id="loginComponent">
@@ -59,13 +59,23 @@
         </fieldset>
     </form>
 </div>
-<script src='./js/smoke.min.js'></script>
-<script src='./js/jquery.js'></script>
-<script src="./js/login.js"></script>
+<script src='js/login/smoke.min.js'></script>
+<script src='js/login/jquery.js'></script>
+<script src="js/login/login.js"></script>
 
 <script type="text/javascript">
     $(function () {
         smoke.signal('This is a normal alert... nothing fancy', function () {},{duration:3000});
+    });
+</script>
+<script type="text/javascript">
+    bkLib.onDomLoaded(function() {
+        new nicEditor().panelInstance('area1');
+        new nicEditor({fullPanel : true}).panelInstance('area2');
+        new nicEditor({iconsPath : '../nicEditorIcons.gif'}).panelInstance('area3');
+        new nicEditor({buttonList :['fontSize','bold','italic','underline','strikeThrough','subscript',
+            ' superscript','html','image']}).panelInstance('area4');
+        new nicEditor({maxHeight : 100}).panelInstance('area5');
     });
 </script>
 
