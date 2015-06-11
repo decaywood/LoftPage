@@ -43,6 +43,7 @@ $(function(){
 		},
 		
 		uploadStarted:function(i, file, len){
+
 			createImage(file);
 		},
 		

@@ -1,5 +1,6 @@
 package org.decaywood.controller;
 
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -25,6 +26,8 @@ import java.io.InputStream;
 @Controller
 public class RegisterController extends BaseController {
 
+    Logger logger = Logger.getLogger(this.getClass().getName());
+
     @Resource(name = "userService")
     UserService userService;
 
@@ -36,24 +39,29 @@ public class RegisterController extends BaseController {
             InputStream inputStream = request.getInputStream();
             String contextPath = request.getContextPath();
             String imagePath = userService.saveImage(inputStream, contextPath, fileType);
+            logger.debug("===================" + imagePath + "======================");
             Subject currentUser = SecurityUtils.getSubject();
             Session session = currentUser.getSession();
-            session.setAttribute(NameDomainMapper.LOGO_PATH, imagePath);
+            session.setAttribute(NameDomainMapper.LOGO_PATH.getName(), imagePath);
 
         } catch (IOException e) {
-            errorInfo = "Image Upload Faild!";
+            errorInfo = NameDomainMapper.ERROR_INFO3.getName();
         }
         return errorInfo;
     }
 
-    @RequestMapping(value = "saveUser")
-    public String saveUser(HttpServletRequest request, String userName, String password, String nickName, String email, String phone) {
+    @RequestMapping(value = "/saveUser")
+    public String saveUser(String userName, String password, String nickName, String email, String phone) {
         User user = new User();
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        String logoURL = (String) session.getAttribute(NameDomainMapper.LOGO_PATH.getName());
         String errorInfo = "";
         user.setUserLoginName(userName)
                 .setUserPassword(password)
                 .setUserNickName(nickName)
-                .setUserEmail(email);
+                .setUserEmail(email)
+                .setUserLogoURL(logoURL);
         try {
             userService.registNewUser(user);
         } catch (UserConflictException e) {

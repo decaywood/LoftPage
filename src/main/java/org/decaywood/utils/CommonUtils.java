@@ -18,7 +18,7 @@ public class CommonUtils {
     public static String readFile(String fileReletivePath) {
         String line = null;
         try {
-            String path = ValidateCode.class.getClassLoader().getResource("").getPath() + fileReletivePath;
+            String path = ValidateCode.class.getClassLoader().getResource("").getPath() + "../../" + fileReletivePath;
             InputStream inputStream = new FileInputStream(path);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             line = reader.readLine(); // 读取第一行

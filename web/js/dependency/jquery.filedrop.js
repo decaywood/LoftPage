@@ -103,6 +103,7 @@
 
 
 	function upload() {
+
 		stop_loop = false;
 		if (!files) {
 			opts.error(errors[0]);
@@ -164,7 +165,6 @@
 			upload.currentProgress = 0;
 			upload.startData = 0;
 			upload.addEventListener("progress", progress, false);
-
 			xhr.open("POST", opts.url+"?fileType="+file.type, true);
 			xhr.setRequestHeader('content-type', 'multipart/form-data; boundary='
 			    + boundary);

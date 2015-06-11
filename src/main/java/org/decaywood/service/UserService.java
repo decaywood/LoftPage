@@ -53,6 +53,7 @@ public class UserService {
 
         if(errorInfo != null) throw new UserConflictException(errorInfo);
 
+        userFormatPadding(user);
         dao.saveUser(user);
 
     }
