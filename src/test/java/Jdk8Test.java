@@ -28,11 +28,9 @@ public class Jdk8Test {
                 .setUserPassword("123456")
                 .setUserID("123")
                 .setUserName("decaywood")
-                .setUserRight("admin")
                 .setUserIPAddress("localhost")
                 .setUserStatus("go")
                 .setUserRole("");
-        userService.saveUser(user);
     }
 
     @Test

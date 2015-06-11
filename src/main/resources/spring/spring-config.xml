@@ -83,6 +83,9 @@
                 /validate.do = anon
                 /validateCode.do = anon
                 /authenticate.do = anon
+                /register.do = anon
+                /imgUpload.do = anon
+                /saveUser.do = anon
                 /** = authc
             </value>
         </property>

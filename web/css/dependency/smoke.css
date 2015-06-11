@@ -4,7 +4,7 @@
 }
 
 .smoke-base .dialog {
-    top:auto;
+    top:0;
     left:auto;
     right:0;
     bottom: 0;
@@ -16,6 +16,7 @@
 }
 
 .smoke {
+
     text-align:center;
     filter:alpha(opacity=80);
     -moz-opacity:0.8;

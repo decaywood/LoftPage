@@ -34,8 +34,7 @@ public class LoginController extends BaseController {
         ModelAndView modelAndView = getModelAndView();
         RequestDatas requestDatas = getRequestDatas();
         requestDatas.put(NameDomainMapper.SYSTEM_NAME.getName(), CommonUtils.readFile(SystemConfigure.SYSTEM_NAME));
-        modelAndView.setViewName("login");
-        modelAndView.addObject(NameDomainMapper.REQUEST_DATAS.getName(), requestDatas);
+        modelAndView.setViewName(NameDomainMapper.LOGIN_PAGE.getName());
         return modelAndView;
     }
 
@@ -76,6 +75,9 @@ public class LoginController extends BaseController {
         }
 
     }
+
+
+
 
     @RequestMapping(value = "/authenticate")
     @ResponseBody

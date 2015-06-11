@@ -1,25 +1,25 @@
 body{
+
     background-image: url("../../images/login/login.jpg");
     background-repeat: no-repeat;
     background-size: auto;
-    width: auto;
-    height: auto;
     padding: 0;
     margin: 0;
     color: #DDD;
     font-family: 'Helvetica', 'Lucida Grande', 'Arial', sans-serif;
 }
 #border,
-#loginComponent{
+#registerComponent{
+
     filter:alpha(opacity=80);
     -moz-opacity:0.8;
     -khtml-opacity: 0.8;
     opacity: 0.8;
-    height: auto;
-    width: 350px;
+    height: 350px;
+    width: 700px;
 }
 /* Layout with mask */
-#loginComponent{
+#registerComponent{
     color: transparent;
     padding: 3px;
     margin: 200px auto;
@@ -32,7 +32,7 @@ body{
     border-radius: 5px;
 }
 #border,
-#loginComponent,
+#registerComponent,
 #border.start,
 #rain.start{
     background-repeat: repeat-x, repeat-x, repeat-x, repeat-x;
@@ -49,7 +49,7 @@ body{
 
 /* Non-keyframe fallback animation */
 #border.end,
-#loginComponent.end{
+#registerComponent.end{
     -moz-transition-property: background-position;
     -moz-transition-duration: 30s;
     -moz-transition-timing-function: linear;
@@ -76,7 +76,7 @@ body{
     90% {background-color: #F20006;}
     100% {background-color: #39f;}
 }
-#border,#loginComponent,#codeImg{
+#border,#registerComponent{
     -webkit-animation-direction: normal;
     -webkit-animation-duration: 20s;
     -webkit-animation-iteration-count: infinite;
@@ -84,18 +84,7 @@ body{
     -webkit-animation-timing-function: ease;
 }
 
-#codeImg {
-    margin-right: 5px;
-    -moz-border-radius: 0px 25px 25px 0px;
-    -webkit-border-radius: 0px 25px 25px 0px;
-    border-radius: 0px 25px 25px 0px;
-    display: block;
-    width: auto;
-    height: auto;
-    background: #111;
-    color: #444;
-    font-size: 16px;
-}
+
 
 /* In-Active State Style */
 #border.unfocus{
@@ -105,33 +94,18 @@ body{
     box-shadow: 0px 0px 15px rgba(255,255,255,.2);
     -webkit-animation-name: none;
 }
-#loginComponent.unfocus{
+#registerComponent.unfocus{
     background: #000 !important;
     -webkit-animation-name: none;
 }
 
-/* Regular Form Styles */
-form{
-    background: #212121;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    height: 100%;
-    width: 100%;
-    background: -moz-radial-gradient(50% 46% 90deg,circle closest-corner, #242424, #090909);
-    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(#242424), to(#090909));
-}
-form label{
-    display: block;
-    padding: 10px 10px 5px 15px;
-    font-size: 11px;
-    color: #777;
-}
-form input {
+
+
+input {
     display: block;
     margin: 11px 10px 10px 15px;
-    width: 85%;
-    height: 28px;
+    width: 90%;
+    height: 12%;
     background: #111;
     -moz-box-shadow: 0px 0px 4px #000 inset;
     -webkit-box-shadow: 0px 0px 4px #000 inset;
@@ -142,7 +116,7 @@ form input {
     color: #444;
     font-size: 16px;
 }
-form input:focus{
+input:focus{
     -moz-border-radius: 25px 0px 0px 25px;
     -webkit-border-radius: 25px 0px 0px 25px;
     border-radius: 25px 0px 0px 25px;
@@ -150,19 +124,27 @@ form input:focus{
     color: #FFF;
 }
 
+#leftBlock {
+    background: #212121;
+    float: left;
+    width: 350px;
+    height: 350px;
+}
 
-button#login, button#register{
-    width: 100%;
+#rightBlock {
+    background: #212121;
+    float: left;
+    width: 350px;
+    height: 350px;
+}
+
+button {
+    margin-top: 10px;
+    width: 40%;
     height: 40px;
-    margin-left: 1px;
-    margin-right: 5px;
     color: #999;
-    float: right;
     border: 1px solid #000;
     font-weight: lighter;
-    -moz-border-radius: 0px 25px 25px 0px;
-    -webkit-border-radius: 0px 25px 25px 0px;
-    border-radius: 0px 25px 25px 0px;
     background: #45484d;
     background: -moz-linear-gradient(top, #222 0%, #111 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#222), color-stop(100%,#111));
@@ -171,4 +153,20 @@ button#login, button#register{
     -webkit-box-shadow: 0px 1px 1px #000, 0px 1px 0px rgba(255,255,255,.3) inset;
     box-shadow: 0px 1px 1px #000,0px 1px 0px rgba(255,255,255,.3) inset;
     text-shadow: 0 1px 1px #000;
+}
+
+button#commitButton {
+    float: left;
+    margin-left: 20px;
+    -moz-border-radius: 25px 0px 0px 25px;
+    -webkit-border-radius: 25px 0px 0px 25px;
+    border-radius: 25px 0px 0px 25px;
+}
+
+button#cancelButton {
+    margin-left: 20px;
+    float: left;
+    -moz-border-radius: 0px 25px 25px 0px;
+    -webkit-border-radius: 0px 25px 25px 0px;
+    border-radius: 0px 25px 25px 0px;
 }

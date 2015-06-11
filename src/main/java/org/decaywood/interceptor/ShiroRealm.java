@@ -67,7 +67,7 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException();
         }
 
-        user.setUserLastLoginTime(TimeUtils.getTime().toString());
+        user.setUserLastLoginTime(TimeUtils.getSqlTime());
         userService.updateUserLastLoginTime(user);
 
         session.setAttribute(NameDomainMapper.SESSION_USER_LOGIN_NAME.name(), user);

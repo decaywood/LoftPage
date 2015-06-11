@@ -26,12 +26,15 @@ public enum NameDomainMapper {
 
     STATUS_LOGIN,
 
+    LOGO_PATH,
+
     ERROR_INFO("error! details as follow-> "),
     ERROR_INFO1("validate code does not match!"),
     ERROR_INFO2("password or userName is fault!"),
 
     LOGIN_PAGE("login"),
-    MAIN_PAGE("mainPage");
+    MAIN_PAGE("mainPage"),
+    REGISTER_PAGE("register");
 
     private String enumName;
 

@@ -39,9 +39,7 @@
         <level value="DEBUG" />
     </logger>
 
-    <logger name="org.mybatis">
-        <level value="DEBUG" />
-    </logger>
+
     <logger name="java.sql">
         <level value="DEBUG" />
     </logger>

@@ -28,10 +28,13 @@ public class CommonUtils {
         return line;
     }
 
+
     public static String generateUUID() {
         String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
         return uuid;
     }
+
+
 
 
     public static boolean isEmpty(String s){
