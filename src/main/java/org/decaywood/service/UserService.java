@@ -1,14 +1,19 @@
 package org.decaywood.service;
 
+import org.apache.log4j.Logger;
 import org.decaywood.dataAccess.UserDao;
 import org.decaywood.entity.User;
 import org.decaywood.exceptions.UserConflictException;
+import org.decaywood.exceptions.ValueCantCastException;
 import org.decaywood.utils.CommonUtils;
+import org.decaywood.utils.ImageUtils;
 import org.decaywood.utils.NameDomainMapper;
 import org.decaywood.utils.TimeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
 
@@ -18,6 +23,9 @@ import java.sql.Date;
 
 @Service("userService")
 public class UserService {
+
+    private static volatile String ROOT_PATH;
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     @Resource(name = "userDataAccess")
     private UserDao dao;
@@ -61,26 +69,31 @@ public class UserService {
 
     public String saveImage( InputStream stream,
                               String rootPath,
-                              String fileType ) throws IOException {
+                              String fileType ) throws IOException, ValueCantCastException {
         String filePath = null;
-        try {
-            String suffix = fileType.replace("/image", "");
-            BufferedInputStream fileIn = new BufferedInputStream(stream);
+        BufferedImage bufferedImage = ImageUtils.resizeImage(ImageIO.read(stream));
 
-            filePath = rootPath + CommonUtils.generateUUID() + suffix;
+        try {
+            String suffix = fileType.replace("image/", ".");
+            String imgType = fileType.replace("image/", "");
+
+            if(ROOT_PATH == null){
+                File logoDirect = new File(rootPath + "userLogo");
+                if(!logoDirect.exists() && !logoDirect.isDirectory()) logoDirect.mkdir();
+                ROOT_PATH = logoDirect.getPath() + NameDomainMapper.BACK_SLASH.getName();
+            }
+
+            filePath = ROOT_PATH + ImageUtils.generateUUID(bufferedImage)+ suffix;
 
             File file = new File(filePath);
-            BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(file));
-            byte[] buf = new byte[1024 * 1024 * 2];
-            int bytesIndex = fileIn.read(buf, 0, buf.length);
-            while (bytesIndex != -1) {
-                fileOut.write(buf, 0, bytesIndex);
-                fileIn.read(buf, 0, buf.length);
+
+            if (!file.exists()) {
+                ImageIO.write(bufferedImage, imgType, file);
+                logger.debug(filePath);
             }
-            fileOut.flush();
-            fileOut.close();
-        } catch (IOException e) {
-            throw new IOException();
+
+        } finally {
+            bufferedImage.flush();
         }
         return filePath;
     }

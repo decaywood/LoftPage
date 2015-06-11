@@ -28,6 +28,7 @@ public enum NameDomainMapper {
 
     LOGO_PATH,
 
+    BACK_SLASH("\\"),
 
     ERROR_INFO("error! details as follow-> "),
     ERROR_INFO1("validate code does not match!"),

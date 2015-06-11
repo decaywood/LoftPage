@@ -6,6 +6,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.decaywood.entity.User;
 import org.decaywood.exceptions.UserConflictException;
+import org.decaywood.exceptions.ValueCantCastException;
 import org.decaywood.service.UserService;
 import org.decaywood.utils.NameDomainMapper;
 import org.springframework.stereotype.Controller;
@@ -37,15 +38,19 @@ public class RegisterController extends BaseController {
        String errorInfo = "";
         try {
             InputStream inputStream = request.getInputStream();
-            String contextPath = request.getContextPath();
+            String contextPath = request.getServletContext().getRealPath("/");
+
             String imagePath = userService.saveImage(inputStream, contextPath, fileType);
-            logger.debug("===================" + imagePath + "======================");
             Subject currentUser = SecurityUtils.getSubject();
             Session session = currentUser.getSession();
             session.setAttribute(NameDomainMapper.LOGO_PATH.getName(), imagePath);
 
+        } catch (ValueCantCastException e) {
+            errorInfo = NameDomainMapper.ERROR_INFO3.getName();
+            logger.error(e.getMessage());
         } catch (IOException e) {
             errorInfo = NameDomainMapper.ERROR_INFO3.getName();
+            logger.error(e.getMessage());
         }
         return errorInfo;
     }
@@ -66,6 +71,7 @@ public class RegisterController extends BaseController {
             userService.registNewUser(user);
         } catch (UserConflictException e) {
             errorInfo = e.getMessage();
+            logger.error(e.getMessage());
         }
 
         return errorInfo;

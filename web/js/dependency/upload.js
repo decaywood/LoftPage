@@ -7,11 +7,13 @@ $(function(){
 
 		maxfiles: 5,
     	maxfilesize: 2,
-		url: 'imgUpload.do',
+		url: '../imgUpload.do',
 		
 		uploadFinished:function(i,file,response){
 			$.data(file).addClass('done');
-			alert(response);
+
+			errorInfo = response == "" ? "Image Upload Success!" : response;
+			window.parent.smoke.signal(errorInfo, function (e) {}, { duration:3000});
 			// response is the JSON object that post_file.php returns
 		},
 		

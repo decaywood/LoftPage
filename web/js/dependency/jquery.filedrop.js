@@ -103,7 +103,6 @@
 
 
 	function upload() {
-
 		stop_loop = false;
 		if (!files) {
 			opts.error(errors[0]);
@@ -113,8 +112,8 @@
 			filesRejected = 0;
 
 		if (files_count > opts.maxfiles) {
-		    opts.error(errors[1]);
-		    return false;
+			opts.error(errors[1]);
+			return false;
 		}
 
 		for (var i=0; i<files_count; i++) {
@@ -165,25 +164,26 @@
 			upload.currentProgress = 0;
 			upload.startData = 0;
 			upload.addEventListener("progress", progress, false);
+
 			xhr.open("POST", opts.url+"?fileType="+file.type, true);
 			xhr.setRequestHeader('content-type', 'multipart/form-data; boundary='
-			    + boundary);
+			+ boundary);
 
 			xhr.sendAsBinary(e.target.result);
 
 			opts.uploadStarted(index, file, files_count);
 
 			xhr.onload = function() {
-			    if (xhr.responseText) {
-				var now = new Date().getTime(),
-				    timeDiff = now - start_time,
-				    result = opts.uploadFinished(index, file, jQuery.parseJSON(xhr.responseText), timeDiff);
+				if (xhr.responseText) {
+					var now = new Date().getTime(),
+						timeDiff = now - start_time,
+						result = opts.uploadFinished(index, file, jQuery.parseJSON(xhr.responseText), timeDiff);
 					filesDone++;
 					if (filesDone == files_count - filesRejected) {
 						afterAll();
 					}
-			    if (result === false) stop_loop = true;
-			    }
+					if (result === false) stop_loop = true;
+				}
 			};
 		}
 	}
@@ -257,12 +257,12 @@
 	try {
 		if (XMLHttpRequest.prototype.sendAsBinary) return;
 		XMLHttpRequest.prototype.sendAsBinary = function(datastr) {
-		    function byteValue(x) {
-		        return x.charCodeAt(0) & 0xff;
-		    }
-		    var ords = Array.prototype.map.call(datastr, byteValue);
-		    var ui8a = new Uint8Array(ords);
-		    this.send(ui8a.buffer);
+			function byteValue(x) {
+				return x.charCodeAt(0) & 0xff;
+			}
+			var ords = Array.prototype.map.call(datastr, byteValue);
+			var ui8a = new Uint8Array(ords);
+			this.send(ui8a.buffer);
 		}
 	} catch(e) {}
 

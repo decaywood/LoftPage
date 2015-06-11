@@ -1,13 +1,11 @@
 
+
 .smoke-base {
     background: none;
 }
 
 .smoke-base .dialog {
-    top:0;
-    left:auto;
-    right:0;
-    bottom: 0;
+
     width: auto;
 }
 
@@ -16,7 +14,7 @@
 }
 
 .smoke {
-
+    position: relative;
     text-align:center;
     filter:alpha(opacity=80);
     -moz-opacity:0.8;

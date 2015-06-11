@@ -22,7 +22,7 @@ body{
 #registerComponent{
     color: transparent;
     padding: 3px;
-    margin: 200px auto;
+    margin: 100px auto;
 }
 /* Artifical "border" to clear border to bypass mask */
 #border{
