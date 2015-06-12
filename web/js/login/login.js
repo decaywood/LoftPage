@@ -39,9 +39,6 @@ $(function () {
 function register() {
     $.ajax({
         url:'register.do',
-        data:{
-            validateCode:validateCode
-        },
         async:false,
         cache:false,
         type:'POST',

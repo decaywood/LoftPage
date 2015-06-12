@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -56,16 +57,19 @@ public class RegisterController extends BaseController {
     }
 
     @RequestMapping(value = "/saveUser")
+    @ResponseBody
     public String saveUser(String userName, String password, String nickName, String email, String phone) {
         User user = new User();
         Subject currentUser = SecurityUtils.getSubject();
         Session session = currentUser.getSession();
         String logoURL = (String) session.getAttribute(NameDomainMapper.LOGO_PATH.getName());
         String errorInfo = "";
+
         user.setUserLoginName(userName)
                 .setUserPassword(password)
                 .setUserNickName(nickName)
                 .setUserEmail(email)
+                .setUserPhoneNumber(phone)
                 .setUserLogoURL(logoURL);
         try {
             userService.registNewUser(user);
