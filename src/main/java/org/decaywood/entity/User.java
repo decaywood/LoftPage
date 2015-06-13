@@ -24,41 +24,6 @@ public class User {
     private String userLogoURL;
 
 
-    public Date getUserRegisterTime() {
-        return userRegisterTime;
-    }
-
-    public void setUserRegisterTime(Date userRegisterTime) {
-        this.userRegisterTime = userRegisterTime;
-    }
-
-    public String getUserPhoneNumber() {
-        return userPhoneNumber;
-    }
-
-    public User setUserPhoneNumber(String userPhoneNumber) {
-        this.userPhoneNumber = userPhoneNumber;
-        return this;
-    }
-
-    public String getUserLoginName() {
-        return userLoginName;
-    }
-
-    public User setUserLoginName(String userLoginName) {
-        this.userLoginName = userLoginName;
-        return this;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public User setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-        return this;
-    }
-
     public String getUserID() {
         return userID;
     }
@@ -68,11 +33,47 @@ public class User {
         return this;
     }
 
-    public String getUserNickName() {
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public User setUserRole(String userRole) {
+        this.userRole = userRole;
+        return this;
+    }
+
+    public Date getUserLastLoginTime() {
+        return userLastLoginTime;
+    }
+
+    public User setUserLastLoginTime(Date userLastLoginTime) {
+        this.userLastLoginTime = userLastLoginTime;
+        return this;
+    }
+
+    public Date getUserRegisterTime() {
+        return userRegisterTime;
+    }
+
+    public User setUserRegisterTime(Date userRegisterTime) {
+        this.userRegisterTime = userRegisterTime;
+        return this;
+    }
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public User setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+        return this;
+    }
+
+    public String getUserLoginName() {
         return userLoginName;
     }
 
-    public User setUserNickName(String userLoginName) {
+    public User setUserLoginName(String userLoginName) {
         this.userLoginName = userLoginName;
         return this;
     }
@@ -95,22 +96,21 @@ public class User {
         return this;
     }
 
-
-    public String getUserRole() {
-        return userRole;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public User setUserRole(String userRole) {
-        this.userRole = userRole;
+    public User setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
         return this;
     }
 
-    public Date getUserLastLoginTime() {
-        return userLastLoginTime;
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
     }
 
-    public User setUserLastLoginTime(Date userLastLoginTime) {
-        this.userLastLoginTime = userLastLoginTime;
+    public User setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
         return this;
     }
 
@@ -123,15 +123,6 @@ public class User {
         return this;
     }
 
-    public String getUserStatus() {
-        return userStatus;
-    }
-
-    public User setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
-        return this;
-    }
-
     public String getUserLogoURL() {
         return userLogoURL;
     }
@@ -140,6 +131,4 @@ public class User {
         this.userLogoURL = userLogoURL;
         return this;
     }
-
-
 }

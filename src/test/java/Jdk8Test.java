@@ -1,5 +1,5 @@
+import org.decaywood.dataAccess.UserDao;
 import org.decaywood.entity.User;
-import org.decaywood.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,18 +19,19 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class Jdk8Test {
-    @Resource(name = "userService")
-    UserService userService;
+    @Resource(name = "userDataAccess")
+    UserDao userDao;
     @Test
     public void mysqlTest() {
-        User user = new User().setUserLoginName("decaywood")
-                .setUserEmail("decaywood@qq.com")
+        User user = new User().setUserLoginName("decawgawgaywood")
+                .setUserEmail("decaawgywood@qq.com")
                 .setUserPassword("123456")
-                .setUserID("123")
+                .setUserID("awrawr")
                 .setUserName("decaywood")
                 .setUserIPAddress("localhost")
                 .setUserStatus("go")
                 .setUserRole("");
+        userDao.saveUser(user);
     }
 
     @Test

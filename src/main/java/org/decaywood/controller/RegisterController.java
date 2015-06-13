@@ -56,19 +56,23 @@ public class RegisterController extends BaseController {
     }
 
     @RequestMapping(value = "/saveUser")
-    public String saveUser(String userName, String password, String nickName, String email, String phone) {
+    @ResponseBody
+    public String saveUser(HttpServletRequest request, String userName, String password, String nickName, String email, String phone) {
         User user = new User();
         Subject currentUser = SecurityUtils.getSubject();
         Session session = currentUser.getSession();
+
         String logoURL = (String) session.getAttribute(NameDomainMapper.LOGO_PATH.getName());
         String errorInfo = "";
+
         user.setUserLoginName(userName)
                 .setUserPassword(password)
-                .setUserNickName(nickName)
+                .setUserName(nickName)
                 .setUserEmail(email)
+                .setUserPhoneNumber(phone)
                 .setUserLogoURL(logoURL);
         try {
-            userService.registNewUser(user);
+            userService.registNewUser(user, request);
         } catch (UserConflictException e) {
             errorInfo = e.getMessage();
             logger.error(e.getMessage());

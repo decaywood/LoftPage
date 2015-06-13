@@ -30,6 +30,7 @@
         <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" />
         <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3" />
         <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
+        <element id="library" level="project" name="Maven: joda-time:joda-time:2.8" />
       </element>
       <element id="javaee-facet-resources" facet="LoftPage/web/Web" />
     </root>

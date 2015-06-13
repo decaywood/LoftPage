@@ -3,8 +3,6 @@
 // -------------------------------------------------
 $(function () {
 
-
-
     $('button#commitButton').click(function () {
         var userName = $('input#userName');
         var password = $('input#password');
@@ -41,9 +39,9 @@ $(function () {
             smoke.signal(phone.attr('data-validation-msg'), function (e) {}, { duration:3000})
         }
 
-        if(leagalUserName && leagalPassword && leagalNickName && leagalEmail && leagalphone){
-            register(userName, password, nickName, email, phone);
-        }
+        //if(leagalUserName && leagalPassword && leagalNickName && leagalEmail && leagalphone){
+            register(userName.val(), password.val(), nickName.val(), email.val(), phone.val());
+        //}
     });
 
 
@@ -51,6 +49,7 @@ $(function () {
 });
 
 function register(userName, password, nickName, email, phone) {
+    alert(userName + " " +password + " " +nickName + " " +email + " " +phone);
     $.ajax({
         url:'saveUser.do',
         data:{

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
@@ -38,7 +39,7 @@ public class UserService {
         return dao.queryByUser(user);
     }
 
-    public void registNewUser(User user) throws UserConflictException {
+    public void registNewUser(User user, HttpServletRequest request) throws UserConflictException {
 
         User queryUser = dao.queryByUser(user);
         String errorInfo = null;
@@ -61,7 +62,7 @@ public class UserService {
 
         if(errorInfo != null) throw new UserConflictException(errorInfo);
 
-        userFormatPadding(user);
+        userFormatPadding(user, request);
         dao.saveUser(user);
 
     }
@@ -98,13 +99,14 @@ public class UserService {
         return filePath;
     }
 
-    private void userFormatPadding(User user) {
-        user.setUserID(CommonUtils.generateUUID());
-        user.setUserRole(NameDomainMapper.ROLE_USER.getName());
+    private void userFormatPadding(User user, HttpServletRequest request) {
         Date date = TimeUtils.getSqlTime();
-        user.setUserLastLoginTime(date);
-        user.setUserRegisterTime(date);
-        user.setUserStatus(NameDomainMapper.STATUS_LOGIN.getName());
+        user.setUserID(CommonUtils.generateUUID())
+            .setUserRole(NameDomainMapper.ROLE_USER.getName())
+            .setUserLastLoginTime(date)
+            .setUserRegisterTime(date)
+            .setUserStatus(NameDomainMapper.STATUS_LOGIN.getName())
+                .setUserIPAddress(request.getRemoteAddr());
     }
 
 }

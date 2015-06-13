@@ -35,6 +35,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.8" />
         </element>
       </element>
       <element id="artifact" artifact-name="LoftPage:ear exploded" />
