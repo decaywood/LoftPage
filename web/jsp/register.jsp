@@ -51,14 +51,12 @@
                           <input type="email"
                                  name="userEmail"
                                  id="userEmail"
-                                 data-validation-msg="Wrong Email Format"
                                  placeholder="Email">
                       </tr>
                       <tr>
                           <input type="tel"
                                  name="userPhone"
                                  id="userPhone"
-                                 data-validation-msg="Wrong Phone Format"
                                  placeholder="Phone Number">
                       </tr>
                       <tr>
