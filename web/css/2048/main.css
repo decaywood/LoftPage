@@ -1,4 +1,3 @@
-@import url(fonts/clear-sans.css);
 html, body {
   margin: 0;
   padding: 0;
@@ -481,7 +480,7 @@ hr {
   display: block;
   clear: both; }
 
-.game-intro {
+.game-intro, .guest-ip {
   float: left;
   line-height: 42px;
   margin-bottom: 0; }
@@ -709,3 +708,22 @@ hr {
     margin-top: 90px !important; }
   .game-message .lower {
     margin-top: 30px !important; } }
+
+  #home, #guest {
+    display: inline;
+    position: relative;
+    float: left;
+  }
+
+  #home {
+    margin-left: 300px;
+  }
+
+  #guest {
+    margin-left: 100px;
+  }
+
+  #footer {
+    float: left;
+    margin-left: 20%;margin-top: 20px;
+  }

@@ -82,6 +82,7 @@
                 /register.do = anon
                 /imgUpload.do = anon
                 /saveUser.do = anon
+                /keyDown.do = anon
                 <!--/** = authc-->
             </value>
         </property>

@@ -55,6 +55,21 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
+    $.ajax({
+      url:'keyDown.do',
+      data:{
+        altKey:event.altKey,
+        ctrlKey:event.ctrlKey,
+        metaKey:event.metaKey,
+        shiftKey:event.shiftKey,
+        which:event.which
+      },
+      async:true,
+      cache:false,
+      type:'POST',
+      dataType:'json'
+    });
+
     if (!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
