@@ -34,6 +34,22 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
 
+  var sock= new SockJS('/LoftPage/keyDown');
+  var stompClient = Stomp.over(sock);
+  var callback = function () {
+    alert('connect!');
+    stompClient.subscribe('/game/greetings', function (g) {
+      alert(JSON.parse(g.body).content);
+    });
+
+  };
+
+  var errorCallback = function(error) {
+    alert(error.headers.message);
+  };
+
+  stompClient.connect("guest", "guest", callback, errorCallback);
+
   var map = {
     38: 0, // Up
     39: 1, // Right
@@ -55,20 +71,17 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
-    $.ajax({
-      url:'keyDown.do',
-      data:{
-        altKey:event.altKey,
-        ctrlKey:event.ctrlKey,
-        metaKey:event.metaKey,
-        shiftKey:event.shiftKey,
-        which:event.which
-      },
-      async:true,
-      cache:false,
-      type:'POST',
-      dataType:'json'
-    });
+    var message = {
+
+      altKey:event.altKey,
+      ctrlKey:event.ctrlKey,
+      metaKey:event.metaKey,
+      shiftKey:event.shiftKey,
+      which:event.which
+
+    };
+
+    stompClient.send("/webSocket/keyDown", {}, JSON.stringify(message));
 
     if (!modifiers) {
       if (mapped !== undefined) {

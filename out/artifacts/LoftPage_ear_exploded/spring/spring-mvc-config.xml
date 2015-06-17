@@ -2,8 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket
+		http://www.springframework.org/schema/websocket/spring-websocket-4.1.xsd">
 
        <context:component-scan base-package="org.decaywood.controller" />
 
@@ -31,6 +36,30 @@
               <property name="suffix" value=".jsp"/>
        </bean>
 
+       <!-- ================ websocket start =============== -->
+       <websocket:message-broker application-destination-prefix="/LoftPage">
+              <websocket:stomp-endpoint path="/keyDown">
+                     <websocket:sockjs/>
+              </websocket:stomp-endpoint>
+              <websocket:simple-broker prefix="/game"></websocket:simple-broker>
+       </websocket:message-broker>
+       <!--<websocket:handlers allowed-origins="">-->
+              <!--<websocket:mapping path="/websocket/gameInfo.do" handler="clientWebsocketHandler"/>-->
+              <!--<websocket:handshake-handler ref="handshakeHandler" />-->
+              <!--<websocket:handshake-interceptors>-->
+                     <!--<bean class="org.decaywood.websocket.HandshakeInterceptor" />-->
+              <!--</websocket:handshake-interceptors>-->
+              <!--<websocket:sockjs/>-->
+       <!--</websocket:handlers>-->
 
+       <!--<bean id="clientWebsocketHandler" class="org.decaywood.websocket.ClientWebsocketHandler" />-->
+       <!--<bean id="handshakeHandler" class="org.decaywood.websocket.ClientHandshakeHandler" />-->
+
+       <!--<bean class="org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean">-->
+              <!--<property name="maxTextMessageBufferSize" value="8192"/>-->
+              <!--<property name="maxBinaryMessageBufferSize" value="8192"/>-->
+       <!--</bean>-->
+
+       <!-- ================ websocket end =============== -->
 
 </beans>

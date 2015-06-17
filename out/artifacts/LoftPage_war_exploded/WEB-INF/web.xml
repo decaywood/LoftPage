@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -13,10 +16,7 @@
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:log4j/log4j-config.xml</param-value>
     </context-param>
-    <context-param>
-        <param-name/>
-        <param-value/>
-    </context-param>
+
 
     <!-- Encoding Filter start -->
     <filter>
@@ -69,7 +69,9 @@
             <param-value>classpath:spring/spring-mvc-config.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <async-supported>true</async-supported>
     </servlet>
+
 
     <servlet-mapping>
         <servlet-name>springMVC</servlet-name>
