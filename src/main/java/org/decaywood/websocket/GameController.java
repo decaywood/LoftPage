@@ -1,4 +1,4 @@
-package org.decaywood.controller;
+package org.decaywood.websocket;
 
 import org.apache.log4j.Logger;
 import org.decaywood.entity.KeyEvent;
@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -22,13 +23,15 @@ public class GameController {
     @Resource(name = "userService")
     UserService userService;
 
-    @Resource
-    SimpMessagingTemplate messagingTemplate;
+//    @Resource
+//    SimpMessagingTemplate simpMessagingTemplate;
 
 
     @MessageMapping(value = "/keyDown")
-    @SendTo(value = "/game/greetings")
+    @SendTo(value = "/message/responds")
+    @ResponseBody
     public KeyEvent keyDown(KeyEvent event) {
+        logger.debug("=====================   "+event+"   =============================");
         return event;
     }
 }

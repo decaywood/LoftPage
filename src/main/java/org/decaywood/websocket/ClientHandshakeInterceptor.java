@@ -12,7 +12,7 @@ import java.util.Map;
  * @author: decaywood
  * @date: 2015/6/17 13:53
  */
-public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
+public class ClientHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 

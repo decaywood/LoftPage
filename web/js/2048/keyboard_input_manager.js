@@ -34,21 +34,19 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
 
-  var sock= new SockJS('/LoftPage/keyDown');
+  var sock= new SockJS('/LoftPage/webSocket');
   var stompClient = Stomp.over(sock);
-  var callback = function () {
-    alert('connect!');
-    stompClient.subscribe('/game/greetings', function (g) {
-      alert(JSON.parse(g.body).content);
+  
+  var callback = function (frame) {
+
+    stompClient.subscribe('/message/responds', function(responds){
     });
 
   };
+  
 
-  var errorCallback = function(error) {
-    alert(error.headers.message);
-  };
-
-  stompClient.connect("guest", "guest", callback, errorCallback);
+  
+  stompClient.connect("","", callback);
 
   var map = {
     38: 0, // Up
@@ -73,15 +71,15 @@ KeyboardInputManager.prototype.listen = function () {
 
     var message = {
 
-      altKey:event.altKey,
-      ctrlKey:event.ctrlKey,
-      metaKey:event.metaKey,
-      shiftKey:event.shiftKey,
-      which:event.which
+      'altKey':event.altKey,
+      'ctrlKey':event.ctrlKey,
+      'metaKey':event.metaKey,
+      'shiftKey':event.shiftKey,
+      'which':event.which
 
     };
 
-    stompClient.send("/webSocket/keyDown", {}, JSON.stringify(message));
+    stompClient.send("/game/keyDown", {}, JSON.stringify(message));
 
     if (!modifiers) {
       if (mapped !== undefined) {
