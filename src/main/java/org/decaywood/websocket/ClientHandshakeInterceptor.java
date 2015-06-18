@@ -30,6 +30,8 @@ public class ClientHandshakeInterceptor extends HttpSessionHandshakeInterceptor 
                                Exception ex) {
         logger.debug("============= After Handshake =============");
         super.afterHandshake(request, response, wsHandler, ex);
+
+
     }
 
 }

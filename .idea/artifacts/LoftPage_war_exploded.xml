@@ -38,6 +38,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-websocket:4.1.6.RELEASE" />
+          <element id="library" level="project" name="Maven: com.lmax:disruptor:3.3.2" />
         </element>
       </element>
       <element id="artifact" artifact-name="LoftPage:ear exploded" />

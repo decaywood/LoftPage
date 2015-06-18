@@ -1,11 +1,13 @@
 package org.decaywood.websocket;
 
+import org.decaywood.controller.GameController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.server.HandshakeHandler;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import javax.annotation.Resource;
 
@@ -52,8 +54,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
     @Bean
-    public ClientHandshakeHandler handshakeHandler() {
-        return new ClientHandshakeHandler();
+    public DefaultHandshakeHandler handshakeHandler() {
+        return new DefaultHandshakeHandler();
     }
 
     @Bean

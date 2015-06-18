@@ -34,6 +34,7 @@
         <element id="library" level="project" name="Maven: org.springframework:spring-messaging:4.0.1.RELEASE" />
         <element id="library" level="project" name="Maven: org.springframework:spring-websocket:4.1.6.RELEASE" />
         <element id="library" level="project" name="Maven: org.springframework:spring-messaging:4.1.6.RELEASE" />
+        <element id="library" level="project" name="Maven: com.lmax:disruptor:3.3.2" />
       </element>
       <element id="javaee-facet-resources" facet="LoftPage/web/Web" />
     </root>

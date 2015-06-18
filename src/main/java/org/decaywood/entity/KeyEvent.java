@@ -11,6 +11,24 @@ public class KeyEvent {
     private String metaKey;
     private String shiftKey;
     private String which;
+    private String IPAddress;
+
+    public long getID() {
+        String ip[] = IPAddress.split(".");
+        long id = 256 * 256 * 256 * Long.parseLong(ip[0]) +
+                  256 * 256 * Long.parseLong(ip[1]) +
+                  256 * Long.parseLong(ip[2]) +
+                  Long.parseLong(ip[3]);
+        return id;
+    }
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public void setIPAddress(String IPAddress) {
+        this.IPAddress = IPAddress;
+    }
 
     public String getWhich() {
         return which;
