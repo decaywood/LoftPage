@@ -11,7 +11,7 @@ public class KeyEvent {
     private String metaKey;
     private String shiftKey;
     private String which;
-    private String IPAddress;
+    /*private String IPAddress;
 
     public long getID() {
         String ip[] = IPAddress.split(".");
@@ -29,7 +29,7 @@ public class KeyEvent {
     public void setIPAddress(String IPAddress) {
         this.IPAddress = IPAddress;
     }
-
+*/
     public String getWhich() {
         return which;
     }

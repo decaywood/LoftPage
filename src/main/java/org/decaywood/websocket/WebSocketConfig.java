@@ -58,9 +58,5 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         return new DefaultHandshakeHandler();
     }
 
-    @Bean
-    public ClientHandshakeInterceptor handshakeInterceptor() {
-        return new ClientHandshakeInterceptor();
-    }
 
 }

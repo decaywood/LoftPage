@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/.idea/.idea" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/.idea/.name" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/.idea/copyright" charset="GBK" />
     <file url="file://$PROJECT_DIR$/web/css" charset="GBK" />
     <file url="file://$PROJECT_DIR$/web/css/2048/helpers.scss" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/web/css/2048/main.css" charset="UTF-8" />
