@@ -8,19 +8,19 @@ import java.util.Map;
  */
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
+/*
+ * ============================== Internal Entry ====================================
+ */
 
+    protected class CacheEntry {
 
-    class CacheEntry<Key, Val> {
-
-        CacheEntry(Key key, Val value, long ttl) {
-            this.key = key;
+        CacheEntry(V value, long ttl) {
             this.cachedObject = value;
             this.ttl = ttl;
             this.lastAccess = System.currentTimeMillis();
         }
 
-        final Key key;
-        final Val cachedObject;
+        final V cachedObject;
         long lastAccess;		// time of last access
         long accessCount;		// number of accesses
         long ttl;				// objects timeout (time-to-live), 0 = no timeout
@@ -31,14 +31,17 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
             }
             return lastAccess + ttl < System.currentTimeMillis();
         }
-        Val getObject() {
+        V getValue() {
             lastAccess = System.currentTimeMillis();
             accessCount++;
             return cachedObject;
         }
     }
 
-    protected Map<K, CacheEntry<K,V>> cacheMap;
+/*
+ * ============================== Internal Entry End ====================================
+ */
+    protected Map<K, CacheEntry> cacheMap;
 
     protected int cacheSize;      // max cache size, 0 = no limit
     protected long cacheTimeout;     // default timeout, 0 = no timeout
@@ -64,7 +67,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
     @Override
     public void put(K key, V value, long timeout) {
 
-        CacheEntry<K,V> co = new CacheEntry<K,V>(key, value, timeout);
+        CacheEntry co = new CacheEntry(value, timeout);
         if (timeout != 0) {
             existCustomTimeout = true;
         }
@@ -88,7 +91,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public V get(K key) {
-        CacheEntry<K,V> co = cacheMap.get(key);
+        CacheEntry co = cacheMap.get(key);
         if (co == null) {
             missCount++;
             return null;
@@ -102,7 +105,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         }
 
         hitCount++;
-        return co.getObject();
+        return co.getValue();
     }
 
 

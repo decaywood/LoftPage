@@ -31,7 +31,7 @@ public interface ICache<K, V> {
      * Prunes values from cache and returns the number of removed values.
      * Used strategy depends on cache implementation.
      */
-    int prune();
+    void prune();
 
     boolean isFull();
 
