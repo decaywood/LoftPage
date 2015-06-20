@@ -1,4 +1,4 @@
-package org.decaywood.buffer;
+package org.decaywood.buffer.handler;
 
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;

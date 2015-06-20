@@ -39,6 +39,10 @@ public class UserService {
         return dao.queryByUser(user);
     }
 
+    public User queryByUserID(String ID) {
+        return dao.queryByUserID(ID);
+    }
+
     public void registNewUser(User user, HttpServletRequest request) throws UserConflictException {
 
         User queryUser = dao.queryByUser(user);

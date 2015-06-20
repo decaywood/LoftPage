@@ -6,6 +6,8 @@ import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import org.decaywood.buffer.handler.BufferExceptionHandler;
+import org.decaywood.buffer.handler.KeyEventSender;
 import org.decaywood.entity.KeyEvent;
 import org.springframework.stereotype.Component;
 
