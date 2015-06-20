@@ -15,57 +15,42 @@ import java.util.concurrent.Executors;
  */
 
 @Component
-public class MainBuffer {
+public abstract class MainBuffer {
 
     private RingBuffer<KeyEvent> ringBuffer;
 
-    public MainBuffer() {
-        this(1 << 10, 10);
+    public MainBuffer() {}
+
+
+    /**
+     * generate different configured ring buffer
+     */
+    @FunctionalInterface
+    protected interface BufferGenerator {
+        RingBuffer<KeyEvent> initRingBuffer();
     }
 
-
-
-    public MainBuffer(int bufferSize, int consumerFactor) {
-
-        int size = bufferSize > 0 ? bufferSize : 1 << 10;
-
-        Disruptor<KeyEvent> disruptor = new Disruptor<>(
-                KeyEvent::new,
-                size,
-                Executors.newCachedThreadPool(),
-                ProducerType.MULTI,
-                new SleepingWaitStrategy());
-
-        int threadsCount = Math.max(1, Runtime.getRuntime().availableProcessors());
-        int consumerCount = threadsCount * consumerFactor;
-
-        KeyEventSender[] senders = initSenders(consumerCount);
-
-        disruptor.handleEventsWith(senders);
-        disruptor.handleExceptionsWith(new BufferExceptionHandler());
-        this.ringBuffer = disruptor.start();
-
-    }
-
-
-    private KeyEventSender[] initSenders(int consumerCount) {
-        KeyEventSender[] senders = new KeyEventSender[consumerCount];
-        for (int i = 0; i < consumerCount; i++) {
-            senders[i] = new KeyEventSender();
-        }
-        return senders;
+    protected void buildRingBuffer(BufferGenerator generator) {
+        this.ringBuffer = generator.initRingBuffer();
     }
 
 
     public void publishKeyEvent(KeyEvent event) {
 
         long sequence = this.ringBuffer.next();
-        KeyEvent keyEvent = this.ringBuffer.get(sequence);
-        setKeyEventValue(event, keyEvent);
-        this.ringBuffer.publish(sequence);
+        try {
+            KeyEvent keyEvent = this.ringBuffer.get(sequence);
+            setKeyEventValue(event, keyEvent);
+        } finally {
+            this.ringBuffer.publish(sequence); // ensure that event can be published
+        }
 
     }
 
+
+    /*
+        method to copy KeyEvent
+     */
     private void setKeyEventValue(KeyEvent publisher, KeyEvent acceptor) {
         acceptor.setAltKey(publisher.getAltKey());
         acceptor.setCtrlKey(publisher.getCtrlKey());

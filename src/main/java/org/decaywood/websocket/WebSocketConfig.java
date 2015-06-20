@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * Created by Administrator on 2015/6/18.
  */
 
-@Configuration
+//@Configuration
 @EnableWebSocketMessageBroker
 @EnableWebMvc
 @EnableWebSocket

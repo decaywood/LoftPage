@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
  * Created by decaywood on 2015/5/23.
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath:spring/spring-config.xml")
 public class Jdk8Test {
     @Resource(name = "userDataAccess")
     UserDao userDao;
