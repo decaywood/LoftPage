@@ -7,7 +7,8 @@ package org.decaywood.utils.cache;
 
 
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Time stamp cache. Not limited by size, objects are removed only when they are expired.
@@ -21,7 +22,7 @@ public class TimeStampCache<K, V> extends AbstractCache<K, V> {
 
         this.cacheSize = 0;
         this.cacheTimeout = timeout;
-        this.cacheMap = new HashMap<>();
+        this.cache = new HashMap<>();
 
     }
 
@@ -31,10 +32,42 @@ public class TimeStampCache<K, V> extends AbstractCache<K, V> {
     @Override
     public void prune() {
 
-        this.cacheMap.forEach((key, cacheEntry) -> {
+        this.cache.forEach((key, cacheEntry) -> {
             if (!cacheEntry.isExpired()) return;
-            this.cacheMap.remove(key);
+            this.cache.remove(key);
         });
 
+    }
+
+    // ---------------------------------------------------------------- auto prune
+
+    protected Timer pruneTimer;
+
+    /**
+     * Schedules prune.
+     */
+    public void schedulePrune(long delay) {
+        if (pruneTimer != null) {
+            pruneTimer.cancel();
+        }
+        pruneTimer = new Timer();
+        pruneTimer.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        prune();
+                    }
+                }, delay, delay
+        );
+    }
+
+    /**
+     * Cancels prune schedules.
+     */
+    public void cancelPruneSchedule() {
+        if (pruneTimer != null) {
+            pruneTimer.cancel();
+            pruneTimer = null;
+        }
     }
 }

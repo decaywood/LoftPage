@@ -3,7 +3,7 @@ package org.decaywood.utils.cache;
 import java.util.Map;
 
 /**
- * @author: Administrator
+ * @author: decaywood
  * @date: 2015/6/20 20:53.
  */
 public abstract class AbstractCache<K, V> implements ICache<K, V> {
@@ -41,7 +41,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 /*
  * ============================== Internal Entry End ====================================
  */
-    protected Map<K, CacheEntry> cacheMap;
+    protected Map<K, CacheEntry> cache;
 
     protected int cacheSize;      // max cache size, 0 = no limit
     protected long cacheTimeout;     // default timeout, 0 = no timeout
@@ -74,7 +74,7 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
         if (isFull()) {
             prune();
         }
-        cacheMap.put(key, co);
+        cache.put(key, co);
 
     }
 
@@ -91,14 +91,14 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public V get(K key) {
-        CacheEntry co = cacheMap.get(key);
+        CacheEntry co = cache.get(key);
         if (co == null) {
             missCount++;
             return null;
         }
         if (co.isExpired() == true) {
             // remove(key);		// can't upgrade the lock
-            cacheMap.remove(key);
+            cache.remove(key);
 
             missCount++;
             return null;
@@ -112,22 +112,22 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     @Override
     public boolean isFull() {
-        return cacheMap.size() >= cacheSize;
+        return cache.size() >= cacheSize;
     }
 
     @Override
     public void remove(K key) {
-        cacheMap.remove(key);
+        cache.remove(key);
     }
 
     @Override
     public void clearCache() {
-        cacheMap.clear();
+        cache.clear();
     }
 
     @Override
     public int size() {
-        return cacheMap.size();
+        return cache.size();
     }
 
     @Override
@@ -137,5 +137,10 @@ public abstract class AbstractCache<K, V> implements ICache<K, V> {
 
     protected boolean isPruneExpiredActive() {
         return (cacheTimeout != 0) || existCustomTimeout;
+    }
+
+    @Override
+    public boolean containsKey(K key) {
+        return this.cache.containsKey(key);
     }
 }

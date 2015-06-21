@@ -24,12 +24,25 @@ public class User {
     private String userLogoURL;
 
 
+
+    private String userHighestScore;
+
+
     public String getUserID() {
         return userID;
     }
 
     public User setUserID(String userID) {
         this.userID = userID;
+        return this;
+    }
+
+    public String getUserHighestScore() {
+        return userHighestScore;
+    }
+
+    public User setUserHighestScore(String userHighestScore) {
+        this.userHighestScore = userHighestScore;
         return this;
     }
 

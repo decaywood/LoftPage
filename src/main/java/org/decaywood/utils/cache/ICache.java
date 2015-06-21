@@ -42,6 +42,7 @@ public interface ICache<K, V> {
     int size();
 
     boolean isEmpty();
-    
+
+    boolean containsKey(K key);
     
 }

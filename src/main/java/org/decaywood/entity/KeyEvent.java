@@ -21,6 +21,8 @@ public class KeyEvent {
     private String which;
     private String userID;
     private String IPAddress;
+    private String gameState;
+    private String highestScore;
 
     public String getUserID() {
         return userID;
@@ -37,6 +39,23 @@ public class KeyEvent {
                 256 * Long.parseLong(ip[2]) +
                 Long.parseLong(ip[3]);
         return id;
+    }
+
+
+    public String getHighestScore() {
+        return highestScore;
+    }
+
+    public void setHighestScore(String highestScore) {
+        this.highestScore = highestScore;
+    }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
     }
 
     public String getIPAddress() {
