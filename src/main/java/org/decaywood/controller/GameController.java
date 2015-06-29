@@ -27,6 +27,14 @@ public class GameController {
     SimpMessagingTemplate simpMessagingTemplate;
 
 
+    @RequestMapping(value = "/connectGame")
+    @ResponseBody
+    public String loginGame(String userID) {
+        String result = "connect!";
+
+        return result;
+    }
+
     @RequestMapping(value = "/keyDown")
     @ResponseBody
     public void keyDown(HttpServletRequest request, KeyEvent event) {

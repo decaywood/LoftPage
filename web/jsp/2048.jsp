@@ -9,6 +9,7 @@
   <title>2048</title>
 
   <link href="<%=path%>/css/2048/main.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="<%=path%>/css/dependency/smoke.css" media="screen" type="text/css"/>
   <link rel="shortcut icon" href="<%=path%>/images/2048/favicon.ico">
   <link rel="apple-touch-icon" href="<%=path%>/images/2048/apple-touch-icon.png">
   <link rel="apple-touch-startup-image" href="<%=path%>/images/2048/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
@@ -148,6 +149,7 @@
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
   </div>
+  <script src="<%=path%>/js/dependency/smoke.min.js"></script>
   <script src="<%=path%>/js/dependency/uuid.js"></script>
   <script src="<%=path%>/js/dependency/stomp.js"></script>
   <script src="<%=path%>/js/dependency/sockjs.js"></script>

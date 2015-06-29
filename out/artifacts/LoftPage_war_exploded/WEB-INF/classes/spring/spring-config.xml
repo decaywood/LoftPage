@@ -80,6 +80,7 @@
                 /imgUpload.do = anon
                 /saveUser.do = anon
                 /keyDown.do = anon
+                /connectGame.do = anon
                 <!--/** = authc-->
             </value>
         </property>

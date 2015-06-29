@@ -39,6 +39,20 @@ KeyboardInputManager.prototype.listen = function () {
 
   var randomStr = Math.uuidCompact();
   alert(randomStr);
+
+  $.ajax({
+    url:'connectGame.do',
+    data:{
+      userID:randomStr
+    },
+    async:true,
+    cache:false,
+    type:'POST',
+    dataType:'json',
+    success: function (info) {
+        smoke.signal(info, function (e) {}, { duration:3000});
+    }
+  });
   
   var callback = function (frame) {
 
@@ -90,7 +104,7 @@ KeyboardInputManager.prototype.listen = function () {
       async:true,
       cache:false,
       type:'POST',
-      dataType:'json',
+      dataType:'json'
     });
 
     stompClient.send("/game/keyDown", {}, JSON.stringify(message));
