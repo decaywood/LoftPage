@@ -1,7 +1,6 @@
 package org.decaywood.buffer.handler;
 
 import com.lmax.disruptor.EventHandler;
-import jodd.cache.TimedCache;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.entity.User;
 import org.decaywood.service.UserService;
@@ -47,11 +46,11 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
     @Resource(name = "userService")
     private UserService userService;
 
-    public RepositoryHandler() {
-        this((cache, event) -> {
-            return !cache.containsKey(event.getUserID()) || event.getGameState().equalsIgnoreCase("Terminate");
-        });
-    }
+//    public RepositoryHandler() {
+//        this((cache, event) -> {
+//            return !cache.containsKey(event.getUserID()) || event.getGameState().equalsIgnoreCase("Terminate");
+//        });
+//    }
 
     public RepositoryHandler(EventFilter filter) {
         this(filter, CacheType.LRU_CACHE);
@@ -84,7 +83,7 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
         if(eventFilter.filter(cache, event)) return;
 
         User user = new User();
-        user.setUserID(event.getUserID()).setUserHighestScore(event.getHighestScore());
+//        user.setUserID(event.getUserID()).setUserHighestScore(event.getHighestScore());
 
 //        this.userService.
 

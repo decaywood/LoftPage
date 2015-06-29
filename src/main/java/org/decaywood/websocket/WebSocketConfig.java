@@ -1,6 +1,5 @@
 package org.decaywood.websocket;
 
-import org.decaywood.controller.GameController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -15,7 +14,7 @@ import javax.annotation.Resource;
  * Created by Administrator on 2015/6/18.
  */
 
-//@Configuration
+@Configuration
 @EnableWebSocketMessageBroker
 @EnableWebMvc
 @EnableWebSocket
@@ -48,10 +47,12 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registration.setSendTimeLimit(600000);
     }
 
-    @Bean
-    public GameController GameController() {
-        return new GameController();
-    }
+
+
+//    @Bean
+//    public GameController GameController() {
+//        return new GameController();
+//    }
 
     @Bean
     public DefaultHandshakeHandler handshakeHandler() {

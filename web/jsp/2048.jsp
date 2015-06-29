@@ -148,6 +148,7 @@
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
   </div>
+  <script src="<%=path%>/js/dependency/uuid.js"></script>
   <script src="<%=path%>/js/dependency/stomp.js"></script>
   <script src="<%=path%>/js/dependency/sockjs.js"></script>
   <script src="<%=path%>/js/dependency/jquery.js"></script>

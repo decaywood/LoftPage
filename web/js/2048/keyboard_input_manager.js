@@ -36,14 +36,18 @@ KeyboardInputManager.prototype.listen = function () {
 
   var sock= new SockJS('/LoftPage/webSocket');
   var stompClient = Stomp.over(sock);
+
+  var randomStr = Math.uuidCompact();
+  alert(randomStr);
   
   var callback = function (frame) {
 
-    stompClient.subscribe('/message/responds', function(responds){
+    stompClient.subscribe('/message/responds/' + randomStr, function(responds){
+      alert(responds);
     });
 
   };
-  
+
 
   
   stompClient.connect("","", callback);
@@ -75,9 +79,19 @@ KeyboardInputManager.prototype.listen = function () {
       'ctrlKey':event.ctrlKey,
       'metaKey':event.metaKey,
       'shiftKey':event.shiftKey,
-      'which':event.which
+      'which':event.which,
+      'userID':randomStr
 
     };
+
+    $.ajax({
+      url:'keyDown.do',
+      data:message,
+      async:true,
+      cache:false,
+      type:'POST',
+      dataType:'json',
+    });
 
     stompClient.send("/game/keyDown", {}, JSON.stringify(message));
 

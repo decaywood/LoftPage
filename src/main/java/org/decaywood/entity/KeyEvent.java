@@ -20,8 +20,6 @@ public class KeyEvent {
     private String shiftKey;
     private String which;
     private String userID;
-    private String IPAddress;
-    private String gameState;
     private String highestScore;
 
     public String getUserID() {
@@ -32,14 +30,6 @@ public class KeyEvent {
         this.userID = userID;
     }
 
-    public long getID() {
-        String ip[] = IPAddress.split(".");
-        long id = 256 * 256 * 256 * Long.parseLong(ip[0]) +
-                256 * 256 * Long.parseLong(ip[1]) +
-                256 * Long.parseLong(ip[2]) +
-                Long.parseLong(ip[3]);
-        return id;
-    }
 
 
     public String getHighestScore() {
@@ -49,23 +39,6 @@ public class KeyEvent {
     public void setHighestScore(String highestScore) {
         this.highestScore = highestScore;
     }
-
-    public String getGameState() {
-        return gameState;
-    }
-
-    public void setGameState(String gameState) {
-        this.gameState = gameState;
-    }
-
-    public String getIPAddress() {
-        return IPAddress;
-    }
-
-    public void setIPAddress(String IPAddress) {
-        this.IPAddress = IPAddress;
-    }
-
 
     public String getWhich() {
         return which;
