@@ -1,10 +1,11 @@
 package org.decaywood.buffer.handler;
 
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.WorkHandler;
 import org.decaywood.entity.KeyEvent;
+import org.decaywood.service.ConnectionManager;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import java.util.concurrent.atomic.LongAdder;
+import javax.annotation.Resource;
 
 /**
  * @author: decaywood
@@ -12,15 +13,15 @@ import java.util.concurrent.atomic.LongAdder;
  */
 public class KeyEventSender implements WorkHandler<KeyEvent> {
 
-    private static LongAdder longAdder = new LongAdder();
+    public static final String ADDRESS_PREFIX = "/message/responds/";
 
-    private static LongAdder handlerIDGenerator = new LongAdder();
+    @Resource(name = "ConnectionManager")
+    private ConnectionManager manager;
 
-    private long handlerID;
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     public KeyEventSender() {
-        handlerID = handlerIDGenerator.longValue();
-        handlerIDGenerator.increment();
     }
 
 
@@ -31,10 +32,20 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     }
 
     private void execute(KeyEvent event, long sequence, boolean endOfBatch) throws InterruptedException {
-        longAdder.increment();
-        System.out.println("count : " + longAdder.intValue() + "  thread: " + Thread.currentThread().getId());
-//        System.out.println("Event -> " + event +"Sequence -> " + sequence
-//                + "Batch -> " + endOfBatch + "  thread ====> " + Thread.currentThread().getId());
+        System.out.println("Event -> " + event +"Sequence -> " + sequence
+                + "Batch -> " + endOfBatch + "  thread ====> " + Thread.currentThread().getId());
+
+        String sendURL;
+
+        try {
+            String IPAddress = event.getIPAddress();
+            String userID = event.getUserID();
+            sendURL = manager.getSendURL(IPAddress, userID);
+            simpMessagingTemplate.convertAndSend(sendURL, event);
+        } catch (Exception e) {
+            simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
+                    + event.getUserID(), e.getMessage());
+        }
     }
 
 

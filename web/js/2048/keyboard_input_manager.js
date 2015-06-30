@@ -38,7 +38,6 @@ KeyboardInputManager.prototype.listen = function () {
   var stompClient = Stomp.over(sock);
 
   var randomStr = Math.uuidCompact();
-  alert(randomStr);
 
   $.ajax({
     url:'connectGame.do',

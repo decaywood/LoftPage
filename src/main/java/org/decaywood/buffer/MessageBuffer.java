@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.LongAdder;
  * @date: 2015/6/18 20:42
  */
 
-@Component
+@Component(value = "MessageBuffer")
 public class MessageBuffer implements Runnable {
 
     @Resource(name = "MultiSendersBuffer")

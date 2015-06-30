@@ -21,6 +21,15 @@ public class KeyEvent {
     private String which;
     private String userID;
     private String highestScore;
+    private String IPAddress;
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public void setIPAddress(String IPAddress) {
+        this.IPAddress = IPAddress;
+    }
 
     public String getUserID() {
         return userID;

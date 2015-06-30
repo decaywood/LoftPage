@@ -1,9 +1,9 @@
 package org.decaywood.controller;
 
 import org.apache.log4j.Logger;
+import org.decaywood.buffer.MessageBuffer;
 import org.decaywood.entity.KeyEvent;
-import org.decaywood.service.UserService;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.decaywood.service.ConnectionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,26 +20,34 @@ public class GameController {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
-    @Resource(name = "userService")
-    UserService userService;
+    @Resource(name = "ConnectionManager")
+    private ConnectionManager manager;
 
-    @Resource
-    SimpMessagingTemplate simpMessagingTemplate;
+    @Resource(name = "MessageBuffer")
+    private MessageBuffer messageBuffer;
 
+
+    @RequestMapping(value = "/disConnectGame")
+    @ResponseBody
+    public String disConnectGame(HttpServletRequest request, String userID) {
+        String result;
+        result = this.manager.disConnectGame(request.getRemoteAddr(), userID);
+        return result;
+    }
 
     @RequestMapping(value = "/connectGame")
     @ResponseBody
-    public String loginGame(String userID) {
-        String result = "connect!";
-
+    public String connectGame(HttpServletRequest request, String userID) {
+        String result;
+        result = manager.connect(request.getRemoteAddr(), userID);
         return result;
     }
 
     @RequestMapping(value = "/keyDown")
     @ResponseBody
     public void keyDown(HttpServletRequest request, KeyEvent event) {
-        logger.debug("=====================   " + event + "   =============================");
-        simpMessagingTemplate.convertAndSend("/message/responds", event);
+        event.setIPAddress(request.getRemoteAddr());
+        this.messageBuffer.publishEvent(event);
     }
 
 }
