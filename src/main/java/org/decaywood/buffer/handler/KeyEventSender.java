@@ -11,6 +11,7 @@ import javax.annotation.Resource;
  * @author: decaywood
  * @date: 2015/6/19 9:56
  */
+
 public class KeyEventSender implements WorkHandler<KeyEvent> {
 
     public static final String ADDRESS_PREFIX = "/message/responds/";
@@ -21,7 +22,9 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    public KeyEventSender() {
+    public KeyEventSender(ConnectionManager manager, SimpMessagingTemplate simpMessagingTemplate) {
+        this.manager = manager;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
 

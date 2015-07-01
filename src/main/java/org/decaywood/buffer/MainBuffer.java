@@ -1,21 +1,35 @@
 package org.decaywood.buffer;
 
 import com.lmax.disruptor.RingBuffer;
-import com.lmax.disruptor.SleepingWaitStrategy;
-import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
 import org.decaywood.entity.KeyEvent;
-import org.springframework.stereotype.Component;
+import org.decaywood.service.ConnectionManager;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import java.util.concurrent.Executors;
+import javax.annotation.Resource;
 
 /**
  * @author: decaywood
  * @date: 2015/6/19 10:42
  */
 
-@Component
 public abstract class MainBuffer {
+
+    protected ConnectionManager manager;
+
+    protected SimpMessagingTemplate simpMessagingTemplate;
+
+    private BufferGenerator generator;
+
+    @Resource(name = "ConnectionManager")
+    public void setManager(ConnectionManager manager) {
+        this.manager = manager;
+        buildBuffer();
+    }
+    @Resource
+    public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
+        buildBuffer();
+    }
 
     private RingBuffer<KeyEvent> ringBuffer;
 
@@ -27,11 +41,16 @@ public abstract class MainBuffer {
      */
     @FunctionalInterface
     protected interface BufferGenerator {
-        RingBuffer<KeyEvent> initRingBuffer();
+        RingBuffer<KeyEvent> initRingBuffer(ConnectionManager manager, SimpMessagingTemplate simpMessagingTemplate);
     }
 
-    protected void buildRingBuffer(BufferGenerator generator) {
-        this.ringBuffer = generator.initRingBuffer();
+    protected void setGenerator(BufferGenerator generator) {
+        this.generator = generator;
+    }
+
+    private void buildBuffer() {
+        if(manager != null && simpMessagingTemplate != null)
+            this.ringBuffer = this.generator.initRingBuffer(manager, simpMessagingTemplate);
     }
 
 
@@ -52,11 +71,16 @@ public abstract class MainBuffer {
         method to copy KeyEvent
      */
     private void setKeyEventValue(KeyEvent publisher, KeyEvent acceptor) {
+
         acceptor.setAltKey(publisher.getAltKey());
         acceptor.setCtrlKey(publisher.getCtrlKey());
         acceptor.setMetaKey(publisher.getMetaKey());
         acceptor.setShiftKey(publisher.getShiftKey());
         acceptor.setWhich(publisher.getWhich());
+        acceptor.setIPAddress(publisher.getIPAddress());
+        acceptor.setUserID(publisher.getUserID());
+        acceptor.setHighestScore(publisher.getHighestScore());
+
     }
 
 }

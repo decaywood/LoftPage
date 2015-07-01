@@ -1,6 +1,4 @@
-import org.decaywood.buffer.MainBuffer;
 import org.decaywood.buffer.MessageBuffer;
-import org.decaywood.entity.KeyEvent;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,7 +30,7 @@ public class BufferTest {
                 public void run() {
                     for (int i = 0; i < 1000; i++) {
 //                        System.out.println("================ " + Thread.currentThread().getId() + "==================");
-                        buffer.publishEvent(new KeyEvent(String.valueOf(i)));
+//                        buffer.publishEvent(new KeyEvent(String.valueOf(i)));
                     }
 
                 }

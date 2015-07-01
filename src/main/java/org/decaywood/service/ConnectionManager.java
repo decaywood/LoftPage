@@ -2,7 +2,7 @@ package org.decaywood.service;
 
 import org.decaywood.buffer.handler.KeyEventSender;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Deque;
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date: 2015/6/29 21:48
  */
 
-@Service(value = "ConnectionManager")
+@Component(value = "ConnectionManager")
 public class ConnectionManager {
 
     @Resource
@@ -115,7 +115,7 @@ public class ConnectionManager {
 
         URLMapper urlMapper = new URLMapper(IPAddress, userID);
 
-        if (IDMapper.containsKey(urlMapper)) throw new Exception("URL doesn't match!");
+        if (!IDMapper.containsKey(urlMapper)) throw new Exception("URL doesn't match!");
 
         String sendURL;
         sendURL = KeyEventSender.ADDRESS_PREFIX + IDMapper.get(urlMapper).userID;

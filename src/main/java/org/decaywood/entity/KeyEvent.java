@@ -9,9 +9,6 @@ public class KeyEvent {
     public KeyEvent() {
     }
 
-    public KeyEvent(String altKey) {
-        this.altKey = altKey;
-    }
 
 
     private String altKey;
