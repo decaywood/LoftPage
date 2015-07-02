@@ -1,6 +1,7 @@
-function GameManager(size, InputManager, Actuator, StorageManager, target) {
+function GameManager(size, InputManager, Actuator, StorageManager, NetSendManager, target) {
   this.size           = size; // Size of the grid
-  this.inputManager   = new InputManager;
+  this.netSendManager = new NetSendManager(this);
+  this.inputManager   = new InputManager(this.netSendManager);
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator(target);
 

@@ -1,4 +1,6 @@
-function KeyboardInputManager() {
+function KeyboardInputManager(netSendManager) {
+
+  this.netSendManager = netSendManager;
   this.events = {};
 
   if (window.navigator.msPointerEnabled) {
@@ -34,36 +36,7 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
 
-  var sock= new SockJS('/LoftPage/webSocket');
-  var stompClient = Stomp.over(sock);
-
-  var randomStr = Math.uuidCompact();
-
-  $.ajax({
-    url:'connectGame.do',
-    data:{
-      userID:randomStr
-    },
-    async:true,
-    cache:false,
-    type:'POST',
-    dataType:'json',
-    success: function (info) {
-        smoke.signal(info, function (e) {}, { duration:3000});
-    }
-  });
-  
-  var callback = function (frame) {
-
-    stompClient.subscribe('/message/responds/' + randomStr, function(responds){
-      alert(responds);
-    });
-
-  };
-
-
-  
-  stompClient.connect("","", callback);
+  this.netSendManager.connectGame();
 
   var map = {
     38: 0, // Up
@@ -86,27 +59,7 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
-    var message = {
-
-      'altKey':event.altKey,
-      'ctrlKey':event.ctrlKey,
-      'metaKey':event.metaKey,
-      'shiftKey':event.shiftKey,
-      'which':event.which,
-      'userID':randomStr
-
-    };
-
-    $.ajax({
-      url:'keyDown.do',
-      data:message,
-      async:true,
-      cache:false,
-      type:'POST',
-      dataType:'json'
-    });
-
-    stompClient.send("/game/keyDown", {}, JSON.stringify(message));
+    this.netSendManager.sendGameState();
 
     if (!modifiers) {
       if (mapped !== undefined) {
