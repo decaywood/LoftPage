@@ -10,15 +10,22 @@ function GameManager(size, InputManager, Actuator, StorageManager, NetSendManage
   this.randomTiles = new Array(this.startTiles);
 
   this.inputManager.on("move", this.move.bind(this));
-  this.inputManager.on("restart", this.restart.bind(this));
+  this.inputManager.on("connect", this.connect.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+
+  //this.netSendManager.connectGame();
+
 }
 
 GameManager.prototype.getRandomTiles = function () {
   return this.randomTiles;
-}
+};
 
 // Restart the game
+GameManager.prototype.connect = function () {
+  this.netSendManager.connectGame();
+};
+
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message

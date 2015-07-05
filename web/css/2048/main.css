@@ -485,7 +485,7 @@ hr {
   line-height: 42px;
   margin-bottom: 0; }
 
-.restart-button {
+.connect-button {
   display: inline-block;
   background: #8f7a66;
   border-radius: 3px;
@@ -531,7 +531,7 @@ hr {
     box-sizing: border-box;
     line-height: 1.65; }
 
-  .restart-button {
+  .connect-button {
     width: 42%;
     padding: 0;
     display: block;

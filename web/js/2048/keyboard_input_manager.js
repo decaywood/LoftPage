@@ -36,7 +36,6 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
   var netSendManager = this.netSendManager;
-  netSendManager.connectGame();
 
   var map = {
     38: 0, // Up
@@ -67,17 +66,17 @@ KeyboardInputManager.prototype.listen = function () {
       }
     }
 
-    // R key restarts the game
+    // R key connect the game
     if (!modifiers && event.which === 82) {
-      self.restart.call(self, event);
+      self.connect.call(self, event);
     }
     netSendManager.sendGameState(event);
 
   });
 
   // Respond to button presses
-  this.bindButtonPress(".retry-button", this.restart);
-  this.bindButtonPress(".restart-button", this.restart);
+  this.bindButtonPress(".retry-button", this.connect);
+  this.bindButtonPress(".connect-button", this.connect);
   this.bindButtonPress(".keep-playing-button", this.keepPlaying);
 
   // Respond to swipe events
@@ -134,9 +133,9 @@ KeyboardInputManager.prototype.listen = function () {
   });
 };
 
-KeyboardInputManager.prototype.restart = function (event) {
+KeyboardInputManager.prototype.connect = function (event) {
   event.preventDefault();
-  this.emit("restart");
+  this.emit("connect");
 };
 
 KeyboardInputManager.prototype.keepPlaying = function (event) {
