@@ -1,68 +1,86 @@
 /**
  * Created by decaywood on 2015/7/2.
  */
-function NetSendManager(gameManager) {
+function NetSendManager(gameManager, remoteManager) {
 
     this.gameManager = gameManager;
-
+    this.remoteManager = remoteManager;
+    this.counter = 0;
     var sock= new SockJS('/LoftPage/webSocket');
     this.stompClient = Stomp.over(sock);
 
 }
 
-NetSendManager.prototype.sendGameState = function () {
+NetSendManager.prototype.sendGameState = function (keyEvent) {
 
     var gameState = this.gameManager.serialize();
+    var currentNum = this.counter++;
+    var expectNum = this.counter;
 
     var message = {
-        grid:        gameState.grid,
-        score:       gameState.score,
-        over:        gameState.over,
-        won:         gameState.won,
-        keepPlaying: gameState.keepPlaying,
-        userID: this.randomStr
-    }
+        userID:this.userID,
+        highestScore:gameState.score,
+        altKey:keyEvent.altKey,
+        ctrlKey:keyEvent.ctrlKey,
+        metaKey:keyEvent.metaKey,
+        shiftKey:keyEvent.shiftKey,
+        which:keyEvent.which,
+        currentNum:currentNum,
+        expectNum:expectNum
+        //randomTiles:randomTiles
+    };
 
-    $.ajax({
-        url:'keyDown.do',
-        data:message,
-        async:true,
-        cache:false,
-        type:'POST',
-        dataType:'json'
-    });
+    this.sendData('keyDown.do', message);
 
 }
 
 NetSendManager.prototype.connectGame = function () {
 
-    this.randomStr = Math.uuidCompact();
+    this.userID = Math.uuidCompact();
+    var userID = this.userID;
 
-    $.ajax({
-        url:'connectGame.do',
-        data:{
-            userID:this.randomStr
-        },
-        async:true,
-        cache:false,
-        type:'POST',
-        dataType:'json',
-        success: function (info) {
+    var stompClient = this.stompClient;
+    var gameManager = this.gameManager;
+    var sender = this.sendData;
 
-            if("Waiting For Connection!" == info || "Connect Game Success!" == info) {
-                self.restart.call(self, {});
-            }
-            smoke.signal(info, function (e) {}, { duration:3000});
-        }
-    });
+    var callback = function () {
 
-    var callback = function (frame) {
-
-        this.stompClient.subscribe('/message/responds/' + randomStr, function(responds){
+        stompClient.subscribe('/message/responds/' + userID, function(responds){
             alert(responds);
         });
 
     };
+    stompClient.connect("","", callback);
 
-    this.stompClient.connect("","", callback);
+    var success = function (info) {
+        smoke.signal(info, function (e) {}, { duration:3000});
+        gameManager.restart();
+        var tiles = gameManager.getRandomTiles();
+
+        var message = {
+            userID:userID,
+            gameState:"init",
+            randomTiles:JSON.stringify(tiles)
+        };
+        sender('keyDown.do', message);
+    };
+
+    sender('connectGame.do', {
+        userID:userID,
+        gameState:"connect"
+    }, success)
+
+
+}
+
+NetSendManager.prototype.sendData = function (target, message, success) {
+    $.ajax({
+        url:target,
+        data:message,
+        async:true,
+        cache:false,
+        type:'POST',
+        dataType:'json',
+        success:success
+    });
 }

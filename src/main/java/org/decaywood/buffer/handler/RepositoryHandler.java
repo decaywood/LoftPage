@@ -3,12 +3,10 @@ package org.decaywood.buffer.handler;
 import com.lmax.disruptor.EventHandler;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.entity.User;
-import org.decaywood.service.UserService;
 import org.decaywood.utils.cache.ICache;
 import org.decaywood.utils.cache.LRUCache;
 import org.decaywood.utils.cache.TimeStampCache;
 
-import javax.annotation.Resource;
 import java.util.function.Supplier;
 
 /**
@@ -43,8 +41,8 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
     private ICache<String, KeyEvent> cache;
 
 
-    @Resource(name = "userService")
-    private UserService userService;
+//    @Resource(name = "userService")
+//    private UserService userService;
 
 //    public RepositoryHandler() {
 //        this((cache, event) -> {

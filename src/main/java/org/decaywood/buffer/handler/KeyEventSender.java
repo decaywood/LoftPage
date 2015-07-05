@@ -43,8 +43,10 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
         try {
             String IPAddress = event.getIPAddress();
             String userID = event.getUserID();
-            sendURL = manager.getSendURL(IPAddress, userID);
-            simpMessagingTemplate.convertAndSend(sendURL, event);
+//            sendURL = manager.getSendURL(IPAddress, userID);
+//            simpMessagingTemplate.convertAndSend(sendURL, event);
+            simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
+                    + event.getUserID(), event.getIPAddress()); // forTest
         } catch (Exception e) {
             simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
                     + event.getUserID(), e.getMessage());

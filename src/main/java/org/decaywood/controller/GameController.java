@@ -37,9 +37,9 @@ public class GameController {
 
     @RequestMapping(value = "/connectGame")
     @ResponseBody
-    public String connectGame(HttpServletRequest request, String userID) {
+    public String connectGame(HttpServletRequest request, KeyEvent keyEvent) {
         String result;
-        result = manager.connect(request.getRemoteAddr(), userID);
+        result = manager.connect(request.getRemoteAddr(), keyEvent.getUserID());
         return result;
     }
 

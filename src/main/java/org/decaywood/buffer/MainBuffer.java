@@ -59,28 +59,12 @@ public abstract class MainBuffer {
         long sequence = this.ringBuffer.next();
         try {
             KeyEvent keyEvent = this.ringBuffer.get(sequence);
-            setKeyEventValue(event, keyEvent);
+            keyEvent.copyOf(event);
         } finally {
             this.ringBuffer.publish(sequence); // ensure that event can be published
         }
 
     }
 
-
-    /*
-        method to copy KeyEvent
-     */
-    private void setKeyEventValue(KeyEvent publisher, KeyEvent acceptor) {
-
-        acceptor.setAltKey(publisher.getAltKey());
-        acceptor.setCtrlKey(publisher.getCtrlKey());
-        acceptor.setMetaKey(publisher.getMetaKey());
-        acceptor.setShiftKey(publisher.getShiftKey());
-        acceptor.setWhich(publisher.getWhich());
-        acceptor.setIPAddress(publisher.getIPAddress());
-        acceptor.setUserID(publisher.getUserID());
-        acceptor.setHighestScore(publisher.getHighestScore());
-
-    }
 
 }

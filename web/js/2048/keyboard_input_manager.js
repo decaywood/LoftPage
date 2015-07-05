@@ -35,8 +35,8 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
-
-  this.netSendManager.connectGame();
+  var netSendManager = this.netSendManager;
+  netSendManager.connectGame();
 
   var map = {
     38: 0, // Up
@@ -59,7 +59,6 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
-    this.netSendManager.sendGameState();
 
     if (!modifiers) {
       if (mapped !== undefined) {
@@ -72,6 +71,8 @@ KeyboardInputManager.prototype.listen = function () {
     if (!modifiers && event.which === 82) {
       self.restart.call(self, event);
     }
+    netSendManager.sendGameState(event);
+
   });
 
   // Respond to button presses

@@ -9,16 +9,52 @@ public class KeyEvent {
     public KeyEvent() {
     }
 
+    private String gameState;
 
-
+    private String userID;
+    private String highestScore;
     private String altKey;
     private String ctrlKey;
     private String metaKey;
     private String shiftKey;
     private String which;
-    private String userID;
-    private String highestScore;
+    private String currentNum;
+    private String expectNum;
+
     private String IPAddress;
+    private String randomTiles;
+
+    public String getRandomTiles() {
+        return randomTiles;
+    }
+
+    public void setRandomTiles(String randomTiles) {
+        this.randomTiles = randomTiles;
+    }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    public String getExpectNum() {
+        return expectNum;
+    }
+
+    public void setExpectNum(String expectNum) {
+        this.expectNum = expectNum;
+    }
+
+    public String getCurrentNum() {
+        return currentNum;
+    }
+
+    public void setCurrentNum(String currentNum) {
+        this.currentNum = currentNum;
+    }
 
     public String getIPAddress() {
         return IPAddress;
@@ -84,6 +120,23 @@ public class KeyEvent {
 
     public void setAltKey(String altKey) {
         this.altKey = altKey;
+    }
+
+    public void copyOf(KeyEvent keyEvent) {
+        this.gameState = keyEvent.gameState;
+
+        this.userID = keyEvent.userID;
+        this.highestScore = keyEvent.highestScore;
+        this.altKey = keyEvent.altKey;
+        this.ctrlKey = keyEvent.ctrlKey;
+        this.metaKey = keyEvent.metaKey;
+        this.shiftKey = keyEvent.shiftKey;
+        this.which = keyEvent.which;
+        this.currentNum = keyEvent.currentNum;
+        this.expectNum = keyEvent.expectNum;
+
+        this.IPAddress = keyEvent.IPAddress;
+        this.randomTiles = keyEvent.randomTiles;
     }
 
     @Override

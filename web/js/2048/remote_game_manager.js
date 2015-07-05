@@ -1,27 +1,18 @@
 /**
  * Created by decaywood on 2015/7/2.
  */
-function RemoteGameManager(size, InputManager, Actuator, StorageManager, NetSendManager, target) {
+function RemoteGameManager(size, Actuator, target) {
     this.size           = size; // Size of the grid
-    this.netSendManager = new NetSendManager(this);
-    this.inputManager   = new InputManager(this.netSendManager);
-    this.storageManager = new StorageManager;
     this.actuator       = new Actuator(target);
 
     this.startTiles     = 2;
 
-    this.inputManager.on("move", this.move.bind(this));
-    this.inputManager.on("restart", this.restart.bind(this));
-    this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
-
-    this.setup();
 }
 
 // Restart the game
-RemoteGameManager.prototype.restart = function () {
-    this.storageManager.clearGameState();
+RemoteGameManager.prototype.restart = function (tiles) {
     this.actuator.continueGame(); // Clear the game won/lost message
-    this.setup();
+    this.setup(tiles);
 };
 
 // Keep playing after winning (allows going over 2048)
@@ -36,67 +27,45 @@ RemoteGameManager.prototype.isGameTerminated = function () {
 };
 
 // Set up the game
-RemoteGameManager.prototype.setup = function () {
-    var previousState = this.storageManager.getGameState();
+RemoteGameManager.prototype.setup = function (randomTiles) {
 
-    // Reload the game from a previous game if present
-    if (previousState) {
-        this.grid        = new Grid(previousState.grid.size,
-            previousState.grid.cells); // Reload grid
-        this.score       = previousState.score;
-        this.over        = previousState.over;
-        this.won         = previousState.won;
-        this.keepPlaying = previousState.keepPlaying;
-    } else {
-        this.grid        = new Grid(this.size);
-        this.score       = 0;
-        this.over        = false;
-        this.won         = false;
-        this.keepPlaying = false;
 
-        // Add the initial tiles
-        this.addStartTiles();
-    }
+    this.grid        = new Grid(this.size);
+    this.score       = 0;
+    this.over        = false;
+    this.won         = false;
+    this.keepPlaying = false;
+
+    // Add the initial tiles
+    this.addStartTiles(randomTiles);//TODO
+
 
     // Update the actuator
     this.actuate();
 };
 
 // Set up the initial tiles to start the game with
-RemoteGameManager.prototype.addStartTiles = function () {
-    for (var i = 0; i < this.startTiles; i++) {
-        this.addRandomTile();
+RemoteGameManager.prototype.addStartTiles = function (randomTiles) {
+    for (var i = 0; i < randomTiles.length; i++) {
+        this.addRandomTile(randomTiles[i]);
     }
 };
 
 // Adds a tile in a random position
-RemoteGameManager.prototype.addRandomTile = function () {
+RemoteGameManager.prototype.addRandomTile = function (tile) { //TODO
     if (this.grid.cellsAvailable()) {
-        var value = Math.random() < 0.9 ? 2 : 4;
-        var tile = new Tile(this.grid.randomAvailableCell(), value);
-
         this.grid.insertTile(tile);
     }
 };
 
 // Sends the updated grid to the actuator
 RemoteGameManager.prototype.actuate = function () {
-    if (this.storageManager.getBestScore() < this.score) {
-        this.storageManager.setBestScore(this.score);
-    }
-
-    // Clear the state when the game is over (game over only, not win)
-    if (this.over) {
-        this.storageManager.clearGameState();
-    } else {
-        this.storageManager.setGameState(this.serialize());
-    }
 
     this.actuator.actuate(this.grid, {
         score:      this.score,
         over:       this.over,
         won:        this.won,
-        bestScore:  this.storageManager.getBestScore(),
+        bestScore:  0,
         terminated: this.isGameTerminated()
     });
 
@@ -131,7 +100,8 @@ RemoteGameManager.prototype.moveTile = function (tile, cell) {
 };
 
 // Move tiles on the grid in the specified direction
-RemoteGameManager.prototype.move = function (direction) {
+RemoteGameManager.prototype.move = function (direction, randomTile) {
+
     // 0: up, 1: right, 2: down, 3: left
     var self = this;
 
@@ -184,7 +154,7 @@ RemoteGameManager.prototype.move = function (direction) {
     });
 
     if (moved) {
-        this.addRandomTile();
+        this.addRandomTile(randomTile); //TODO
 
         if (!this.movesAvailable()) {
             this.over = true; // Game over!

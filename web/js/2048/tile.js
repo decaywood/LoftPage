@@ -12,6 +12,7 @@ Tile.prototype.savePosition = function () {
 };
 
 Tile.prototype.updatePosition = function (position) {
+  if(position == undefined) return;
   this.x = position.x;
   this.y = position.y;
 };

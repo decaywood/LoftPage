@@ -19,7 +19,7 @@
 
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 </head>
 <body>
   <div>
@@ -149,6 +149,7 @@
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
   </div>
+  <script src="<%=path%>/js/2048/tile.js"></script>
   <script src="<%=path%>/js/dependency/smoke.min.js"></script>
   <script src="<%=path%>/js/dependency/uuid.js"></script>
   <script src="<%=path%>/js/dependency/stomp.js"></script>
@@ -157,10 +158,11 @@
   <script src="<%=path%>/js/2048/bind_polyfill.js"></script>
   <script src="<%=path%>/js/2048/classlist_polyfill.js"></script>
   <script src="<%=path%>/js/2048/animframe_polyfill.js"></script>
+  <script src="<%=path%>/js/2048/net_send_manager.js"></script>
+  <script src="<%=path%>/js/2048/remote_game_manager.js"></script>
   <script src="<%=path%>/js/2048/keyboard_input_manager.js"></script>
   <script src="<%=path%>/js/2048/html_actuator.js"></script>
   <script src="<%=path%>/js/2048/grid.js"></script>
-  <script src="<%=path%>/js/2048/tile.js"></script>
   <script src="<%=path%>/js/2048/local_storage_manager.js"></script>
   <script src="<%=path%>/js/2048/game_manager.js"></script>
   <script src="<%=path%>/js/2048/application.js"></script>

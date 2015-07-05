@@ -87,6 +87,8 @@ public class ConnectionManager {
         while (true) {
             if (!connectionQueue.isEmpty() && !IDMapper.containsKey(mapper)) {
 
+                if(mapper.equals(connectionQueue.peek())) return "Waiting For Remote Connection!";
+
                 URLMapper remote = connectionQueue.poll();
 
                 IDMapper.put(mapper, remote);
@@ -101,7 +103,7 @@ public class ConnectionManager {
 
                 if (!IDMapper.containsKey(mapper))
                     connectionQueue.offer(mapper);
-                return "Waiting For Connection!";
+                return "Connect Game Success! Waiting For Remote Connection!";
             } else {
                 disConnectGame(mapper);
                 return connect(IPAddress, userID);

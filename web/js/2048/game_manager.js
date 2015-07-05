@@ -1,17 +1,21 @@
 function GameManager(size, InputManager, Actuator, StorageManager, NetSendManager, target) {
   this.size           = size; // Size of the grid
-  this.netSendManager = new NetSendManager(this);
+  var remoteManager = new RemoteGameManager(4, HTMLActuator, '#guest');
+  this.netSendManager = new NetSendManager(this, remoteManager);
   this.inputManager   = new InputManager(this.netSendManager);
   this.storageManager = new StorageManager;
   this.actuator       = new Actuator(target);
 
   this.startTiles     = 2;
+  this.randomTiles = new Array(this.startTiles);
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+}
 
-  this.setup();
+GameManager.prototype.getRandomTiles = function () {
+  return this.randomTiles;
 }
 
 // Restart the game
@@ -61,6 +65,7 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
+  this.randomTiles.length = 0; // clear arrays
   for (var i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
   }
@@ -71,7 +76,7 @@ GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
     var value = Math.random() < 0.9 ? 2 : 4;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
-
+    this.randomTiles.push(tile);
     this.grid.insertTile(tile);
   }
 };

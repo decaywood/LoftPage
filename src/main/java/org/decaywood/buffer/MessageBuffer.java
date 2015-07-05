@@ -83,6 +83,7 @@ public class MessageBuffer implements Runnable {
 
         if(messageCounter.intValue() < flushShreshold) return;
         this.service.execute(this);
+
     }
 
     private Queue<KeyEvent> getMinBuffer() {
