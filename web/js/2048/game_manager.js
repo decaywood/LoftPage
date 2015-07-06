@@ -26,6 +26,10 @@ GameManager.prototype.connect = function () {
   this.netSendManager.connectGame();
 };
 
+GameManager.prototype.getBestScore = function () {
+  return this.storageManager.getBestScore();
+};
+
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
   this.actuator.continueGame(); // Clear the game won/lost message
@@ -193,6 +197,7 @@ GameManager.prototype.move = function (direction) {
   });
 
   if (moved) {
+    this.randomTiles.length = 0;
     this.addRandomTile();
 
     if (!this.movesAvailable()) {

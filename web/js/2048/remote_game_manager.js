@@ -154,7 +154,9 @@ RemoteGameManager.prototype.move = function (direction, randomTile) {
     });
 
     if (moved) {
-        this.addRandomTile(randomTile); //TODO
+        var tile = new Tile(randomTile, randomTile.value);
+        alert(direction + "  " + JSON.stringify(randomTile));
+        this.addRandomTile(tile); //TODO
 
         if (!this.movesAvailable()) {
             this.over = true; // Game over!

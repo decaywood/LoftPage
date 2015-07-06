@@ -35,7 +35,7 @@
 
         <div class="above-game">
           <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
-          <a class="connect-button">New Game</a>
+          <a class="connect-button">Connect</a>
         </div>
 
         <div class="game-container">
@@ -149,6 +149,7 @@
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
   </div>
+  <script src="<%=path%>/js/2048/grid.js"></script>
   <script src="<%=path%>/js/2048/tile.js"></script>
   <script src="<%=path%>/js/dependency/smoke.min.js"></script>
   <script src="<%=path%>/js/dependency/uuid.js"></script>
@@ -158,11 +159,10 @@
   <script src="<%=path%>/js/2048/bind_polyfill.js"></script>
   <script src="<%=path%>/js/2048/classlist_polyfill.js"></script>
   <script src="<%=path%>/js/2048/animframe_polyfill.js"></script>
-  <script src="<%=path%>/js/2048/net_send_manager.js"></script>
   <script src="<%=path%>/js/2048/remote_game_manager.js"></script>
+  <script src="<%=path%>/js/2048/net_send_manager.js"></script>
   <script src="<%=path%>/js/2048/keyboard_input_manager.js"></script>
   <script src="<%=path%>/js/2048/html_actuator.js"></script>
-  <script src="<%=path%>/js/2048/grid.js"></script>
   <script src="<%=path%>/js/2048/local_storage_manager.js"></script>
   <script src="<%=path%>/js/2048/game_manager.js"></script>
   <script src="<%=path%>/js/2048/application.js"></script>
