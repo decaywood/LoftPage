@@ -12,44 +12,44 @@
 
     <!-- Application Loggers -->
     <logger name="com.decaywood">
-        <level value="DEBUG" />
+        <level value="INFO" />
     </logger>
 
-    <!-- 3rdparty Loggers -->
-    <logger name="org.springframework.core">
-        <level value="DEBUG" />
-    </logger>
+     <!--3rdparty Loggers -->
+    <!--<logger name="org.springframework.core">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
 
-    <logger name="org.springframework.beans">
-        <level value="DEBUG" />
-    </logger>
+    <!--<logger name="org.springframework.beans">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
 
-    <logger name="org.springframework.context">
-        <level value="DEBUG" />
-    </logger>
+    <!--<logger name="org.springframework.context">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
 
-    <logger name="org.springframework.web">
-        <level value="DEBUG" />
-    </logger>
-    <logger name="org.springframework.http">
-        <level value="DEBUG" />
-    </logger>
+    <!--<logger name="org.springframework.web">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+    <!--<logger name="org.springframework.http">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
 
-    <logger name="org.springframework.jdbc">
-        <level value="DEBUG" />
-    </logger>
+    <!--<logger name="org.springframework.jdbc">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
 
 
-    <logger name="java.sql">
-        <level value="DEBUG" />
-    </logger>
-    <logger name="org.apache.shiro">
-        <level value="DEBUG" />
-    </logger>
-    <!-- Root Logger -->
+    <!--<logger name="java.sql">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.shiro">-->
+        <!--<level value="DEBUG" />-->
+    <!--</logger>-->
+     <!--Root Logger -->
     <root>
 
-        <priority value="DEBUG" />
+        <priority value="INFO" />
         <appender-ref ref="console" />
     </root>
 

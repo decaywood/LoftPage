@@ -48,12 +48,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
 
-
-//    @Bean
-//    public GameController GameController() {
-//        return new GameController();
-//    }
-
     @Bean
     public DefaultHandshakeHandler handshakeHandler() {
         return new DefaultHandshakeHandler();

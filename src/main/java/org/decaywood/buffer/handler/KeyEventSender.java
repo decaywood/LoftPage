@@ -3,6 +3,7 @@ package org.decaywood.buffer.handler;
 import com.lmax.disruptor.WorkHandler;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.service.ConnectionManager;
+import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import javax.annotation.Resource;
@@ -15,6 +16,9 @@ import javax.annotation.Resource;
 public class KeyEventSender implements WorkHandler<KeyEvent> {
 
     public static final String ADDRESS_PREFIX = "/message/responds/";
+
+    @Resource(name = "KeyEventSequencer")
+    private KeyEventSequencer sequencer;
 
     @Resource(name = "ConnectionManager")
     private ConnectionManager manager;
@@ -31,18 +35,18 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
 
     @Override
     public void onEvent(KeyEvent event) throws Exception {
-        execute(event, 0, true);
+        execute(event);
     }
 
-    private void execute(KeyEvent event, long sequence, boolean endOfBatch) throws InterruptedException {
-        System.out.println("Event -> " + event +"Sequence -> " + sequence
-                + "Batch -> " + endOfBatch + "  thread ====> " + Thread.currentThread().getId());
+    private void execute(KeyEvent event) throws InterruptedException {
+        sequencer.processKeyEvent(event, KeyEventSender.this::sendEvent);
+    }
 
-        String sendURL;
-
+    public void sendEvent(KeyEvent event) {
         try {
-            String IPAddress = event.getIPAddress();
-            String userID = event.getUserID();
+//            String sendURL;
+//            String IPAddress = event.getIPAddress();
+//            String userID = event.getUserID();
 //            sendURL = manager.getSendURL(IPAddress, userID);
 //            simpMessagingTemplate.convertAndSend(sendURL, event);
             simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
@@ -52,6 +56,5 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
                     + event.getUserID(), e.getMessage());
         }
     }
-
 
 }
