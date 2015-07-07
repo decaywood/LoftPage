@@ -37,9 +37,9 @@ NetSendManager.prototype.initStomp = function () {
             var tuple = getElement(responds);
             var mapped = map[tuple.keyEvent.which];
             if(tuple.gameState == "init")
-                remoteManager.restart(tuple.tiles);
+                remoteManager.restart(tuple.tiles, tuple.highestScore);
             if(tuple.gameState == "gaming" && mapped !== undefined)
-                remoteManager.move(mapped, tuple.tiles);
+                remoteManager.move(mapped, tuple.tiles.pop(), tuple.highestScore);
 
         });
     };
@@ -83,10 +83,11 @@ NetSendManager.prototype.connectGame = function () {
         smoke.signal(info, function (e) {}, { duration:3000});
         gameManager.restart();
         var tiles = gameManager.getRandomTiles();
-
+        var bestScore = gameManager.getBestScore();
         var message = {
             userID:userID,
             gameState:"init",
+            highestScore:bestScore,
             randomTiles:JSON.stringify(tiles)
         };
 
@@ -120,15 +121,16 @@ var getElement = function (jsonFile) {
     var keyEvent = eventParser(body);
     var tiles = tilesParser(body);
     var gameState = body.gameState;
-
+    var highestScore = body.highestScore;
     var tuple = {
         keyEvent:keyEvent,
         tiles:tiles,
-        gameState:gameState
+        gameState:gameState,
+        highestScore:highestScore
     };
 
     return tuple;
-}
+};
 
 var eventParser = function (jsonFile) {
     var keyEvent = {
@@ -139,10 +141,10 @@ var eventParser = function (jsonFile) {
         which:jsonFile.which
     };
     return keyEvent;
-}
+};
 
 var tilesParser = function (jsonFile) {
     var randomTiles = jsonFile.randomTiles;
     var tiles = JSON.parse(randomTiles);
     return tiles;
-}
+};

@@ -10,9 +10,9 @@ function RemoteGameManager(size, Actuator, target) {
 }
 
 // Restart the game
-RemoteGameManager.prototype.restart = function (tiles) {
+RemoteGameManager.prototype.restart = function (tiles, bestScore) {
     this.actuator.continueGame(); // Clear the game won/lost message
-    this.setup(tiles);
+    this.setup(tiles, bestScore);
 };
 
 // Keep playing after winning (allows going over 2048)
@@ -27,17 +27,18 @@ RemoteGameManager.prototype.isGameTerminated = function () {
 };
 
 // Set up the game
-RemoteGameManager.prototype.setup = function (randomTiles) {
+RemoteGameManager.prototype.setup = function (randomTiles, bestScore) {
 
 
     this.grid        = new Grid(this.size);
     this.score       = 0;
+    this.bestScore   = bestScore;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
 
     // Add the initial tiles
-    this.addStartTiles(randomTiles);//TODO
+    this.addStartTiles(randomTiles);
 
 
     // Update the actuator
@@ -47,12 +48,17 @@ RemoteGameManager.prototype.setup = function (randomTiles) {
 // Set up the initial tiles to start the game with
 RemoteGameManager.prototype.addStartTiles = function (randomTiles) {
     for (var i = 0; i < randomTiles.length; i++) {
-        this.addRandomTile(randomTiles[i]);
+        var randomTile = randomTiles[i];
+        var x = randomTile.x;
+        var y = randomTile.y;
+        var position = {x: x, y: y};
+        var tile = new Tile(position, randomTile.value);
+        this.addRandomTile(tile);
     }
 };
 
 // Adds a tile in a random position
-RemoteGameManager.prototype.addRandomTile = function (tile) { //TODO
+RemoteGameManager.prototype.addRandomTile = function (tile) {
     if (this.grid.cellsAvailable()) {
         this.grid.insertTile(tile);
     }
@@ -61,11 +67,15 @@ RemoteGameManager.prototype.addRandomTile = function (tile) { //TODO
 // Sends the updated grid to the actuator
 RemoteGameManager.prototype.actuate = function () {
 
+    if (this.bestScore < this.score) {
+        this.bestScore = score;
+    }
+
     this.actuator.actuate(this.grid, {
         score:      this.score,
         over:       this.over,
         won:        this.won,
-        bestScore:  0,
+        bestScore:  this.bestScore,
         terminated: this.isGameTerminated()
     });
 
@@ -100,8 +110,9 @@ RemoteGameManager.prototype.moveTile = function (tile, cell) {
 };
 
 // Move tiles on the grid in the specified direction
-RemoteGameManager.prototype.move = function (direction, randomTile) {
+RemoteGameManager.prototype.move = function (direction, randomTile, bestScore) {
 
+    this.bestScore = bestScore;
     // 0: up, 1: right, 2: down, 3: left
     var self = this;
 
@@ -154,9 +165,12 @@ RemoteGameManager.prototype.move = function (direction, randomTile) {
     });
 
     if (moved) {
-        var tile = new Tile(randomTile, randomTile.value);
-        alert(direction + "  " + JSON.stringify(randomTile));
-        this.addRandomTile(tile); //TODO
+        var x = randomTile.x;
+        var y = randomTile.y;
+        var position = {x: x, y: y};
+        var t = new Tile(position, randomTile.value);
+
+        this.addRandomTile(t);
 
         if (!this.movesAvailable()) {
             this.over = true; // Game over!
