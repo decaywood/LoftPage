@@ -40,16 +40,16 @@ public class KeyEvent {
         this.gameState = gameState;
     }
 
-    public String getExpectNum() {
-        return expectNum;
+    public int getExpectNum() {
+        return Integer.parseInt(expectNum);
     }
 
     public void setExpectNum(String expectNum) {
         this.expectNum = expectNum;
     }
 
-    public String getCurrentNum() {
-        return currentNum;
+    public int getCurrentNum() {
+        return Integer.parseInt(currentNum);
     }
 
     public void setCurrentNum(String currentNum) {
