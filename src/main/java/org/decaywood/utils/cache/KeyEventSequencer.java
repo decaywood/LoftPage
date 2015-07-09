@@ -28,22 +28,59 @@ public class KeyEventSequencer {
 
     private static class BufferKey {
 
+        boolean marker;
         String userID;
-        int expectNum;
+        int key;
+
         Consumer<BufferKey> operator;
 
-        public BufferKey(String userID, int expectNum, Consumer<BufferKey> operator) {
+        public BufferKey(String userID, int key, Consumer<BufferKey> operator) {
             this.userID = userID;
-            this.expectNum = expectNum;
+            this.key = key;
             this.operator = operator;
+        }
+
+        BufferKey mark() {
+            this.marker = true;
+            return this;
+        }
+
+        BufferKey unmark() {
+            this.marker = false;
+            return this;
+        }
+
+        public boolean isMarker() {
+            return marker;
         }
 
         void recycle() {
             this.userID = null;
-            this.expectNum  = 0;
+            this.key  = 0;
+            this.marker = false;
             operator.accept(this);
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            BufferKey bufferKey = (BufferKey) o;
+
+            if (marker != bufferKey.marker) return false;
+            if (key != bufferKey.key) return false;
+            return !(userID != null ? !userID.equals(bufferKey.userID) : bufferKey.userID != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (marker ? 1 : 0);
+            result = 31 * result + (userID != null ? userID.hashCode() : 0);
+            result = 31 * result + key;
+            return result;
+        }
     }
 
     /**
@@ -68,15 +105,28 @@ public class KeyEventSequencer {
     }
 
     public Queue<KeyEvent> processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
+
         initThreadLocal();
+
+
         Queue<KeyEvent> queue = threadLocalKeyEventCollector.get();
+
         if (keyEvent.getCurrentNum() == 0) {
-            BufferKey bufferKey = getBufferKey(keyEvent);
-            keyEventBuffer.put(bufferKey, NULL_EVENT);
+            BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getExpectNum());
+            keyEventBuffer.put(bufferKey.mark(), NULL_EVENT);
             operator.accept(keyEvent);
+        } else {
+            BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
+            if (keyEventBuffer.containsKey(bufferKey)) {
+
+            } else {
+                bufferKey.unmark();
+                keyEventBuffer.put(bufferKey, keyEvent);
+            }
+
         }
 
-        BufferKey key = getBufferKey(keyEvent);
+//        BufferKey key = getBufferKey(keyEvent);
 
         return queue;
     }
@@ -95,18 +145,16 @@ public class KeyEventSequencer {
         }
     }
 
-    private BufferKey getBufferKey(KeyEvent keyEvent) {
+    private BufferKey getBufferKey(String userID, int key) {
 
-        int expectNum = keyEvent.getExpectNum();
-        String userID = keyEvent.getUserID();
         Queue<BufferKey> pool = threadLocalBufferKeyPool.get();
         BufferKey bufferKey;
         if (pool.isEmpty()) {
-            bufferKey = new BufferKey(userID, expectNum, pool::offer);
+            bufferKey = new BufferKey(userID, key, pool::offer);
         } else {
             bufferKey = pool.poll();
             bufferKey.userID = userID;
-            bufferKey.expectNum = expectNum;
+            bufferKey.key = key;
         }
 
         return bufferKey;
