@@ -6,8 +6,6 @@ import org.decaywood.service.ConnectionManager;
 import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
-import javax.annotation.Resource;
-
 /**
  * @author: decaywood
  * @date: 2015/6/19 9:56
@@ -17,18 +15,19 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
 
     public static final String ADDRESS_PREFIX = "/message/responds/";
 
-    @Resource(name = "KeyEventSequencer")
+
     private KeyEventSequencer sequencer;
 
-    @Resource(name = "ConnectionManager")
     private ConnectionManager manager;
 
-    @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    public KeyEventSender(ConnectionManager manager, SimpMessagingTemplate simpMessagingTemplate) {
+    public KeyEventSender(ConnectionManager manager,
+                          SimpMessagingTemplate simpMessagingTemplate,
+                          KeyEventSequencer sequencer) {
         this.manager = manager;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.sequencer = sequencer;
     }
 
 
@@ -39,6 +38,9 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     }
 
     private void execute(KeyEvent event) throws InterruptedException {
+        if (sequencer == null) {
+            System.out.println("sequencer == null");
+        }else
         sequencer.processKeyEvent(event, KeyEventSender.this::sendEvent);
     }
 

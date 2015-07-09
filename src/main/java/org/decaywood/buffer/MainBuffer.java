@@ -3,6 +3,7 @@ package org.decaywood.buffer;
 import com.lmax.disruptor.RingBuffer;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.service.ConnectionManager;
+import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import javax.annotation.Resource;
@@ -18,6 +19,8 @@ public abstract class MainBuffer {
 
     protected SimpMessagingTemplate simpMessagingTemplate;
 
+    protected KeyEventSequencer sequencer;
+
     private BufferGenerator generator;
 
     @Resource(name = "ConnectionManager")
@@ -31,6 +34,12 @@ public abstract class MainBuffer {
         buildBuffer();
     }
 
+    @Resource(name = "KeyEventSequencer")
+    public void setSequencer(KeyEventSequencer sequencer) {
+        this.sequencer = sequencer;
+        buildBuffer();
+    }
+
     private RingBuffer<KeyEvent> ringBuffer;
 
     public MainBuffer() {}
@@ -41,7 +50,9 @@ public abstract class MainBuffer {
      */
     @FunctionalInterface
     protected interface BufferGenerator {
-        RingBuffer<KeyEvent> initRingBuffer(ConnectionManager manager, SimpMessagingTemplate simpMessagingTemplate);
+        RingBuffer<KeyEvent> initRingBuffer(ConnectionManager manager,
+                                            SimpMessagingTemplate simpMessagingTemplate,
+                                            KeyEventSequencer sequencer);
     }
 
     protected void setGenerator(BufferGenerator generator) {
@@ -49,8 +60,8 @@ public abstract class MainBuffer {
     }
 
     private void buildBuffer() {
-        if(manager != null && simpMessagingTemplate != null)
-            this.ringBuffer = this.generator.initRingBuffer(manager, simpMessagingTemplate);
+        if(manager != null && simpMessagingTemplate != null && sequencer != null)
+            this.ringBuffer = this.generator.initRingBuffer(manager, simpMessagingTemplate, sequencer);
     }
 
 

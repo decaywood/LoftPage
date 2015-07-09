@@ -24,20 +24,19 @@ import java.util.function.Consumer;
 @Component("KeyEventSequencer")
 public class KeyEventSequencer {
 
-    private static final KeyEvent NULL_EVENT = new KeyEvent();
+
 
     private static class BufferKey {
 
         boolean marker;
-        String userID;
-        int key;
+        final String userID;
+        final int key;
 
         Consumer<BufferKey> operator;
 
-        public BufferKey(String userID, int key, Consumer<BufferKey> operator) {
+        public BufferKey(String userID, int key) {
             this.userID = userID;
             this.key = key;
-            this.operator = operator;
         }
 
         BufferKey mark() {
@@ -52,13 +51,6 @@ public class KeyEventSequencer {
 
         public boolean isMarker() {
             return marker;
-        }
-
-        void recycle() {
-            this.userID = null;
-            this.key  = 0;
-            this.marker = false;
-            operator.accept(this);
         }
 
         @Override
@@ -91,10 +83,6 @@ public class KeyEventSequencer {
      */
     ThreadLocal<Queue<KeyEvent>> threadLocalKeyEventCollector;
 
-    /**
-     * pool can cached the bufferKey so that it can be reuse
-     */
-    ThreadLocal<Queue<BufferKey>> threadLocalBufferKeyPool;
 
 
     private ConcurrentHashMap<BufferKey, KeyEvent> keyEventBuffer;
@@ -104,61 +92,86 @@ public class KeyEventSequencer {
         this.threadLocalKeyEventCollector = new ThreadLocal<>();
     }
 
-    public Queue<KeyEvent> processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
+    public void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
+
+        if(operator == null) return;
+
+        if(!keyEvent.canBuffered()){
+            operator.accept(keyEvent);
+            return;
+        }
 
         initThreadLocal();
-
 
         Queue<KeyEvent> queue = threadLocalKeyEventCollector.get();
 
         if (keyEvent.getCurrentNum() == 0) {
             BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getExpectNum());
-            keyEventBuffer.put(bufferKey.mark(), NULL_EVENT);
+            keyEventBuffer.put(bufferKey.mark(), keyEvent);
             operator.accept(keyEvent);
         } else {
             BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
             if (keyEventBuffer.containsKey(bufferKey)) {
 
+                collectKeyEvent(queue, keyEvent);
+                keyEventBuffer.remove(bufferKey);
+
             } else {
+
                 bufferKey.unmark();
                 keyEventBuffer.put(bufferKey, keyEvent);
+
             }
 
         }
 
-//        BufferKey key = getBufferKey(keyEvent);
+        while (!queue.isEmpty()) {
+            KeyEvent event = queue.poll();
+            operator.accept(event);
+        }
 
-        return queue;
     }
 
     private synchronized void initThreadLocal() {
+
         Queue<KeyEvent> collector = threadLocalKeyEventCollector.get();
         if (collector == null) {
             collector = new LinkedList<>();
             threadLocalKeyEventCollector.set(collector);
         }
 
-        Queue<BufferKey> pool = threadLocalBufferKeyPool.get();
-        if (pool == null) {
-            pool = new LinkedList<>();
-            threadLocalBufferKeyPool.set(pool);
-        }
     }
 
     private BufferKey getBufferKey(String userID, int key) {
 
-        Queue<BufferKey> pool = threadLocalBufferKeyPool.get();
-        BufferKey bufferKey;
-        if (pool.isEmpty()) {
-            bufferKey = new BufferKey(userID, key, pool::offer);
-        } else {
-            bufferKey = pool.poll();
-            bufferKey.userID = userID;
-            bufferKey.key = key;
-        }
-
+        BufferKey bufferKey = new BufferKey(userID, key);;
         return bufferKey;
 
     }
+
+    private void collectKeyEvent(Queue<KeyEvent> queue, KeyEvent event) {
+
+        queue.offer(event);
+        String userID = event.getUserID();
+        int expectNum = event.getExpectNum();
+        BufferKey bufferKey = getBufferKey(userID, expectNum);
+
+        KeyEvent nextEvent = null;
+
+        while (keyEventBuffer.containsKey(bufferKey)) {
+
+            nextEvent = keyEventBuffer.get(bufferKey);
+            queue.offer(nextEvent);
+            expectNum = nextEvent.getExpectNum();
+            keyEventBuffer.remove(bufferKey);
+            bufferKey = getBufferKey(userID, expectNum);
+
+        }
+
+        bufferKey.mark();
+        keyEventBuffer.put(bufferKey, nextEvent);
+
+    }
+
 
 }

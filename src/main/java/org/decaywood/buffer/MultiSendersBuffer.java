@@ -10,6 +10,7 @@ import org.decaywood.buffer.handler.BufferExceptionHandler;
 import org.decaywood.buffer.handler.KeyEventSender;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.service.ConnectionManager;
+import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -53,17 +54,20 @@ public class MultiSendersBuffer extends MainBuffer {
      *                       worker count is consumerFactor multiply availableProcessors count
      */
     public MultiSendersBuffer(int bufferSize, int consumerFactor, HandlerGenerator generator) {
-        setGenerator((manager, template) -> initBuffer(
-                bufferSize, consumerFactor, generator, manager, template));
+        setGenerator((manager, template, sequencer) -> initBuffer(
+                bufferSize, consumerFactor, generator, manager, template, sequencer));
     }
 
 
 
 
-    public WorkHandler<KeyEvent>[] initSenders(int senderSize, ConnectionManager manager, SimpMessagingTemplate template) {
+    public WorkHandler<KeyEvent>[] initSenders(int senderSize,
+                                               ConnectionManager manager,
+                                               SimpMessagingTemplate template,
+                                               KeyEventSequencer sequencer) {
         WorkHandler[] workHandlers = new WorkHandler[senderSize];
         for (int i = 0; i < senderSize; i++) {
-            workHandlers[i] = new KeyEventSender(manager, template);
+            workHandlers[i] = new KeyEventSender(manager, template, sequencer);
         }
 
         return workHandlers;
@@ -73,7 +77,8 @@ public class MultiSendersBuffer extends MainBuffer {
                                             int consumerFactor,
                                             HandlerGenerator generator,
                                             ConnectionManager manager,
-                                            SimpMessagingTemplate template) {
+                                            SimpMessagingTemplate template,
+                                            KeyEventSequencer sequencer) {
 
         int size = bufferSize > 0 ? bufferSize : 1 << 10;
 
@@ -87,7 +92,7 @@ public class MultiSendersBuffer extends MainBuffer {
         int threadsCount = Math.max(1, Runtime.getRuntime().availableProcessors());
         int consumerCount = threadsCount * consumerFactor;
 
-        WorkHandler<KeyEvent>[] senders = initSenders(consumerCount, manager, template);
+        WorkHandler<KeyEvent>[] senders = initSenders(consumerCount, manager, template, sequencer);
 
         disruptor.handleEventsWithWorkerPool(senders).then(generator.generateEventHandlers());
         disruptor.handleExceptionsWith(new BufferExceptionHandler());

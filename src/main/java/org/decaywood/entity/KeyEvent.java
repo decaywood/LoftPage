@@ -6,8 +6,6 @@ package org.decaywood.entity;
  */
 public class KeyEvent {
 
-    public KeyEvent() {
-    }
 
     private String gameState;
 
@@ -23,6 +21,10 @@ public class KeyEvent {
 
     private String IPAddress;
     private String randomTiles;
+
+    public boolean canBuffered() {
+        return currentNum != null && expectNum != null;
+    }
 
     public String getRandomTiles() {
         return randomTiles;
