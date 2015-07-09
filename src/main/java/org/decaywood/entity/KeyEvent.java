@@ -43,7 +43,7 @@ public class KeyEvent {
     }
 
     public int getExpectNum() {
-        return Integer.parseInt(expectNum);
+        return expectNum == null ? 0 : Integer.parseInt(expectNum);
     }
 
     public void setExpectNum(String expectNum) {
@@ -51,7 +51,7 @@ public class KeyEvent {
     }
 
     public int getCurrentNum() {
-        return Integer.parseInt(currentNum);
+        return currentNum == null ? 0 : Integer.parseInt(currentNum);
     }
 
     public void setCurrentNum(String currentNum) {
@@ -144,11 +144,13 @@ public class KeyEvent {
     @Override
     public String toString() {
         return "KeyEvent{" +
-                "altKey='" + altKey + '\'' +
-                ", ctrlKey='" + ctrlKey + '\'' +
-                ", metaKey='" + metaKey + '\'' +
-                ", shiftKey='" + shiftKey + '\'' +
-                ", which='" + which + '\'' +
+                "currentNum='" + currentNum + '\'' +
+                ", expectNum='" + expectNum + '\'' +
+                ", IPAddress='" + IPAddress + '\'' +
+                ", randomTiles='" + randomTiles + '\'' +
+                ", gameState='" + gameState + '\'' +
+                ", userID='" + userID + '\'' +
+                ", highestScore='" + highestScore + '\'' +
                 '}';
     }
 }

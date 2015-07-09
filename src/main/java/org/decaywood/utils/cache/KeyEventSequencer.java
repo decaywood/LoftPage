@@ -1,5 +1,6 @@
 package org.decaywood.utils.cache;
 
+import org.apache.log4j.Logger;
 import org.decaywood.entity.KeyEvent;
 import org.springframework.stereotype.Component;
 
@@ -24,17 +25,19 @@ import java.util.function.Consumer;
 @Component("KeyEventSequencer")
 public class KeyEventSequencer {
 
-
+    private Logger logger = Logger.getLogger(this.getClass().getName());
 
     private static class BufferKey {
 
+        String IPAddress;
         boolean marker;
         final String userID;
         final int key;
 
         Consumer<BufferKey> operator;
 
-        public BufferKey(String userID, int key) {
+        public BufferKey(String IPAddress, String userID, int key) {
+            this.IPAddress = IPAddress;
             this.userID = userID;
             this.key = key;
         }
@@ -62,14 +65,16 @@ public class KeyEventSequencer {
 
             if (marker != bufferKey.marker) return false;
             if (key != bufferKey.key) return false;
-            return !(userID != null ? !userID.equals(bufferKey.userID) : bufferKey.userID != null);
+            if (!IPAddress.equals(bufferKey.IPAddress)) return false;
+            return userID.equals(bufferKey.userID);
 
         }
 
         @Override
         public int hashCode() {
-            int result = (marker ? 1 : 0);
-            result = 31 * result + (userID != null ? userID.hashCode() : 0);
+            int result = IPAddress.hashCode();
+            result = 31 * result + (marker ? 1 : 0);
+            result = 31 * result + userID.hashCode();
             result = 31 * result + key;
             return result;
         }
@@ -106,18 +111,23 @@ public class KeyEventSequencer {
         Queue<KeyEvent> queue = threadLocalKeyEventCollector.get();
 
         if (keyEvent.getCurrentNum() == 0) {
-            BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getExpectNum());
+
+            clearUserData(keyEvent.getIPAddress());
+            logger.info("first Event ---> " + keyEvent.getCurrentNum());
+
+            BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getExpectNum());
             keyEventBuffer.put(bufferKey.mark(), keyEvent);
             operator.accept(keyEvent);
+            return;
         } else {
-            BufferKey bufferKey = getBufferKey(keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
+            BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
             if (keyEventBuffer.containsKey(bufferKey)) {
-
+                logger.info("collect event ---> " +keyEvent.getCurrentNum());
                 collectKeyEvent(queue, keyEvent);
                 keyEventBuffer.remove(bufferKey);
 
             } else {
-
+                logger.info("cached Event ---> " +keyEvent.getCurrentNum());
                 bufferKey.unmark();
                 keyEventBuffer.put(bufferKey, keyEvent);
 
@@ -132,6 +142,15 @@ public class KeyEventSequencer {
 
     }
 
+    public void clearUserData(String IPAddress) {
+
+        keyEventBuffer.forEachKey(Integer.MAX_VALUE, bufferKey -> {
+            if(!bufferKey.IPAddress.equalsIgnoreCase(IPAddress)) return;
+            keyEventBuffer.remove(bufferKey);
+        });
+
+    }
+
     private synchronized void initThreadLocal() {
 
         Queue<KeyEvent> collector = threadLocalKeyEventCollector.get();
@@ -142,9 +161,9 @@ public class KeyEventSequencer {
 
     }
 
-    private BufferKey getBufferKey(String userID, int key) {
+    private BufferKey getBufferKey(String IPAddress, String userID, int key) {
 
-        BufferKey bufferKey = new BufferKey(userID, key);;
+        BufferKey bufferKey = new BufferKey(IPAddress, userID, key);
         return bufferKey;
 
     }
@@ -152,9 +171,10 @@ public class KeyEventSequencer {
     private void collectKeyEvent(Queue<KeyEvent> queue, KeyEvent event) {
 
         queue.offer(event);
+        String ip = event.getIPAddress();
         String userID = event.getUserID();
         int expectNum = event.getExpectNum();
-        BufferKey bufferKey = getBufferKey(userID, expectNum);
+        BufferKey bufferKey = getBufferKey(ip, userID, expectNum);
 
         KeyEvent nextEvent = null;
 
@@ -164,12 +184,12 @@ public class KeyEventSequencer {
             queue.offer(nextEvent);
             expectNum = nextEvent.getExpectNum();
             keyEventBuffer.remove(bufferKey);
-            bufferKey = getBufferKey(userID, expectNum);
+            bufferKey = getBufferKey(ip, userID, expectNum);
 
         }
 
         bufferKey.mark();
-        keyEventBuffer.put(bufferKey, nextEvent);
+        keyEventBuffer.put(bufferKey, nextEvent == null ? event : nextEvent);
 
     }
 

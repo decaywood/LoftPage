@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * @author: decaywood
- * @date: 2015/5/23 14:08dapa
+ * @date: 2015/5/23 14:08
  */
 @Controller
 public class LoginController extends BaseController {

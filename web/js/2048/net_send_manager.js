@@ -1,6 +1,7 @@
 /**
  * Created by decaywood on 2015/7/2.
  */
+
 function NetSendManager(gameManager, remoteManager) {
 
     this.gameManager = gameManager;
@@ -9,6 +10,7 @@ function NetSendManager(gameManager, remoteManager) {
     this.userID = Math.uuidCompact();
     var sock= new SockJS('/LoftPage/webSocket');
     this.stompClient = Stomp.over(sock);
+
     this.map = {
         38: 0, // Up
         39: 1, // Right
@@ -25,6 +27,8 @@ function NetSendManager(gameManager, remoteManager) {
     };
     this.initStomp();
 }
+
+
 
 NetSendManager.prototype.initStomp = function () {
     var stompClient = this.stompClient;
@@ -43,8 +47,7 @@ NetSendManager.prototype.initStomp = function () {
 
         });
     };
-    var errorCallback = function (e) {
-    };
+    var errorCallback = function (e) {};
     stompClient.connect("","", callback,errorCallback);
 };
 
@@ -52,8 +55,15 @@ NetSendManager.prototype.sendGameState = function (keyEvent) {
 
     var tiles = this.gameManager.getRandomTiles();
     var bestScore = this.gameManager.getBestScore();
-    var currentNum = this.counter++;
-    var expectNum = this.counter;
+
+    var which = keyEvent.which;
+    var map = this.map;
+    var mapped = map[which];
+
+    if(mapped !== undefined) {
+        var currentNum = this.counter++;
+        var expectNum = this.counter;
+    }
 
     var message = {
         userID:this.userID,

@@ -48,7 +48,7 @@
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>
     </bean>
 
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
         <constructor-arg ref="sqlSessionFactory" />
     </bean>
 
@@ -81,6 +81,7 @@
                 /saveUser.do = anon
                 /keyDown.do = anon
                 /connectGame.do = anon
+                /disConnectGame.do = anon
                 <!--/** = authc-->
             </value>
         </property>
