@@ -119,14 +119,12 @@ public class KeyEventSequencer {
         BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
 
         if (keyEventBuffer.containsKey(bufferKey)) {
-            logger.info("collect event ---> " +keyEvent.getCurrentNum());
-            System.out.println("collect event ---> " +keyEvent.getCurrentNum());
+
             collectKeyEvent(queue, keyEvent);
-            keyEventBuffer.remove(bufferKey);
+            if(keyEvent.getCurrentNum() != 0)
+                keyEventBuffer.remove(bufferKey);
 
         } else {
-            logger.info("cached Event ---> " +keyEvent.getCurrentNum());
-            System.out.println("cached Event ---> " +keyEvent.getCurrentNum());
             bufferKey.unmark();
             keyEventBuffer.put(bufferKey, keyEvent);
 
@@ -138,10 +136,12 @@ public class KeyEventSequencer {
 
     public void clearUserData(String IPAddress, String userID) {
 
+        logger.info("clearing user history data!");
+
         keyEventBuffer.forEachKey(Integer.MAX_VALUE, bufferKey -> {
 
-            if(!bufferKey.IPAddress.equalsIgnoreCase(IPAddress)) return;
-            if(bufferKey.userID.equalsIgnoreCase(userID)) return;
+            if (!bufferKey.IPAddress.equalsIgnoreCase(IPAddress)) return;
+            if (bufferKey.userID.equalsIgnoreCase(userID)) return;
             keyEventBuffer.remove(bufferKey);
 
         });
@@ -193,6 +193,7 @@ public class KeyEventSequencer {
     private void sendEvent(Queue<KeyEvent> queue, Consumer<KeyEvent> operator) {
         while (!queue.isEmpty()) {
             KeyEvent event = queue.poll();
+            logger.info("event send =======> " + event.getCurrentNum());
             operator.accept(event);
         }
     }
