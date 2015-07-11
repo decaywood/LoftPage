@@ -97,7 +97,7 @@ public class KeyEventSequencer {
         this.threadLocalKeyEventCollector = new ThreadLocal<>();
     }
 
-    public void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
+    public synchronized void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
 
         if(operator == null) return;
 
@@ -108,50 +108,47 @@ public class KeyEventSequencer {
 
         initThreadLocal();
 
+        BufferKey markKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), 0).mark();
+        if (!keyEventBuffer.containsKey(markKey)) {
+            keyEventBuffer.put(markKey, keyEvent);
+            clearUserData(keyEvent.getIPAddress(), keyEvent.getUserID());
+        }
+
         Queue<KeyEvent> queue = threadLocalKeyEventCollector.get();
 
-        if (keyEvent.getCurrentNum() == 0) {
+        BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
 
-            clearUserData(keyEvent.getIPAddress());
-            logger.info("first Event ---> " + keyEvent.getCurrentNum());
+        if (keyEventBuffer.containsKey(bufferKey)) {
+            logger.info("collect event ---> " +keyEvent.getCurrentNum());
+            System.out.println("collect event ---> " +keyEvent.getCurrentNum());
+            collectKeyEvent(queue, keyEvent);
+            keyEventBuffer.remove(bufferKey);
 
-            BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getExpectNum());
-            keyEventBuffer.put(bufferKey.mark(), keyEvent);
-            operator.accept(keyEvent);
-            return;
         } else {
-            BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
-            if (keyEventBuffer.containsKey(bufferKey)) {
-                logger.info("collect event ---> " +keyEvent.getCurrentNum());
-                collectKeyEvent(queue, keyEvent);
-                keyEventBuffer.remove(bufferKey);
-
-            } else {
-                logger.info("cached Event ---> " +keyEvent.getCurrentNum());
-                bufferKey.unmark();
-                keyEventBuffer.put(bufferKey, keyEvent);
-
-            }
+            logger.info("cached Event ---> " +keyEvent.getCurrentNum());
+            System.out.println("cached Event ---> " +keyEvent.getCurrentNum());
+            bufferKey.unmark();
+            keyEventBuffer.put(bufferKey, keyEvent);
 
         }
 
-        while (!queue.isEmpty()) {
-            KeyEvent event = queue.poll();
-            operator.accept(event);
-        }
+        sendEvent(queue, operator);
 
     }
 
-    public void clearUserData(String IPAddress) {
+    public void clearUserData(String IPAddress, String userID) {
 
         keyEventBuffer.forEachKey(Integer.MAX_VALUE, bufferKey -> {
+
             if(!bufferKey.IPAddress.equalsIgnoreCase(IPAddress)) return;
+            if(bufferKey.userID.equalsIgnoreCase(userID)) return;
             keyEventBuffer.remove(bufferKey);
+
         });
 
     }
 
-    private synchronized void initThreadLocal() {
+    private void initThreadLocal() {
 
         Queue<KeyEvent> collector = threadLocalKeyEventCollector.get();
         if (collector == null) {
@@ -191,6 +188,13 @@ public class KeyEventSequencer {
         bufferKey.mark();
         keyEventBuffer.put(bufferKey, nextEvent == null ? event : nextEvent);
 
+    }
+
+    private void sendEvent(Queue<KeyEvent> queue, Consumer<KeyEvent> operator) {
+        while (!queue.isEmpty()) {
+            KeyEvent event = queue.poll();
+            operator.accept(event);
+        }
     }
 
 

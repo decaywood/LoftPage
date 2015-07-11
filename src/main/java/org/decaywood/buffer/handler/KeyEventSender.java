@@ -38,12 +38,8 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     }
 
     private void execute(KeyEvent event) throws InterruptedException {
-//        if (sequencer == null) {
-//            System.out.println("sequencer == null");
-//        }else
         System.out.println(event);
         sequencer.processKeyEvent(event, KeyEventSender.this::sendEvent);
-//        sendEvent(event);
     }
 
     public void sendEvent(KeyEvent event) {

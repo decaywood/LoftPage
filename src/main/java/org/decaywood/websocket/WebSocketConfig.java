@@ -1,12 +1,9 @@
 package org.decaywood.websocket;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.socket.config.annotation.*;
-import org.springframework.web.socket.server.HandshakeHandler;
-import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import javax.annotation.Resource;
 
@@ -22,8 +19,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 
     @Resource
-    private HandshakeHandler handshakeHandler;
-    @Resource
     private ClientHandshakeInterceptor interceptor;
 
     @Override
@@ -35,7 +30,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/webSocket")
-                .setHandshakeHandler(handshakeHandler)
                 .addInterceptors(interceptor)
                 .withSockJS();
     }
@@ -48,10 +42,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
 
-    @Bean
-    public DefaultHandshakeHandler handshakeHandler() {
-        return new DefaultHandshakeHandler();
-    }
 
 
 }
