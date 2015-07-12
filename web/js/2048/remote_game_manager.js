@@ -4,15 +4,19 @@
 function RemoteGameManager(size, Actuator, target) {
     this.size           = size; // Size of the grid
     this.actuator       = new Actuator(target);
-
     this.startTiles     = 2;
-
+    this.updateIPAddress("");
 }
 
 // Restart the game
-RemoteGameManager.prototype.restart = function (tiles, bestScore) {
+RemoteGameManager.prototype.restart = function (tiles, bestScore, IPAddress) {
     this.actuator.continueGame(); // Clear the game won/lost message
     this.setup(tiles, bestScore);
+    this.updateIPAddress(IPAddress);
+};
+
+RemoteGameManager.prototype.updateIPAddress = function (IPAddress) {
+    this.actuator.updateIPAddress(IPAddress);
 };
 
 // Keep playing after winning (allows going over 2048)

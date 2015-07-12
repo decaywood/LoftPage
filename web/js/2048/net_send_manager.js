@@ -40,8 +40,9 @@ NetSendManager.prototype.initStomp = function () {
 
             var tuple = getElement(responds);
             var mapped = map[tuple.keyEvent.which];
+
             if(tuple.gameState == "init")
-                remoteManager.restart(tuple.tiles, tuple.highestScore);
+                remoteManager.restart(tuple.tiles, tuple.highestScore, tuple.IP);
             if(tuple.gameState == "gaming" && mapped !== undefined)
                 remoteManager.move(mapped, tuple.tiles.pop(), tuple.highestScore);
 
@@ -136,7 +137,8 @@ var getElement = function (jsonFile) {
         keyEvent:keyEvent,
         tiles:tiles,
         gameState:gameState,
-        highestScore:highestScore
+        highestScore:highestScore,
+        IP:body.ipaddress
     };
 
     return tuple;

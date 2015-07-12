@@ -93,7 +93,7 @@
         </div>
 
         <div class="above-game">
-          <p class="guest-ip"><strong>guest IP : </strong></p>
+          <p class="game-intro" id="guest-ip-container"></p>
         </div>
 
         <div class="game-container">

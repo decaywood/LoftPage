@@ -3,8 +3,9 @@ function HTMLActuator(target) {
   this.scoreContainer   = document.querySelector(target+"-score-container");
   this.bestContainer    = document.querySelector(target+"-best-container");
   this.messageContainer = document.querySelector(target+"-game-message");
-
+  this.ipContainer = document.querySelector(target+"-ip-container");
   this.score = 0;
+
 }
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
@@ -101,6 +102,11 @@ HTMLActuator.prototype.normalizePosition = function (position) {
 HTMLActuator.prototype.positionClass = function (position) {
   position = this.normalizePosition(position);
   return "tile-position-" + position.x + "-" + position.y;
+};
+
+HTMLActuator.prototype.updateIPAddress = function (IPAddress) {
+  if(IPAddress == null || IPAddress == undefined) return;
+  this.ipContainer.textContent ="Guest IP :" +  IPAddress;
 };
 
 HTMLActuator.prototype.updateScore = function (score) {
