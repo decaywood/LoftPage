@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -32,6 +33,13 @@ public class CommonUtils {
     public static String generateUUID() {
         String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
         return uuid;
+    }
+
+    public static long generateHashCode(String... seeds) {
+
+        return Arrays.stream(seeds).map(x -> (long)x.hashCode()).peek(System.out::println)
+                .reduce(0L, (first, second) -> first * 31 + second);
+
     }
 
 

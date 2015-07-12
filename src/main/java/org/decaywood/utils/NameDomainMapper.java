@@ -38,7 +38,7 @@ public enum NameDomainMapper {
     ERROR_INFO3("Image Upload Faild!"),
 
     LOGIN_PAGE("login"),
-    MAIN_PAGE("mainPage"),
+    MAIN_PAGE("2048"),
     REGISTER_PAGE("register");
 
     private String enumName;

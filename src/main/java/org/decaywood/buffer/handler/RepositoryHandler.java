@@ -3,10 +3,13 @@ package org.decaywood.buffer.handler;
 import com.lmax.disruptor.EventHandler;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.entity.User;
+import org.decaywood.service.UserService;
+import org.decaywood.utils.CommonUtils;
 import org.decaywood.utils.cache.ICache;
 import org.decaywood.utils.cache.LRUCache;
 import org.decaywood.utils.cache.TimeStampCache;
 
+import javax.annotation.Resource;
 import java.util.function.Supplier;
 
 /**
@@ -14,47 +17,54 @@ import java.util.function.Supplier;
  * @date: 2015/6/20
  *
  */
+
+/**
+ * use cache to cache the processed data, if cache doesn't contain the data, we say
+ * that the data is out of date.
+ */
 public class RepositoryHandler implements EventHandler<KeyEvent> {
 
 
     public enum CacheType {
 
-        TIME_STAMP_CACHE(() -> new TimeStampCache<String, KeyEvent>(1000 * 60)), // timeout : 1 min
-        LRU_CACHE(() -> new LRUCache<String, KeyEvent>(500));
+        TIME_STAMP_CACHE(() -> new TimeStampCache<Long, KeyEvent>(1000 * 60)), // timeout : 1 min
+        LRU_CACHE(() -> new LRUCache<Long, KeyEvent>(500));
 
-        CacheType(Supplier<ICache<String, KeyEvent>> supplier) {
+        CacheType(Supplier<ICache<Long, KeyEvent>> supplier) {
             this.supplier = supplier;
         }
 
-        private Supplier<ICache<String, KeyEvent>> supplier;
+        /**
+         * use function programming style to ensure lazy init
+         */
+        private Supplier<ICache<Long, KeyEvent>> supplier;
 
-        private ICache<String, KeyEvent> getInstance() {
+        private ICache<Long, KeyEvent> getInstance() {
             return supplier.get();
         }
     }
 
     public interface EventFilter {
-        boolean filter(ICache<String, KeyEvent> cache, KeyEvent event);
+        boolean filter(ICache<Long, KeyEvent> cache, KeyEvent event);
     }
 
     private EventFilter eventFilter;
-    private ICache<String, KeyEvent> cache;
+    private ICache<Long, KeyEvent> cache;
 
 
-//    @Resource(name = "userService")
-//    private UserService userService;
+    @Resource(name = "userService")
+    private UserService userService;
 
-//    public RepositoryHandler() {
-//        this((cache, event) -> {
-//            return !cache.containsKey(event.getUserID()) || event.getGameState().equalsIgnoreCase("Terminate");
-//        });
-//    }
+    public RepositoryHandler() {
+        this((cache, event) -> cache.containsKey(
+                CommonUtils.generateHashCode(event.getIPAddress(), event.getUserID())));
+    }
 
     public RepositoryHandler(EventFilter filter) {
         this(filter, CacheType.LRU_CACHE);
     }
 
-    public RepositoryHandler(EventFilter filter, Supplier<ICache<String, KeyEvent>> cacheSupplier) {
+    public RepositoryHandler(EventFilter filter, Supplier<ICache<Long, KeyEvent>> cacheSupplier) {
         this(filter, cacheSupplier.get());
     }
 
@@ -62,7 +72,7 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
         this(filter, cacheType.getInstance());
     }
 
-    public RepositoryHandler(EventFilter filter, ICache<String, KeyEvent> cache) {
+    public RepositoryHandler(EventFilter filter, ICache<Long, KeyEvent> cache) {
         this.eventFilter = filter;
         this.cache = cache;
     }
@@ -82,9 +92,10 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
 
         User user = new User();
 //        user.setUserID(event.getUserID()).setUserHighestScore(event.getHighestScore());
-
 //        this.userService.
 
     }
+
+
 
 }

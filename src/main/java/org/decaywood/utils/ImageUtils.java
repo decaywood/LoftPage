@@ -8,6 +8,13 @@ import java.awt.image.BufferedImage;
 /**
  * @author: decaywood
  * @date: 2015/6/11 16:51
+ *
+ * if two pictures are same in pixel level, we define these two
+ * pictures are similar, and the uuid of these two pictures
+ * are same.
+ * the main reason to define this rule is to save the picture
+ * storage space.
+ *
  */
 public class ImageUtils {
 

@@ -1,9 +1,6 @@
 import org.decaywood.dataAccess.UserDao;
 import org.decaywood.entity.User;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -65,6 +62,13 @@ public class Jdk8Test {
     }
 
 
+    @Test
+    public void reduceTest2() {
+        String[] seeds = new String[]{"hash1", "hash2", "hash3"};
+        long hash = Arrays.stream(seeds).map(x -> (long)x.hashCode()).peek(System.out::println)
+                .reduce(0L, (first, second) -> first * 31 + second);
+        System.out.println(hash);
+    }
 
 
 }

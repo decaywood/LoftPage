@@ -34,8 +34,8 @@ public class LoginController extends BaseController {
         ModelAndView modelAndView = getModelAndView();
         RequestDatas requestDatas = getRequestDatas();
         requestDatas.put(NameDomainMapper.SYSTEM_NAME.getName(), CommonUtils.readFile(SystemConfigure.SYSTEM_NAME));
-//        modelAndView.setViewName(NameDomainMapper.LOGIN_PAGE.getName());
-        modelAndView.setViewName("2048");
+        modelAndView.setViewName(NameDomainMapper.LOGIN_PAGE.getName());
+//        modelAndView.setViewName("2048");
         return modelAndView;
     }
 
@@ -90,12 +90,13 @@ public class LoginController extends BaseController {
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.login(passwordToken);
         } catch (AuthenticationException e) {
-            errorInfo = NameDomainMapper.ERROR_INFO2.getName();
+            return NameDomainMapper.ERROR_INFO2.getName();
         } catch (Exception e){
-            errorInfo = NameDomainMapper.ERROR_INFO + e.toString();
-        } finally {
-            return errorInfo;
+            return NameDomainMapper.ERROR_INFO + e.toString();
         }
+
+        return errorInfo;
+
     }
 
     @RequestMapping(value = "/mainPage")

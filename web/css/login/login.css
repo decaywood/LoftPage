@@ -1,7 +1,7 @@
 body{
     background-image: url("../../images/login/login.jpg");
     background-repeat: no-repeat;
-    background-size: auto;
+    background-size: cover;
     width: auto;
     height: auto;
     padding: 0;

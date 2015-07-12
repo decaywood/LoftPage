@@ -96,6 +96,7 @@ GameManager.prototype.addRandomTile = function () {
 GameManager.prototype.actuate = function () {
   if (this.storageManager.getBestScore() < this.score) {
     this.storageManager.setBestScore(this.score);
+    //this.netSendManager
   }
 
   // Clear the state when the game is over (game over only, not win)
