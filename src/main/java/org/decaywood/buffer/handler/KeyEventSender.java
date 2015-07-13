@@ -20,6 +20,23 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
 
     private ConnectionManager manager;
 
+
+    /**
+     *
+     * The messages were sending in ascending order from the application implementation perspective
+     * (I.e, convertAndSend() are called in one thread or at least thread safe fashion").
+     * However, Springframework web socket uses reactor-tcp implementation which will process the messages
+     * on clientOutboundChannel from the thread pool. Thus the messages can be written to the tcp socket
+     * in different order that they are arrived.
+     *
+     * solution:
+     * 1. configured the web socket to limit one thread for the clientOutboundChannel.
+     * 2. write our own logical to preserve the order --> we accept this solution,the main reason as follow:
+     *
+     *    * back end required high react time,so processing messages by threadPool is needed.
+     *    * we don't care the cost of frontend(relatively).
+     *
+     */
     private SimpMessagingTemplate simpMessagingTemplate;
 
     public KeyEventSender(ConnectionManager manager,
