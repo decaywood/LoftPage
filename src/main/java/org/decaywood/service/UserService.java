@@ -35,6 +35,14 @@ public class UserService {
         dao.updateUserLastLoginTime(user);
     }
 
+    public void updateUser(User user) {
+        dao.updateUser(user);
+    }
+
+    public void updateUserScore(User user) {
+        dao.updateUserScore(user);
+    }
+
     public User queryByUser(User user) {
         return dao.queryByUser(user);
     }

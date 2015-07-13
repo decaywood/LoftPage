@@ -7,13 +7,11 @@ import java.sql.Date;
  */
 public class User {
 
-    //======================= PADDING ======================
     private String userID;
     private String userRole;
     private Date userLastLoginTime;
     private Date userRegisterTime;
     private String userStatus;
-    //======================= PADDING ======================
 
     private String userLoginName;
     private String userPassword;
@@ -23,19 +21,10 @@ public class User {
     private String userIPAddress;
     private String userLogoURL;
 
-    private String highestScore;
-
 
     private String userHighestScore;
 
 
-    public String getHighestScore() {
-        return highestScore;
-    }
-
-    public void setHighestScore(String highestScore) {
-        this.highestScore = highestScore;
-    }
 
     public String getUserID() {
         return userID;

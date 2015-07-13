@@ -85,6 +85,10 @@ public class UserDao extends DataAccessSupport<User, User, Object, Object, Objec
         update("UserMapper.updateUser", User);
     }
 
+    public void updateUserScore(User User) {
+        update("UserMapper.updateUserScore", User);
+    }
+
     public void updateUserLastLoginTime(User user) {
         update("UserMapper.updateUserLastLoginTime", user.getUserLastLoginTime());
     }

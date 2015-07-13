@@ -92,11 +92,17 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
 
         User user = new User();
         matchUserInfo(event, user);
+        this.userService.updateUser(user);
 
     }
 
     private void matchUserInfo(KeyEvent keyEvent, User user) {
 
+        user.setUserID(keyEvent.getUserDatabaseID());
+        user.setUserEmail(keyEvent.getUserEmail());
+        user.setUserIPAddress(keyEvent.getIPAddress());
+        user.setUserLoginName(keyEvent.getUserLoginName());
+        user.setUserHighestScore(keyEvent.getHighestScore());
 
 
     }

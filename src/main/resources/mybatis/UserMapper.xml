@@ -68,4 +68,14 @@
     </insert>
 
 
+    <update id="updateUserScore" parameterType="User">
+        UPDATE usertable SET
+        userIPAddress = #{userIPAddress},
+        userHighestScore = #{userHighestScore} WHERE
+        userID = #{userID} OR
+        userLoginName = #{userLoginName} OR
+        userEmail = #{userEmail} OR
+        userName = #{userName}
+    </update>
+
 </mapper>
