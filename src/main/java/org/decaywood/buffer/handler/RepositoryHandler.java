@@ -91,11 +91,15 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
         if(eventFilter.filter(cache, event)) return;
 
         User user = new User();
-//        user.setUserID(event.getUserID()).setUserHighestScore(event.getHighestScore());
-//        this.userService.
+        matchUserInfo(event, user);
 
     }
 
+    private void matchUserInfo(KeyEvent keyEvent, User user) {
+
+
+
+    }
 
 
 }

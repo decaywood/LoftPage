@@ -22,8 +22,40 @@ public class KeyEvent {
     private String IPAddress;
     private String randomTiles;
 
+//==================== user reference ================
+
+    private String userDatabaseID;
+    private String userLoginName;
+    private String userEmail;
+
+
+
     public boolean canBuffered() {
         return currentNum != null && expectNum != null;
+    }
+
+    public String getUserDatabaseID() {
+        return userDatabaseID;
+    }
+
+    public void setUserDatabaseID(String userDatabaseID) {
+        this.userDatabaseID = userDatabaseID;
+    }
+
+    public String getUserLoginName() {
+        return userLoginName;
+    }
+
+    public void setUserLoginName(String userLoginName) {
+        this.userLoginName = userLoginName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getRandomTiles() {
@@ -139,18 +171,30 @@ public class KeyEvent {
 
         this.IPAddress = keyEvent.IPAddress;
         this.randomTiles = keyEvent.randomTiles;
+
+        this.userEmail = keyEvent.userEmail;
+        this.userDatabaseID = keyEvent.userDatabaseID;
+        this.userLoginName = keyEvent.userLoginName;
     }
 
     @Override
     public String toString() {
         return "KeyEvent{" +
-                "currentNum='" + currentNum + '\'' +
+                "gameState='" + gameState + '\'' +
+                ", userID='" + userID + '\'' +
+                ", highestScore='" + highestScore + '\'' +
+                ", altKey='" + altKey + '\'' +
+                ", ctrlKey='" + ctrlKey + '\'' +
+                ", metaKey='" + metaKey + '\'' +
+                ", shiftKey='" + shiftKey + '\'' +
+                ", which='" + which + '\'' +
+                ", currentNum='" + currentNum + '\'' +
                 ", expectNum='" + expectNum + '\'' +
                 ", IPAddress='" + IPAddress + '\'' +
                 ", randomTiles='" + randomTiles + '\'' +
-                ", gameState='" + gameState + '\'' +
-                ", userID='" + userID + '\'' +
-                ", highestScore='" + highestScore + '\'' +
+                ", userDatabaseID='" + userDatabaseID + '\'' +
+                ", userLoginName='" + userLoginName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

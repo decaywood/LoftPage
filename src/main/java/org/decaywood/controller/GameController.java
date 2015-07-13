@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.decaywood.buffer.MessageBuffer;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.service.ConnectionManager;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 public class GameController {
 
     Logger logger = Logger.getLogger(this.getClass().getName());
+
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Resource(name = "ConnectionManager")
     private ConnectionManager manager;
@@ -46,8 +50,14 @@ public class GameController {
     @RequestMapping(value = "/keyDown")
     @ResponseBody
     public void keyDown(HttpServletRequest request, KeyEvent event) {
+
         event.setIPAddress(request.getRemoteAddr());
         this.messageBuffer.publishEvent(event);
+
     }
+
+
+
+
 
 }

@@ -6,10 +6,14 @@ function NetSendManager(gameManager, remoteManager) {
 
     this.gameManager = gameManager;
     this.remoteManager = remoteManager;
-    this.counter = 0;
     this.userID = Math.uuidCompact();
     var sock= new SockJS('/LoftPage/webSocket');
     this.stompClient = Stomp.over(sock);
+
+    this.counter = 0;
+
+    this.innerMapper = initInnerMapper();
+
 
     this.map = {
         38: 0, // Up
@@ -35,6 +39,8 @@ NetSendManager.prototype.initStomp = function () {
     var userID = this.userID;
     var map = this.map;
     var remoteManager = this.remoteManager;
+    var innerMapper = this.innerMapper;
+
     var callback = function () {
         stompClient.subscribe('/message/responds/' + userID, function(responds){
 
@@ -43,8 +49,18 @@ NetSendManager.prototype.initStomp = function () {
 
             if(tuple.gameState == "init")
                 remoteManager.restart(tuple.tiles, tuple.highestScore, tuple.IP);
-            if(tuple.gameState == "gaming" && mapped !== undefined)
-                remoteManager.move(mapped, tuple.tiles.pop(), tuple.highestScore);
+
+            if(tuple.gameState == "gaming" && mapped !== undefined) {
+
+                var entry = tuple.tiles.pop();
+                entry.move = mapped;
+                var tileArr = innerMapper.getTile(tuple.currentNum, entry);
+
+                while(tileArr.length != 0) {
+                    var t = tileArr.shift();
+                    remoteManager.move(t.move, t, tuple.highestScore);
+                }
+            }
 
         });
     };
@@ -86,6 +102,8 @@ NetSendManager.prototype.sendGameState = function (keyEvent) {
 
 NetSendManager.prototype.connectGame = function () {
 
+    this.resetState();
+
     var userID = this.userID;
     var gameManager = this.gameManager;
     var sender = this.sendData;
@@ -124,7 +142,15 @@ NetSendManager.prototype.sendData = function (target, message, success) {
     });
 };
 
+NetSendManager.prototype.resetState = function () {
+
+    this.innerMapper.reset();
+    this.counter = 0;
+
+};
+
 var getElement = function (jsonFile) {
+
     var jsonString = JSON.stringify(jsonFile);
     var event = JSON.parse(jsonString).body;
     var body = JSON.parse(event);
@@ -133,30 +159,65 @@ var getElement = function (jsonFile) {
     var tiles = tilesParser(body);
     var gameState = body.gameState;
     var highestScore = body.highestScore;
-    var tuple = {
+    var currentNum = body.currentNum;
+
+    return {
         keyEvent:keyEvent,
         tiles:tiles,
         gameState:gameState,
         highestScore:highestScore,
+        currentNum:currentNum,
         IP:body.ipaddress
     };
 
-    return tuple;
 };
 
 var eventParser = function (jsonFile) {
-    var keyEvent = {
+    return {
         altKey:jsonFile.altKey,
         ctrlKey:jsonFile.ctrlKey,
         metaKey:jsonFile.metaKey,
         shiftKey:jsonFile.shiftKey,
         which:jsonFile.which
     };
-    return keyEvent;
 };
 
 var tilesParser = function (jsonFile) {
     var randomTiles = jsonFile.randomTiles;
-    var tiles = JSON.parse(randomTiles);
-    return tiles;
+    return JSON.parse(randomTiles);
 };
+
+var initInnerMapper = function () {
+    return {
+        mapper:{},
+        stackTracer:0,
+        add: function (currentNum, tile) {
+            this.mapper[currentNum] = tile;
+        },
+        isValid: function (currentNum) {
+            return this.mapper.hasOwnProperty(currentNum);
+        },
+        getTile: function (currentNum, tile) {
+
+            if(currentNum == this.stackTracer) {
+                var array = [tile];
+                this.stackTracer++;
+                var index = JSON.stringify(this.stackTracer);
+                while(this.isValid(index)){
+                    array.push(this.mapper[index]);
+                    delete this.mapper[index];
+                    index = JSON.stringify(this.stackTracer++);
+                }
+                return array;
+            } else {
+                this.mapper[currentNum] = tile;
+                return [];
+            }
+        },
+        reset: function () {
+            this.mapper = {};
+            this.stackTracer = 0;
+        }
+    };
+};
+
