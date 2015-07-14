@@ -34,8 +34,6 @@ public class KeyEventSequencer {
         final String userID;
         final int key;
 
-        Consumer<BufferKey> operator;
-
         public BufferKey(String IPAddress, String userID, int key) {
             this.IPAddress = IPAddress;
             this.userID = userID;
@@ -47,14 +45,11 @@ public class KeyEventSequencer {
             return this;
         }
 
-        BufferKey unmark() {
+        BufferKey unMark() {
             this.marker = false;
             return this;
         }
 
-        public boolean isMarker() {
-            return marker;
-        }
 
         @Override
         public boolean equals(Object o) {
@@ -64,8 +59,8 @@ public class KeyEventSequencer {
             BufferKey bufferKey = (BufferKey) o;
 
             if (marker != bufferKey.marker) return false;
-            if (key != bufferKey.key) return false;
-            if (!IPAddress.equals(bufferKey.IPAddress)) return false;
+            else if (key != bufferKey.key) return false;
+            else if (!IPAddress.equals(bufferKey.IPAddress)) return false;
             return userID.equals(bufferKey.userID);
 
         }
@@ -86,7 +81,7 @@ public class KeyEventSequencer {
      * every time so that it can reduce garbage recycle
      * it is thread safety
      */
-    ThreadLocal<Queue<KeyEvent>> threadLocalKeyEventCollector;
+    ThreadLocal<Queue<KeyEvent>> eventCollector = ThreadLocal.withInitial(LinkedList<KeyEvent>::new);
 
 
 
@@ -94,7 +89,7 @@ public class KeyEventSequencer {
 
     public KeyEventSequencer() {
         this.keyEventBuffer = new ConcurrentHashMap<>(1 << 10);
-        this.threadLocalKeyEventCollector = new ThreadLocal<>();
+        this.eventCollector = new ThreadLocal<>();
     }
 
     public synchronized void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
@@ -106,15 +101,13 @@ public class KeyEventSequencer {
             return;
         }
 
-        initThreadLocal();
-
         BufferKey markKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), 0).mark();
         if (!keyEventBuffer.containsKey(markKey)) {
             keyEventBuffer.put(markKey, keyEvent);
             clearUserData(keyEvent.getIPAddress(), keyEvent.getUserID());
         }
 
-        Queue<KeyEvent> queue = threadLocalKeyEventCollector.get();
+        Queue<KeyEvent> queue = eventCollector.get();
 
         BufferKey bufferKey = getBufferKey(keyEvent.getIPAddress(), keyEvent.getUserID(), keyEvent.getCurrentNum()).mark();
 
@@ -125,7 +118,7 @@ public class KeyEventSequencer {
                 keyEventBuffer.remove(bufferKey);
 
         } else {
-            bufferKey.unmark();
+            bufferKey.unMark();
             keyEventBuffer.put(bufferKey, keyEvent);
 
         }
@@ -148,20 +141,10 @@ public class KeyEventSequencer {
 
     }
 
-    private void initThreadLocal() {
-
-        Queue<KeyEvent> collector = threadLocalKeyEventCollector.get();
-        if (collector == null) {
-            collector = new LinkedList<>();
-            threadLocalKeyEventCollector.set(collector);
-        }
-
-    }
 
     private BufferKey getBufferKey(String IPAddress, String userID, int key) {
 
-        BufferKey bufferKey = new BufferKey(IPAddress, userID, key);
-        return bufferKey;
+        return new BufferKey(IPAddress, userID, key);
 
     }
 
