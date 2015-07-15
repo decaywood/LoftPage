@@ -11,6 +11,11 @@ import javax.annotation.Resource;
 /**
  * @author: decaywood
  * @date: 2015/6/19 10:42
+ *
+ * the super class in which the disruptor is embedded and configured
+ *
+ * ringBuffer can be init (lazy) via BufferGenerator which is offered by subclass
+ *
  */
 
 public abstract class MainBuffer {
@@ -21,19 +26,31 @@ public abstract class MainBuffer {
 
     protected KeyEventSequencer sequencer;
 
+    /**
+     * used for lazy init
+     */
     private BufferGenerator generator;
 
+
+    /**
+     * it is used to manage the connection, mapping URL between two gamer
+     */
     @Resource(name = "ConnectionManager")
     public void setManager(ConnectionManager manager) {
         this.manager = manager;
         buildBuffer();
     }
+
     @Resource
     public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         buildBuffer();
     }
 
+    /**
+     * mainBuffer would disorder the keyEvent,sequencer can
+     * reorder the keyEvent passed through the mainBuffer
+     */
     @Resource(name = "KeyEventSequencer")
     public void setSequencer(KeyEventSequencer sequencer) {
         this.sequencer = sequencer;

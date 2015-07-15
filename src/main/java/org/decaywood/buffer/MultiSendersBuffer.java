@@ -37,10 +37,7 @@ public class MultiSendersBuffer extends MainBuffer {
 
     public MultiSendersBuffer() {
 
-        this(() -> {
-            EventHandler[] eventHandlers = new EventHandler[0];
-            return eventHandlers;
-        });
+        this(() -> new EventHandler[0]);
     }
 
     public MultiSendersBuffer(HandlerGenerator generator) {
@@ -65,7 +62,7 @@ public class MultiSendersBuffer extends MainBuffer {
                                                ConnectionManager manager,
                                                SimpMessagingTemplate template,
                                                KeyEventSequencer sequencer) {
-        WorkHandler[] workHandlers = new WorkHandler[senderSize];
+        WorkHandler<KeyEvent>[] workHandlers = new WorkHandler[senderSize];
         for (int i = 0; i < senderSize; i++) {
             workHandlers[i] = new KeyEventSender(manager, template, sequencer);
         }
