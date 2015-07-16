@@ -35,6 +35,8 @@ function NetSendManager(gameManager, remoteManager) {
 
 
 NetSendManager.prototype.initStomp = function () {
+
+    var initGame = this.initGame;
     var stompClient = this.stompClient;
     var userID = this.userID;
     var map = this.map;
@@ -46,6 +48,10 @@ NetSendManager.prototype.initStomp = function () {
 
             var tuple = getElement(responds);
             var mapped = map[tuple.keyEvent.which];
+
+            if(tuple.gameState == "connect_ack") {
+                initGame();
+            }
 
             if(tuple.gameState == "init")
                 remoteManager.restart(tuple.tiles, tuple.highestScore, tuple.IP);
@@ -102,7 +108,7 @@ NetSendManager.prototype.sendGameState = function (keyEvent) {
 
 NetSendManager.prototype.initGame = function () {
 
-    var sender = this.sendData();
+    var sender = this.sendData;
 
     this.gameManager.restart();
     var tiles = this.gameManager.getRandomTiles();
@@ -127,7 +133,6 @@ NetSendManager.prototype.connectGame = function () {
     var success = function (info) {
         smoke.signal(info, function (e) {}, { duration:3000});
     };
-
     sender('connectGame.do', {
         userID:userID,
         gameState:"connect"

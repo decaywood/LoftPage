@@ -58,19 +58,21 @@ KeyboardInputManager.prototype.listen = function () {
                     event.shiftKey;
     var mapped    = map[event.which];
 
-
-    if (!modifiers) {
+    if(!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
         self.emit("move", mapped);
       }
-    }
 
-    // R key connect the game
-    if (!modifiers && event.which === 82) {
-      self.connect.call(self, event);
+
+      // R key connect the game
+      if (event.which === 82) {
+        self.connect.call(self, event);
+      }
+
+      netSendManager.sendGameState(event);
+
     }
-    netSendManager.sendGameState(event);
 
   });
 

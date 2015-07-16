@@ -21,7 +21,7 @@ GameManager.prototype.getRandomTiles = function () {
   return this.randomTiles;
 };
 
-// Restart the game
+// Connect the game
 GameManager.prototype.connect = function () {
   this.netSendManager.connectGame();
 };

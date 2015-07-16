@@ -110,8 +110,13 @@ public class ConnectionManager {
                 IDMapper.put(mapper, remote);
                 IDMapper.put(remote, mapper);
 
-                template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + userID, "Match successful!");
-                template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + remote.userID, "Match successful!");
+                keyEvent.setGameState("connect_ack");
+
+                template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + userID, keyEvent);
+
+                keyEvent.setUserID(remote.userID);
+                keyEvent.setIPAddress(remote.IPAddress);
+                template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + remote.userID, keyEvent);
 
                 return "Connect Game Success!";
 
