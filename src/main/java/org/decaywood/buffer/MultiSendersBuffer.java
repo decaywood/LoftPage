@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 /**
  * @author: decaywood
@@ -26,21 +27,15 @@ import java.util.concurrent.Executors;
 public class MultiSendersBuffer extends MainBuffer {
 
 
-
-    /**
-     * generate the handlers like logger handler, sql handler and so on
-     */
-    @FunctionalInterface
-    public interface HandlerGenerator {
-        EventHandler<KeyEvent>[] generateEventHandlers();
-    }
-
     public MultiSendersBuffer() {
 
         this(() -> new EventHandler[0]);
     }
+    /**
+     * generate the handlers like logger handler, sql handler and so on
+     */
 
-    public MultiSendersBuffer(HandlerGenerator generator) {
+    public MultiSendersBuffer(Supplier<EventHandler[]> generator) {
         this(1 << 10, 2, generator);
     }
 
@@ -50,7 +45,7 @@ public class MultiSendersBuffer extends MainBuffer {
      * @param consumerFactor use a WorkerPool to allow multiple pooled worker threads to work on a single consumer
      *                       worker count is consumerFactor multiply availableProcessors count
      */
-    public MultiSendersBuffer(int bufferSize, int consumerFactor, HandlerGenerator generator) {
+    public MultiSendersBuffer(int bufferSize, int consumerFactor, Supplier<EventHandler[]> generator) {
         setGenerator((manager, template, sequencer) -> initBuffer(
                 bufferSize, consumerFactor, generator, manager, template, sequencer));
     }
@@ -72,7 +67,7 @@ public class MultiSendersBuffer extends MainBuffer {
 
     private RingBuffer<KeyEvent> initBuffer(int bufferSize,
                                             int consumerFactor,
-                                            HandlerGenerator generator,
+                                            Supplier<EventHandler[]> generator,
                                             ConnectionManager manager,
                                             SimpMessagingTemplate template,
                                             KeyEventSequencer sequencer) {
@@ -91,7 +86,7 @@ public class MultiSendersBuffer extends MainBuffer {
 
         WorkHandler<KeyEvent>[] senders = initSenders(consumerCount, manager, template, sequencer);
 
-        disruptor.handleEventsWithWorkerPool(senders).then(generator.generateEventHandlers());
+        disruptor.handleEventsWithWorkerPool(senders).then(generator.get());
         disruptor.handleExceptionsWith(new BufferExceptionHandler());
         return disruptor.start();
 
