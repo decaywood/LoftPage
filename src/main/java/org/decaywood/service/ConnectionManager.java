@@ -69,26 +69,28 @@ public class ConnectionManager {
         this.IDMapper = new ConcurrentHashMap<>();
     }
 
-    public String disConnectGame(URLMapper mapper) {
-        return disConnectGame(mapper.IPAddress, mapper.userID);
+    public void disConnectGame(URLMapper mapper, KeyEvent event) {
+        disConnectGame(event, mapper.IPAddress, mapper.userID);
     }
 
-    public synchronized String disConnectGame(String IPAddress, String userID) {
+    public synchronized void disConnectGame(KeyEvent event, String IPAddress, String userID) {
 
         URLMapper urlMapper = new URLMapper(IPAddress, userID);
 
-        if(!IDMapper.containsKey(urlMapper)) return "Not Connect Other Player!";
+        if(!IDMapper.containsKey(urlMapper)) return;
 
         URLMapper remote = IDMapper.get(urlMapper);
         IDMapper.remove(urlMapper);
 
-
         if(IDMapper.containsKey(remote)) IDMapper.remove(remote);
-        String info = "Remote Player Disconnected!";
-        template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + userID, info);
-        template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + remote.userID, info);
 
-        return "Game Disconnected!";
+        event.setGameState("game_disconnect");
+        template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + userID, event);
+
+        changEventContent(remote, event);
+        template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + remote.userID, event);
+
+        changEventContent(urlMapper, event);
 
     }
 
@@ -110,12 +112,11 @@ public class ConnectionManager {
                 IDMapper.put(mapper, remote);
                 IDMapper.put(remote, mapper);
 
-                keyEvent.setGameState("connect_ack");
+                keyEvent.setGameState("game_connect_ack");
 
                 template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + userID, keyEvent);
 
-                keyEvent.setUserID(remote.userID);
-                keyEvent.setIPAddress(remote.IPAddress);
+                changEventContent(remote, keyEvent);
                 template.convertAndSend(KeyEventSender.ADDRESS_PREFIX + remote.userID, keyEvent);
 
                 return "Connect Game Success!";
@@ -124,9 +125,10 @@ public class ConnectionManager {
 
                 if (!IDMapper.containsKey(mapper))
                     connectionQueue.offer(mapper);
-                return "Connect Game Success! Waiting For Remote Connection!";
+                return "You've joined the game, waiting For Remote Connection!";
+
             } else {
-                disConnectGame(mapper);
+                disConnectGame(mapper, keyEvent);
                 return connect(keyEvent);
             }
         }
@@ -146,7 +148,10 @@ public class ConnectionManager {
 
     }
 
-
+    private void changEventContent(URLMapper mapper, KeyEvent event) {
+        event.setUserID(mapper.userID);
+        event.setIPAddress(mapper.IPAddress);
+    }
 
 
 }

@@ -30,10 +30,12 @@ GameManager.prototype.getBestScore = function () {
   return this.storageManager.getBestScore();
 };
 
+GameManager.prototype.clearGame = function () {
+  this.setup(false);
+};
+
 GameManager.prototype.restart = function () {
-  this.storageManager.clearGameState();
-  this.actuator.continueGame(); // Clear the game won/lost message
-  this.setup();
+  this.setup(true);
 };
 
 // Keep playing after winning (allows going over 2048)
@@ -48,7 +50,11 @@ GameManager.prototype.isGameTerminated = function () {
 };
 
 // Set up the game
-GameManager.prototype.setup = function () {
+GameManager.prototype.setup = function (execute) {
+
+  this.storageManager.clearGameState();
+  this.actuator.continueGame(); // Clear the game won/lost message
+
   var previousState = this.storageManager.getGameState();
 
   // Reload the game from a previous game if present
@@ -67,7 +73,8 @@ GameManager.prototype.setup = function () {
     this.keepPlaying = false;
 
     // Add the initial tiles
-    this.addStartTiles();
+    if(execute)
+      this.addStartTiles();
   }
 
   // Update the actuator

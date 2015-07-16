@@ -8,9 +8,13 @@ function RemoteGameManager(size, Actuator, target) {
     this.updateIPAddress("");
 }
 
+
+RemoteGameManager.prototype.clearGame = function () {
+    this.setup();
+};
+
 // Restart the game
 RemoteGameManager.prototype.restart = function (tiles, bestScore, IPAddress) {
-    this.actuator.continueGame(); // Clear the game won/lost message
     this.setup(tiles, bestScore);
     this.updateIPAddress(IPAddress);
 };
@@ -33,16 +37,20 @@ RemoteGameManager.prototype.isGameTerminated = function () {
 // Set up the game
 RemoteGameManager.prototype.setup = function (randomTiles, bestScore) {
 
+    this.actuator.continueGame(); // Clear the game won/lost message
+
+    var score = bestScore == undefined ? 0 : bestScore;
 
     this.grid        = new Grid(this.size);
     this.score       = 0;
-    this.bestScore   = bestScore;
+    this.bestScore   = score;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
 
     // Add the initial tiles
-    this.addStartTiles(randomTiles);
+    if(randomTiles != undefined)
+        this.addStartTiles(randomTiles);
 
 
     // Update the actuator

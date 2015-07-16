@@ -36,11 +36,12 @@ function NetSendManager(gameManager, remoteManager) {
 
 NetSendManager.prototype.initStomp = function () {
 
-    var initGame = this.initGame;
+    var netSendManager = this;
     var stompClient = this.stompClient;
     var userID = this.userID;
     var map = this.map;
     var remoteManager = this.remoteManager;
+    var gameManager = this.gameManager;
     var innerMapper = this.innerMapper;
 
     var callback = function () {
@@ -49,14 +50,14 @@ NetSendManager.prototype.initStomp = function () {
             var tuple = getElement(responds);
             var mapped = map[tuple.keyEvent.which];
 
-            if(tuple.gameState == "connect_ack") {
-                initGame();
+            if(tuple.gameState == "game_connect_ack") {
+                netSendManager.initGame(netSendManager.sendData, gameManager, userID);
             }
 
-            if(tuple.gameState == "init")
+            else if(tuple.gameState == "game_init")
                 remoteManager.restart(tuple.tiles, tuple.highestScore, tuple.IP);
 
-            if(tuple.gameState == "gaming" && mapped !== undefined) {
+            else if(tuple.gameState == "gaming" && mapped !== undefined) {
 
                 var entry = tuple.tiles.pop();
                 entry.move = mapped;
@@ -66,6 +67,13 @@ NetSendManager.prototype.initStomp = function () {
                     var t = tileArr.shift();
                     remoteManager.move(t.move, t, tuple.highestScore);
                 }
+            }
+
+            else if (tuple.gameState == "game_disconnect") {
+                smoke.signal("Game Reconnect", function (e) {}, { duration:3000});
+                gameManager.clearGame();
+                remoteManager.clearGame();
+                netSendManager.resetState();
             }
 
         });
@@ -106,16 +114,16 @@ NetSendManager.prototype.sendGameState = function (keyEvent) {
 
 };
 
-NetSendManager.prototype.initGame = function () {
+NetSendManager.prototype.initGame = function (sender, gameManager, userID) {
 
-    var sender = this.sendData;
+    gameManager.restart();
+    var tiles = gameManager.getRandomTiles();
+    var bestScore = gameManager.getBestScore();
 
-    this.gameManager.restart();
-    var tiles = this.gameManager.getRandomTiles();
-    var bestScore = this.gameManager.getBestScore();
+
     var message = {
         userID:userID,
-        gameState:"init",
+        gameState:"game_init",
         highestScore:bestScore,
         randomTiles:JSON.stringify(tiles)
     };
@@ -126,6 +134,7 @@ NetSendManager.prototype.initGame = function () {
 };
 
 NetSendManager.prototype.connectGame = function () {
+
     this.resetState();
     var userID = this.userID;
     var sender = this.sendData;
@@ -135,7 +144,7 @@ NetSendManager.prototype.connectGame = function () {
     };
     sender('connectGame.do', {
         userID:userID,
-        gameState:"connect"
+        gameState:"game_connect"
     }, success)
 
 };
@@ -162,6 +171,7 @@ NetSendManager.prototype.resetState = function () {
 var getElement = function (jsonFile) {
 
     var jsonString = JSON.stringify(jsonFile);
+
     var event = JSON.parse(jsonString).body;
     var body = JSON.parse(event);
 

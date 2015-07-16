@@ -27,14 +27,6 @@ public class GameController {
     private MessageBuffer messageBuffer;
 
 
-    @RequestMapping(value = "/disConnectGame")
-    @ResponseBody
-    public String disConnectGame(HttpServletRequest request, String userID) {
-        String result;
-        result = this.manager.disConnectGame(request.getRemoteAddr(), userID);
-        return result;
-    }
-
     @RequestMapping(value = "/connectGame")
     @ResponseBody
     public String connectGame(HttpServletRequest request, KeyEvent keyEvent) {

@@ -81,7 +81,7 @@ public class KeyEventSequencer {
      * every time so that it can reduce garbage recycle
      * it is thread safety
      */
-    ThreadLocal<Queue<KeyEvent>> eventCollector = ThreadLocal.withInitial(LinkedList<KeyEvent>::new);
+    private ThreadLocal<Queue<KeyEvent>> eventCollector = ThreadLocal.withInitial(LinkedList::new);
 
 
 
@@ -89,7 +89,6 @@ public class KeyEventSequencer {
 
     public KeyEventSequencer() {
         this.keyEventBuffer = new ConcurrentHashMap<>(1 << 10);
-        this.eventCollector = new ThreadLocal<>();
     }
 
     public synchronized void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {

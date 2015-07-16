@@ -1,5 +1,10 @@
 function KeyboardInputManager(netSendManager) {
 
+  // Respond to button presses
+  this.bindButtonPress(".retry-button", this.connect);
+  this.bindButtonPress(".connect-button", this.connect);
+  this.bindButtonPress(".keep-playing-button", this.keepPlaying);
+
   this.netSendManager = netSendManager;
   this.events = {};
 
@@ -75,11 +80,6 @@ KeyboardInputManager.prototype.listen = function () {
     }
 
   });
-
-  // Respond to button presses
-  this.bindButtonPress(".retry-button", this.connect);
-  this.bindButtonPress(".connect-button", this.connect);
-  this.bindButtonPress(".keep-playing-button", this.keepPlaying);
 
   // Respond to swipe events
   var touchStartClientX, touchStartClientY;
