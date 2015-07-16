@@ -100,27 +100,32 @@ NetSendManager.prototype.sendGameState = function (keyEvent) {
 
 };
 
+NetSendManager.prototype.initGame = function () {
+
+    var sender = this.sendData();
+
+    this.gameManager.restart();
+    var tiles = this.gameManager.getRandomTiles();
+    var bestScore = this.gameManager.getBestScore();
+    var message = {
+        userID:userID,
+        gameState:"init",
+        highestScore:bestScore,
+        randomTiles:JSON.stringify(tiles)
+    };
+
+    sender('keyDown.do', message);
+
+
+};
+
 NetSendManager.prototype.connectGame = function () {
-
     this.resetState();
-
     var userID = this.userID;
-    var gameManager = this.gameManager;
     var sender = this.sendData;
 
     var success = function (info) {
         smoke.signal(info, function (e) {}, { duration:3000});
-        gameManager.restart();
-        var tiles = gameManager.getRandomTiles();
-        var bestScore = gameManager.getBestScore();
-        var message = {
-            userID:userID,
-            gameState:"init",
-            highestScore:bestScore,
-            randomTiles:JSON.stringify(tiles)
-        };
-
-        sender('keyDown.do', message);
     };
 
     sender('connectGame.do', {

@@ -1,6 +1,7 @@
 package org.decaywood.service;
 
 import org.decaywood.buffer.handler.KeyEventSender;
+import org.decaywood.entity.KeyEvent;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,19 @@ public class ConnectionManager {
     @Resource
     private SimpMessagingTemplate template;
 
+    /**
+     * connectionQueue is defined as a waiting queue
+     * when two user is waiting for connection,these two
+     * user can be matched into IDMapper
+     */
     private Deque<URLMapper> connectionQueue;
+
+    /**
+     * IDMapper record the user mapping information,
+     * when user1 send the message to user2, eventSender
+     * can send the message to two users according to
+     * the IDMapper
+     */
     private Map<URLMapper, URLMapper> IDMapper;
 
     public static class URLMapper {
@@ -80,14 +93,17 @@ public class ConnectionManager {
     }
 
 
-    public synchronized String connect(String IPAddress, String userID) {
+    public synchronized String connect(KeyEvent keyEvent) {
+
+        String IPAddress = keyEvent.getIPAddress();
+        String userID = keyEvent.getUserID();
 
         URLMapper mapper = new URLMapper(IPAddress, userID);
 
         while (true) {
             if (!connectionQueue.isEmpty() && !IDMapper.containsKey(mapper)) {
 
-                if(mapper.equals(connectionQueue.peek())) return "Waiting For Remote Connection!";
+                if (mapper.equals(connectionQueue.peek())) return "Waiting For Remote Connection!";
 
                 URLMapper remote = connectionQueue.poll();
 
@@ -106,7 +122,7 @@ public class ConnectionManager {
                 return "Connect Game Success! Waiting For Remote Connection!";
             } else {
                 disConnectGame(mapper);
-                return connect(IPAddress, userID);
+                return connect(keyEvent);
             }
         }
 

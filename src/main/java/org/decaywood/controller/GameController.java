@@ -39,7 +39,9 @@ public class GameController {
     @ResponseBody
     public String connectGame(HttpServletRequest request, KeyEvent keyEvent) {
         String result;
-        result = manager.connect(request.getRemoteAddr(), keyEvent.getUserID());
+        System.out.println(Thread.currentThread().getName());
+        keyEvent.setIPAddress(request.getRemoteAddr());
+        result = manager.connect(keyEvent);
         return result;
     }
 
