@@ -6,4 +6,5 @@ LoftPage以当前流行的2048游戏为蓝本，将其进行改造，使其可�
 与其说本项目是一个游戏，把它当作各种最新技术的实践以及设计思想的技术验证更为恰当。
 本文着重讨论设计思想和所用技术本身，并不对项目应用以及前景作过多探讨。
 ##后台结构以及说明
-![](https://github.com/decaywood/LoftPage/blob/master/Info/messageBuffer.png)  
+![](https://github.com/decaywood/LoftPage/blob/master/Info/Structure.png)
+![](https://github.com/decaywood/LoftPage/blob/master/Info/SequenceDiagram.png)
