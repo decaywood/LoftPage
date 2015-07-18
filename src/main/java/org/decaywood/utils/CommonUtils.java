@@ -37,7 +37,7 @@ public class CommonUtils {
 
     public static long generateHashCode(String... seeds) {
 
-        return Arrays.stream(seeds).map(x -> (long)x.hashCode()).peek(System.out::println)
+        return Arrays.stream(seeds).map(x -> (long)x.hashCode())
                 .reduce(0L, (first, second) -> first * 31 + second);
 
     }

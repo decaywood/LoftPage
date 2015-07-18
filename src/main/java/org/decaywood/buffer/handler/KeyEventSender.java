@@ -1,6 +1,7 @@
 package org.decaywood.buffer.handler;
 
 import com.lmax.disruptor.WorkHandler;
+import org.apache.log4j.Logger;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.service.ConnectionManager;
 import org.decaywood.utils.cache.KeyEventSequencer;
@@ -12,6 +13,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
  */
 
 public class KeyEventSender implements WorkHandler<KeyEvent> {
+
+    Logger logger = Logger.getLogger(this.getClass().getName());
 
     public static final String ADDRESS_PREFIX = "/message/responds/";
 
@@ -55,18 +58,24 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     }
 
     private void execute(KeyEvent event) throws InterruptedException {
+        if(this.simpMessagingTemplate == null || this.manager == null || sequencer == null) return;
+
         sequencer.processKeyEvent(event, KeyEventSender.this::sendEvent);
+
     }
 
     public void sendEvent(KeyEvent event) {
+
+
+
         try {
+
             String sendURL;
             String IPAddress = event.getIPAddress();
             String userID = event.getUserID();
             sendURL = manager.getSendURL(IPAddress, userID);
             simpMessagingTemplate.convertAndSend(sendURL, event);
-//            simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
-//                    + event.getUserID(), event); // forTest
+
         } catch (Exception e) {
             simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
                     + event.getUserID(), e.getMessage());

@@ -1,3 +1,4 @@
+import org.decaywood.utils.CommonUtils;
 import org.decaywood.utils.NameDomainMapper;
 import org.junit.Test;
 
@@ -11,5 +12,10 @@ public class BaseToolsTest {
         System.out.println(NameDomainMapper.REQUEST_DATAS.name());
     }
 
+    @Test
+    public void hashGenTest() {
+        System.out.println(CommonUtils.generateHashCode("localhost", "decaywood"));
+
+    }
 
 }

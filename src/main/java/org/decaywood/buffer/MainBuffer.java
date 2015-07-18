@@ -29,7 +29,9 @@ public abstract class MainBuffer {
     /**
      * used for lazy init
      */
-    private BufferGenerator generator;
+    protected BufferGenerator generator;
+
+    protected RingBuffer<KeyEvent> ringBuffer;
 
 
     /**
@@ -57,7 +59,7 @@ public abstract class MainBuffer {
         buildBuffer();
     }
 
-    private RingBuffer<KeyEvent> ringBuffer;
+
 
     public MainBuffer() {}
 
@@ -76,7 +78,7 @@ public abstract class MainBuffer {
         this.generator = generator;
     }
 
-    private void buildBuffer() {
+    protected void buildBuffer() {
         if(manager != null && simpMessagingTemplate != null && sequencer != null)
             this.ringBuffer = this.generator.initRingBuffer(manager, simpMessagingTemplate, sequencer);
     }

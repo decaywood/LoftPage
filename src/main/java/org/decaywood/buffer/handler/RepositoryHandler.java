@@ -1,6 +1,7 @@
 package org.decaywood.buffer.handler;
 
 import com.lmax.disruptor.EventHandler;
+import org.apache.log4j.Logger;
 import org.decaywood.entity.KeyEvent;
 import org.decaywood.entity.User;
 import org.decaywood.service.UserService;
@@ -24,6 +25,7 @@ import java.util.function.Supplier;
  */
 public class RepositoryHandler implements EventHandler<KeyEvent> {
 
+    Logger logger = Logger.getLogger(getClass().getName());
 
     public enum CacheType {
 
@@ -79,16 +81,19 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
 
 
 
-
-
     @Override
     public void onEvent(KeyEvent event, long sequence, boolean endOfBatch) throws Exception {
         execute(event);
     }
 
-    private void execute(KeyEvent event) {
+    protected void execute(KeyEvent event) {
 
-        if(eventFilter.filter(cache, event)) return;
+
+        if (this.userService == null) {
+            logger.error("No User Service!");
+        }
+
+        if (eventFilter.filter(cache, event)) return;
 
         User user = new User();
         matchUserInfo(event, user);

@@ -26,11 +26,11 @@ import java.util.function.Supplier;
 @Component(value = "MultiSendersBuffer")
 public class MultiSendersBuffer extends MainBuffer {
 
-
     public MultiSendersBuffer() {
-
-        this(() -> new EventHandler[0]);
+//        this(() -> new EventHandler[]{new RepositoryHandler()});
+        this(() -> new EventHandler[]{});
     }
+
     /**
      * generate the handlers like logger handler, sql handler and so on
      */
@@ -42,8 +42,9 @@ public class MultiSendersBuffer extends MainBuffer {
     /**
      *
      * @param bufferSize ringBuffer Size
-     * @param consumerFactor use a WorkerPool to allow multiple pooled worker threads to work on a single consumer
-     *                       worker count is consumerFactor multiply availableProcessors count
+     * @param consumerFactor worker count is defined by the result of
+     *                       consumerFactor multiply availableProcessors count,
+     *                       which ensure the count of consumer(WorkHandler).
      */
     public MultiSendersBuffer(int bufferSize, int consumerFactor, Supplier<EventHandler[]> generator) {
         setGenerator((manager, template, sequencer) -> initBuffer(
