@@ -7,6 +7,7 @@ import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * @author: decaywood
@@ -20,11 +21,11 @@ import javax.annotation.Resource;
 
 public abstract class MainBuffer {
 
-    protected ConnectionManager manager;
+    protected Optional<ConnectionManager> manager;
 
-    protected SimpMessagingTemplate simpMessagingTemplate;
+    protected Optional<SimpMessagingTemplate> simpMessagingTemplate;
 
-    protected KeyEventSequencer sequencer;
+    protected Optional<KeyEventSequencer> sequencer;
 
     /**
      * used for lazy init
@@ -39,13 +40,13 @@ public abstract class MainBuffer {
      */
     @Resource(name = "ConnectionManager")
     public void setManager(ConnectionManager manager) {
-        this.manager = manager;
+        this.manager = Optional.of(manager);
         buildBuffer();
     }
 
     @Resource
     public void setSimpMessagingTemplate(SimpMessagingTemplate simpMessagingTemplate) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.simpMessagingTemplate = Optional.of(simpMessagingTemplate);
         buildBuffer();
     }
 
@@ -55,7 +56,7 @@ public abstract class MainBuffer {
      */
     @Resource(name = "KeyEventSequencer")
     public void setSequencer(KeyEventSequencer sequencer) {
-        this.sequencer = sequencer;
+        this.sequencer = Optional.of(sequencer);
         buildBuffer();
     }
 
@@ -79,8 +80,11 @@ public abstract class MainBuffer {
     }
 
     protected void buildBuffer() {
-        if(manager != null && simpMessagingTemplate != null && sequencer != null)
-            this.ringBuffer = this.generator.initRingBuffer(manager, simpMessagingTemplate, sequencer);
+        if(manager.isPresent() && simpMessagingTemplate.isPresent() && sequencer.isPresent())
+            this.ringBuffer = this.generator.initRingBuffer(
+                    manager.get(),
+                    simpMessagingTemplate.get(),
+                    sequencer.get());
     }
 
 

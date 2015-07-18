@@ -89,6 +89,7 @@ public class RepositoryHandler implements EventHandler<KeyEvent> {
     protected void execute(KeyEvent event) {
 
 
+
         if (this.userService == null) {
             logger.error("No User Service!");
         }

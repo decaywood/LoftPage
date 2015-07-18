@@ -7,6 +7,9 @@ import org.decaywood.service.ConnectionManager;
 import org.decaywood.utils.cache.KeyEventSequencer;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.util.Optional;
+import java.util.function.Consumer;
+
 /**
  * @author: decaywood
  * @date: 2015/6/19 9:56
@@ -19,9 +22,9 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     public static final String ADDRESS_PREFIX = "/message/responds/";
 
 
-    private KeyEventSequencer sequencer;
+    private Optional<KeyEventSequencer> sequencer;
 
-    private ConnectionManager manager;
+    private Optional<ConnectionManager> manager;
 
 
     /**
@@ -40,14 +43,14 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
      *    * we don't care the cost of frontend(relatively).
      *
      */
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private Optional<SimpMessagingTemplate> simpMessagingTemplate;
 
     public KeyEventSender(ConnectionManager manager,
                           SimpMessagingTemplate simpMessagingTemplate,
                           KeyEventSequencer sequencer) {
-        this.manager = manager;
-        this.simpMessagingTemplate = simpMessagingTemplate;
-        this.sequencer = sequencer;
+        this.manager = Optional.of(manager);
+        this.simpMessagingTemplate = Optional.of(simpMessagingTemplate);
+        this.sequencer = Optional.of(sequencer);
     }
 
 
@@ -58,9 +61,13 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
     }
 
     private void execute(KeyEvent event) throws InterruptedException {
-        if(this.simpMessagingTemplate == null || this.manager == null || sequencer == null) return;
 
-        sequencer.processKeyEvent(event, KeyEventSender.this::sendEvent);
+        if(!this.simpMessagingTemplate.isPresent()
+                || !this.manager.isPresent() || sequencer.isPresent()) return;
+
+        Optional<Consumer<KeyEvent>> optional = Optional.of(this::sendEvent);
+        sequencer.get().processKeyEvent(event, optional);
+
 
     }
 
@@ -73,11 +80,11 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
             String sendURL;
             String IPAddress = event.getIPAddress();
             String userID = event.getUserID();
-            sendURL = manager.getSendURL(IPAddress, userID);
-            simpMessagingTemplate.convertAndSend(sendURL, event);
+            sendURL = manager.get().getSendURL(IPAddress, userID);
+            simpMessagingTemplate.get().convertAndSend(sendURL, event);
 
         } catch (Exception e) {
-            simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
+            simpMessagingTemplate.get().convertAndSend(KeyEventSender.ADDRESS_PREFIX
                     + event.getUserID(), e.getMessage());
         }
     }

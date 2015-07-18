@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Date;
+import java.util.Optional;
 
 /**
  * Created by decaywood on 2015/5/23.
@@ -53,14 +54,15 @@ public class UserService {
 
     public void registNewUser(User user, HttpServletRequest request) throws UserConflictException {
 
-        User queryUser = dao.queryByUser(user);
-        String errorInfo = null;
+        Optional<User> queryUser = Optional.ofNullable(dao.queryByUser(user));
+        Optional<String> errorInfo = Optional.ofNullable(null);
 
-        if(queryUser != null){
+        if(queryUser.isPresent()){
+
             StringBuilder builder = new StringBuilder();
-            String userEmail = queryUser.getUserEmail();
-            String userName = queryUser.getUserName();
-            String userLoginName = queryUser.getUserLoginName();
+            String userEmail = queryUser.get().getUserEmail();
+            String userName = queryUser.get().getUserName();
+            String userLoginName = queryUser.get().getUserLoginName();
 
 
             if(userLoginName.equals(user.getUserLoginName()))
@@ -69,10 +71,10 @@ public class UserService {
                 builder.append("User Name Has Already Exist!");
             if(userEmail.equals(user.getUserEmail()))
                 builder.append("User Email Has Already Exist!");
-            errorInfo = builder.toString();
+            errorInfo = Optional.of(builder.toString());
         }
 
-        if(errorInfo != null) throw new UserConflictException(errorInfo);
+        if(errorInfo.isPresent()) throw new UserConflictException(errorInfo.get());
 
         userFormatPadding(user, request);
         dao.saveUser(user);

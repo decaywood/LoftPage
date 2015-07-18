@@ -5,6 +5,7 @@ import org.decaywood.entity.KeyEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -91,12 +92,12 @@ public class KeyEventSequencer {
         this.keyEventBuffer = new ConcurrentHashMap<>(1 << 10);
     }
 
-    public synchronized void processKeyEvent(KeyEvent keyEvent, Consumer<KeyEvent> operator) {
+    public synchronized void processKeyEvent(KeyEvent keyEvent, Optional<Consumer<KeyEvent>> operator) {
 
-        if(operator == null) return;
+        if(!operator.isPresent()) return;
 
         if(!keyEvent.canBuffered()){
-            operator.accept(keyEvent);
+            operator.get().accept(keyEvent);
             return;
         }
 
@@ -122,7 +123,7 @@ public class KeyEventSequencer {
 
         }
 
-        sendEvent(queue, operator);
+        sendEvent(queue, operator.get());
 
     }
 
