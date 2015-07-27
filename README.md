@@ -12,6 +12,10 @@ LoftPage以当前流行的2048游戏为蓝本，将其进行改造，使其可�
 减少了代码异味。 
 * 迭代隐藏：集合以及流内置foreach迭代方法，避免了向客户端暴露集合的内部结构的丑陋代码。
 * 兼容泛型：早在JDK1.5就支持泛型，使用泛型能够在编译期就能发现潜在的类型转换错误。
+* Stream API:
+  * Declarative — 语义更明确，更具可读性
+  * Composable — 更好的灵活性
+  * Parallelizable — 更强大的性能
 
 ##效果图(gif文件，加载时间有点长)：
 ![](https://github.com/decaywood/LoftPage/blob/master/Info/2048.gif)
