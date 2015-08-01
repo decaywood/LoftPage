@@ -19,7 +19,9 @@ LoftPage以当前流行的2048游戏为蓝本，将其进行改造，使其可�
   * 能用Stream流处理数据就不用迭代
 * 函数式编程的优势：
 ![](https://github.com/decaywood/LoftPage/blob/master/Info/FunctionVSMethod.png)
-* Stream API：
+* Stream API：for循环以及Iterator迭代内部仍有可变变量，会有潜在的并发性错误，运用递归进行迭代是避免变量更新的办法
+之一，不过使用递归将会产生大量的内存开销（栈帧），尾递归能够避免这个问题，可惜Java编译器不支持尾递归优化，不过
+以后可以改进；就目前而言Stream无疑是最适合解决此类问题的工具。
   * Declarative — 语义更明确，更具可读性
   * Composable — 更好的灵活性
   * Parallelizable — 更强大的性能
