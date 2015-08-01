@@ -18,7 +18,7 @@ LoftPage以当前流行的2048游戏为蓝本，将其进行改造，使其可�
   * 能用方法引用就不用表达式
   * 能用Stream流处理数据就不用迭代
 * 函数式编程的优势：
-![](https://github.com/decaywood/LoftPage/blob/master/Info/FunctionVsMethod.png)
+![](https://github.com/decaywood/LoftPage/blob/master/Info/FunctionVSMethod.png)
 * Stream API：
   * Declarative — 语义更明确，更具可读性
   * Composable — 更好的灵活性
