@@ -34,7 +34,7 @@ public class LoginController extends BaseController {
         ModelAndView modelAndView = getModelAndView();
         RequestDatas requestDatas = getRequestDatas();
         requestDatas.put(NameDomainMapper.SYSTEM_NAME.getName(), CommonUtils.readFile(SystemConfigure.SYSTEM_NAME));
-//        modelAndView.setViewName(NameDomainMapper.LOGIN_PAGE.getName());
+//        modelAndView.setViewName(NameDomainMapper.LOGIN_PAGE.getName()); // 调试状态，暂时不用注册页面
         modelAndView.setViewName("2048");
         return modelAndView;
     }
