@@ -12,10 +12,10 @@ if you have not gradle, don't worry, you can execute the build using one of the 
 
 ```bash
 # on Unix-like platforms such as Linux and Mac OS X
-./gradlew <task>
+./gradlew bootRun
 
 # on Windows using the gradlew.bat batch file
-gradlew <task>
+gradlew bootRun
 ```
 
 ### Build an executable JAR
