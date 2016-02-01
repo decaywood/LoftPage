@@ -1,19 +1,14 @@
 package org.decaywood.buffer;
 
 import com.lmax.disruptor.EventHandler;
-import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
-import com.lmax.disruptor.WorkHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import org.decaywood.buffer.handler.BufferExceptionHandler;
+import org.decaywood.KeyEvent;
 import org.decaywood.buffer.handler.KeyEventSender;
-import org.decaywood.entity.KeyEvent;
-import org.decaywood.service.ConnectionManager;
-import org.decaywood.utils.cache.KeyEventSequencer;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
@@ -26,8 +21,17 @@ import java.util.function.Supplier;
 @Component(value = "MultiSendersBuffer")
 public class MultiSendersBuffer extends MainBuffer {
 
+    private int bufferSize;
+    private Supplier<EventHandler<KeyEvent>[]> generator;
+
+    @Resource
+    public void setKeyEventSender(KeyEventSender sender) {
+        this.keyEventSender = sender;
+        initBuffer(bufferSize, generator);
+    }
+    private KeyEventSender keyEventSender;
+
     public MultiSendersBuffer() {
-//        this(() -> new EventHandler[]{new RepositoryHandler()});
         this(() -> new EventHandler[]{});
     }
 
@@ -35,61 +39,38 @@ public class MultiSendersBuffer extends MainBuffer {
      * generate the handlers like logger handler, sql handler and so on
      */
 
-    public MultiSendersBuffer(Supplier<EventHandler[]> generator) {
-        this(1 << 10, 2, generator);
+    public MultiSendersBuffer(Supplier<EventHandler<KeyEvent>[]> generator) {
+        this(1 << 10, generator);
     }
 
     /**
-     *
      * @param bufferSize ringBuffer Size
-     * @param consumerFactor worker count is defined by the result of
-     *                       consumerFactor multiply availableProcessors count,
-     *                       which ensure the count of consumer(WorkHandler).
      */
-    public MultiSendersBuffer(int bufferSize, int consumerFactor, Supplier<EventHandler[]> generator) {
-        setGenerator((manager, template, sequencer) -> initBuffer(
-                bufferSize, consumerFactor, generator, manager, template, sequencer));
+    public MultiSendersBuffer(int bufferSize, Supplier<EventHandler<KeyEvent>[]> generator) {
+        this.bufferSize = bufferSize;
+        this.generator = generator;
     }
 
-
-
-
-    public WorkHandler<KeyEvent>[] initSenders(int senderSize,
-                                               ConnectionManager manager,
-                                               SimpMessagingTemplate template,
-                                               KeyEventSequencer sequencer) {
-        WorkHandler<KeyEvent>[] workHandlers = new WorkHandler[senderSize];
-        for (int i = 0; i < senderSize; i++) {
-            workHandlers[i] = new KeyEventSender(manager, template, sequencer);
-        }
-
-        return workHandlers;
-    }
-
-    private RingBuffer<KeyEvent> initBuffer(int bufferSize,
-                                            int consumerFactor,
-                                            Supplier<EventHandler[]> generator,
-                                            ConnectionManager manager,
-                                            SimpMessagingTemplate template,
-                                            KeyEventSequencer sequencer) {
+    private void initBuffer(int bufferSize, Supplier<EventHandler<KeyEvent>[]> generator) {
 
         int size = bufferSize > 0 ? bufferSize : 1 << 10;
 
         Disruptor<KeyEvent> disruptor = new Disruptor<>(
                 KeyEvent::new,
                 size,
-                Executors.newCachedThreadPool(),
-                ProducerType.MULTI,
+                Executors.defaultThreadFactory(),
+                ProducerType.SINGLE,
                 new SleepingWaitStrategy());
 
-        int threadsCount = Math.max(1, Runtime.getRuntime().availableProcessors());
-        int consumerCount = threadsCount * consumerFactor;
+        EventHandler<KeyEvent>[] src = generator.get();
+        EventHandler[] handlers = new EventHandler[src.length + 1];
+        handlers[0] = keyEventSender;
+        System.out.println("key event sender : " + keyEventSender);
+        System.arraycopy(src, 0, handlers, 1, src.length);
+        System.out.println("handler len : " + handlers.length);
+        disruptor.handleEventsWith(handlers);
 
-        WorkHandler<KeyEvent>[] senders = initSenders(consumerCount, manager, template, sequencer);
-
-        disruptor.handleEventsWithWorkerPool(senders).then(generator.get());
-        disruptor.handleExceptionsWith(new BufferExceptionHandler());
-        return disruptor.start();
+        this.ringBuffer = disruptor.start();
 
     }
 }

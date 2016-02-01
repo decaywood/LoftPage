@@ -2,24 +2,18 @@ package org.decaywood.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
-import javax.annotation.Resource;
 
-/**
- * Created by Administrator on 2015/6/18.
- */
 
 @Configuration
 @EnableWebSocketMessageBroker
-@EnableWebMvc
-@EnableWebSocket
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 
-    @Resource
-    private ClientHandshakeInterceptor interceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -30,7 +24,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/webSocket")
-                .addInterceptors(interceptor)
                 .withSockJS();
     }
 

@@ -1,6 +1,6 @@
 package org.decaywood.buffer;
 
-import org.decaywood.entity.KeyEvent;
+import org.decaywood.KeyEvent;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -44,6 +44,7 @@ public class MessageBuffer implements Runnable {
 
     /**
      * if the average buffer size overweight the threshold
+     * it would trigger the dispatch thread to publish keyEvent
      */
     private int bufferIncreaseThreshold;
     private int flushThreshold;

@@ -2,7 +2,7 @@ package org.decaywood.buffer.handler;
 
 import com.lmax.disruptor.ExceptionHandler;
 import org.apache.log4j.Logger;
-import org.decaywood.entity.KeyEvent;
+import org.decaywood.KeyEvent;
 
 /**
  * @author: decaywood

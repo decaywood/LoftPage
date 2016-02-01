@@ -1,13 +1,13 @@
 package org.decaywood.buffer.handler;
 
-import com.lmax.disruptor.WorkHandler;
-import org.apache.log4j.Logger;
-import org.decaywood.entity.KeyEvent;
-import org.decaywood.service.ConnectionManager;
-import org.decaywood.utils.cache.KeyEventSequencer;
+import com.lmax.disruptor.EventHandler;
+import org.decaywood.KeyEvent;
+import org.decaywood.KeyEventSequencer;
+import org.decaywood.serve.ConnectionManager;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import javax.annotation.Resource;
 import java.util.function.Consumer;
 
 /**
@@ -15,17 +15,10 @@ import java.util.function.Consumer;
  * @date: 2015/6/19 9:56
  */
 
-public class KeyEventSender implements WorkHandler<KeyEvent> {
-
-    Logger logger = Logger.getLogger(this.getClass().getName());
+@Component(value = "KeyEventSender")
+public class KeyEventSender implements EventHandler<KeyEvent> {
 
     public static final String ADDRESS_PREFIX = "/message/responds/";
-
-
-    private Optional<KeyEventSequencer> sequencer;
-
-    private Optional<ConnectionManager> manager;
-
 
     /**
      *
@@ -43,50 +36,48 @@ public class KeyEventSender implements WorkHandler<KeyEvent> {
      *    * we don't care the cost of frontend(relatively).
      *
      */
-    private Optional<SimpMessagingTemplate> simpMessagingTemplate;
+    @Resource
+    private SimpMessagingTemplate simpMessagingTemplate;
 
-    public KeyEventSender(ConnectionManager manager,
-                          SimpMessagingTemplate simpMessagingTemplate,
-                          KeyEventSequencer sequencer) {
-        this.manager = Optional.of(manager);
-        this.simpMessagingTemplate = Optional.of(simpMessagingTemplate);
-        this.sequencer = Optional.of(sequencer);
-    }
+    /**
+     * it is used to manage the connection, mapping URL between two gamer
+     */
+    @Resource(name = "ConnectionManager")
+    protected ConnectionManager manager;
 
+    /**
+     * mainBuffer would disorder the keyEvent,sequencer can
+     * reorder the keyEvent passed through the mainBuffer
+     */
+    @Resource(name = "KeyEventSequencer")
+    protected KeyEventSequencer sequencer;
 
-
-    @Override
-    public void onEvent(KeyEvent event) throws Exception {
-        execute(event);
-    }
+    public KeyEventSender() {}
 
     private void execute(KeyEvent event) throws InterruptedException {
-
-        if(!this.simpMessagingTemplate.isPresent()
-                || !this.manager.isPresent() || sequencer.isPresent()) return;
-
-        Optional<Consumer<KeyEvent>> optional = Optional.of(this::sendEvent);
-        sequencer.get().processKeyEvent(event, optional);
-
-
+        Consumer<KeyEvent> optional = this::sendEvent;
+        sequencer.processKeyEvent(event, optional);
     }
 
     public void sendEvent(KeyEvent event) {
-
-
 
         try {
 
             String sendURL;
             String IPAddress = event.getIPAddress();
             String userID = event.getUserID();
-            sendURL = manager.get().getSendURL(IPAddress, userID);
-            simpMessagingTemplate.get().convertAndSend(sendURL, event);
+            sendURL = manager.getSendURL(IPAddress, userID);
+            simpMessagingTemplate.convertAndSend(sendURL, event);
+            System.out.println("send Event : " + event.getGameState() + "  " + sendURL);
 
         } catch (Exception e) {
-            simpMessagingTemplate.get().convertAndSend(KeyEventSender.ADDRESS_PREFIX
+            simpMessagingTemplate.convertAndSend(KeyEventSender.ADDRESS_PREFIX
                     + event.getUserID(), e.getMessage());
         }
     }
 
+    @Override
+    public void onEvent(KeyEvent event, long sequence, boolean endOfBatch) throws Exception {
+        execute(event);
+    }
 }
