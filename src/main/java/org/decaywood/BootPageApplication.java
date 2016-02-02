@@ -7,6 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BootPageApplication {
 
 	public static void main(String[] args) throws Exception {
+		/**
+		 * for debug
+		 */
+		System.setProperty("server.port", "4000");
+		System.setProperty("server.context-path", "/");
+
+
 		SpringApplication.run(BootPageApplication.class, args);
 	}
 
