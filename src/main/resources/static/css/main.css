@@ -1014,15 +1014,11 @@ hr {
     display: inline;
     position: relative;
     float: left;
+    margin-left: 10%;
+    margin-bottom: 5%;
 }
 
-#home {
-    margin-left: 300px;
-}
 
-#guest {
-    margin-left: 100px;
-}
 
 #footer {
     float: left;

@@ -86,6 +86,7 @@ KeyboardInputManager.prototype.listen = function () {
   var gameContainer = document.getElementsByClassName("game-container")[0];
 
   gameContainer.addEventListener(this.eventTouchstart, function (event) {
+
     if ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
         event.targetTouches.length > 1) {
       return; // Ignore if touching with more than 1 finger
@@ -130,7 +131,9 @@ KeyboardInputManager.prototype.listen = function () {
 
     if (Math.max(absDx, absDy) > 10) {
       // (right : left) : (down : up)
-      self.emit("move", absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0));
+      var which = absDx > absDy ? (dx > 0 ? 1 : 3) : (dy > 0 ? 2 : 0);
+      self.emit("move", which);
+      netSendManager.sendGameState({which:absDx > absDy ? (dx > 0 ? 39 : 37) : (dy > 0 ? 40 : 38)});
     }
   });
 };
